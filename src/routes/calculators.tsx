@@ -353,7 +353,7 @@ const loanPresets: LoanPreset[] = [
   { key: "property", label: "LAP", icon: Building2, defaultRate: 10, defaultTenure: 180, defaultAmount: 3000000, maxAmount: 50000000 },
 ];
 
-function EMICalculator() {
+function EMICalculator({ onSave }: { onSave: SaveFn }) {
   const [preset, setPreset] = useState<LoanPreset>(loanPresets[0]);
   const [amount, setAmount] = useState(preset.defaultAmount);
   const [rate, setRate] = useState(preset.defaultRate);
@@ -373,6 +373,24 @@ function EMICalculator() {
     const t = e * n;
     return { emi: e, total: t, interest: t - amount };
   }, [amount, rate, tenure]);
+
+  const save = () => onSave({
+    kind: "emi",
+    primary: "Monthly EMI",
+    primaryValue: emi,
+    better: "lower",
+    inputs: [
+      { label: "Loan Type", value: preset.label },
+      { label: "Loan Amount", value: inr(amount) },
+      { label: "Interest Rate", value: `${rate}% p.a.` },
+      { label: "Tenure", value: `${tenure} mo` },
+    ],
+    outputs: [
+      { label: "Monthly EMI", value: inr(emi) },
+      { label: "Total Interest", value: inr(interest) },
+      { label: "Total Payable", value: inr(total) },
+    ],
+  });
 
   return (
     <div className="bg-card border border-border rounded-xl shadow-card p-7 border-b-[3px] border-b-[var(--brand-yellow)]">
@@ -431,13 +449,14 @@ function EMICalculator() {
           <Donut a={amount} b={interest} labelA="Principal" labelB="Interest" center={inr(total)} />
         </div>
       </div>
+      <SaveScenarioButton onClick={save} />
     </div>
   );
 }
 
 /* ---------------- SIP ---------------- */
 
-function SIPCalculator() {
+function SIPCalculator({ onSave }: { onSave: SaveFn }) {
   const [monthly, setMonthly] = useState(10000);
   const [rate, setRate] = useState(12);
   const [years, setYears] = useState(10);
@@ -449,6 +468,23 @@ function SIPCalculator() {
     const inv = monthly * n;
     return { invested: inv, maturity: m, gains: m - inv };
   }, [monthly, rate, years]);
+
+  const save = () => onSave({
+    kind: "sip",
+    primary: "Maturity",
+    primaryValue: maturity,
+    better: "higher",
+    inputs: [
+      { label: "Monthly Investment", value: inr(monthly) },
+      { label: "Expected Return", value: `${rate}% p.a.` },
+      { label: "Time Period", value: `${years} yr` },
+    ],
+    outputs: [
+      { label: "Invested", value: inr(invested) },
+      { label: "Est. Returns", value: inr(gains) },
+      { label: "Maturity", value: inr(maturity) },
+    ],
+  });
 
   return (
     <div className="bg-card border border-border rounded-xl shadow-card p-7 border-b-[3px] border-b-[var(--brand-yellow)]">
@@ -476,13 +512,14 @@ function SIPCalculator() {
           <Donut a={invested} b={gains} labelA="Invested" labelB="Est. Returns" center={inr(maturity)} />
         </div>
       </div>
+      <SaveScenarioButton onClick={save} />
     </div>
   );
 }
 
 /* ---------------- Lumpsum ---------------- */
 
-function LumpsumCalculator() {
+function LumpsumCalculator({ onSave }: { onSave: SaveFn }) {
   const [principal, setPrincipal] = useState(100000);
   const [rate, setRate] = useState(12);
   const [years, setYears] = useState(10);
@@ -491,6 +528,23 @@ function LumpsumCalculator() {
     const m = principal * Math.pow(1 + rate / 100, years);
     return { maturity: m, gains: m - principal };
   }, [principal, rate, years]);
+
+  const save = () => onSave({
+    kind: "lumpsum",
+    primary: "Maturity",
+    primaryValue: maturity,
+    better: "higher",
+    inputs: [
+      { label: "Investment Amount", value: inr(principal) },
+      { label: "Expected Return", value: `${rate}% p.a.` },
+      { label: "Time Period", value: `${years} yr` },
+    ],
+    outputs: [
+      { label: "Invested", value: inr(principal) },
+      { label: "Est. Returns", value: inr(gains) },
+      { label: "Maturity", value: inr(maturity) },
+    ],
+  });
 
   return (
     <div className="bg-card border border-border rounded-xl shadow-card p-7 border-b-[3px] border-b-[var(--brand-yellow)]">
@@ -518,13 +572,14 @@ function LumpsumCalculator() {
           <Donut a={principal} b={gains} labelA="Invested" labelB="Est. Returns" center={inr(maturity)} />
         </div>
       </div>
+      <SaveScenarioButton onClick={save} />
     </div>
   );
 }
 
 /* ---------------- FD ---------------- */
 
-function FDCalculator() {
+function FDCalculator({ onSave }: { onSave: SaveFn }) {
   const [principal, setPrincipal] = useState(500000);
   const [rate, setRate] = useState(7.5);
   const [years, setYears] = useState(5);
@@ -534,6 +589,23 @@ function FDCalculator() {
     const m = principal * Math.pow(1 + rate / 100 / n, n * years);
     return { maturity: m, interest: m - principal };
   }, [principal, rate, years]);
+
+  const save = () => onSave({
+    kind: "fd",
+    primary: "Maturity",
+    primaryValue: maturity,
+    better: "higher",
+    inputs: [
+      { label: "Principal", value: inr(principal) },
+      { label: "Interest Rate", value: `${rate}% p.a.` },
+      { label: "Tenure", value: `${years} yr` },
+    ],
+    outputs: [
+      { label: "Invested", value: inr(principal) },
+      { label: "Interest", value: inr(interest) },
+      { label: "Maturity", value: inr(maturity) },
+    ],
+  });
 
   return (
     <div className="bg-card border border-border rounded-xl shadow-card p-7 border-b-[3px] border-b-[var(--brand-yellow)]">
@@ -561,6 +633,7 @@ function FDCalculator() {
           <Donut a={principal} b={interest} labelA="Principal" labelB="Interest" center={inr(maturity)} />
         </div>
       </div>
+      <SaveScenarioButton onClick={save} />
     </div>
   );
 }
