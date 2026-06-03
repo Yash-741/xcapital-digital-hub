@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Menu, X, ChevronDown, User, Bell } from "lucide-react";
+import { Menu, X, ChevronDown, User } from "lucide-react";
 import logo from "@/assets/xcapital-logo.asset.json";
 
 const loanLinks = [
@@ -67,13 +67,6 @@ export function Header() {
           </div>
 
           <div className="flex items-center gap-2 md:gap-4">
-            <div className="hidden md:flex items-center gap-1 text-sm font-medium text-[var(--brand-black)]/80 hover:text-[var(--brand-black)] cursor-pointer">
-              Gold Price <ChevronDown className="h-3.5 w-3.5" />
-            </div>
-            <button className="hidden md:grid place-items-center h-9 w-9 rounded-full hover:bg-secondary relative" aria-label="Notifications">
-              <Bell className="h-5 w-5 text-[var(--brand-black)]" />
-              <span className="absolute -top-0.5 -right-0.5 h-4 w-4 grid place-items-center text-[10px] font-bold rounded-full bg-[var(--brand-black)] text-[var(--brand-yellow)]">4</span>
-            </button>
             <a
               href="#apply"
               className="inline-flex items-center gap-2 rounded-full px-4 md:px-5 py-2.5 text-sm font-semibold text-[var(--brand-black)] bg-[var(--brand-yellow)] hover:brightness-105 transition"
