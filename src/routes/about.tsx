@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import {
   MapPin, Phone, Mail, Briefcase, Search, FileCheck, Building2,
   FileText, CheckCircle2, RefreshCw, Clock, Users, Handshake,
-  ShieldCheck, Sparkles, ChevronDown, CheckCircle,
+  ShieldCheck, Sparkles, ChevronDown, CheckCircle, Globe,
 } from "lucide-react";
 import { SiteLayout, PageHeader } from "@/components/site/Layout";
 
@@ -70,6 +70,21 @@ const coreValues = [
   { title: "Professionalism", desc: "Maintaining the highest standards." },
   { title: "Client First", desc: "Client success comes first." },
   { title: "Long-Term Relationships", desc: "Building partnerships, not transactions." },
+];
+
+const leaders = [
+  {
+    name: "Amey Jaguste",
+    role: "Founder",
+    phone: "+91 88791 09148",
+    email: "amey.jaguste@xcapital.co.in",
+  },
+  {
+    name: "Durgesh Patel",
+    role: "Co-Founder",
+    phone: "+91 99678 90467",
+    email: "durgesh.patel@xcapital.co.in",
+  },
 ];
 
 const contactSchema = z.object({
@@ -269,15 +284,54 @@ function AboutPage() {
         </div>
       </section>
 
+      {/* Leadership */}
+      <section id="leadership" className="bg-secondary/50">
+        <div className="container-x py-16">
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <h2 className="text-3xl font-bold text-foreground">Leadership</h2>
+            <p className="text-muted-foreground mt-3">Meet the people behind X Capital.</p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            {leaders.map((l) => (
+              <div
+                key={l.email}
+                className="bg-card rounded-xl p-7 border border-border shadow-card border-b-[3px] border-b-[var(--brand-yellow)]"
+              >
+                <div className="flex items-start gap-5">
+                  <div className="h-16 w-16 shrink-0 rounded-full bg-[var(--brand-black)] text-[var(--brand-yellow)] grid place-items-center text-xl font-bold">
+                    {l.name.split(" ").map((n) => n[0]).join("")}
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="text-xl font-bold text-[var(--brand-black)] tracking-wide">{l.name}</h3>
+                    <p className="text-sm text-muted-foreground mt-0.5">{l.role}, X Capital</p>
+                    <ul className="mt-4 space-y-2 text-sm">
+                      <li className="flex items-center gap-2">
+                        <Phone className="h-4 w-4 text-[var(--brand-yellow)] shrink-0" />
+                        <a href={`tel:${l.phone.replace(/\s/g, "")}`} className="hover:text-[var(--brand-black)]">{l.phone}</a>
+                      </li>
+                      <li className="flex items-center gap-2 min-w-0">
+                        <Mail className="h-4 w-4 text-[var(--brand-yellow)] shrink-0" />
+                        <a href={`mailto:${l.email}`} className="truncate hover:text-[var(--brand-black)]">{l.email}</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section id="reach-us" className="container-x py-16">
         <div className="grid md:grid-cols-2 gap-10">
           <div>
             <h2 className="text-3xl font-bold text-foreground">Reach Us</h2>
             <p className="text-muted-foreground mt-3">We'd love to hear from you. Fill the form or reach us directly.</p>
             <ul className="mt-6 space-y-4 text-sm">
-              <li className="flex gap-3"><MapPin className="h-5 w-5 text-[var(--brand-yellow)] shrink-0" /><span>XCapital Tower, Bandra Kurla Complex, Mumbai 400051</span></li>
-              <li className="flex gap-3"><Phone className="h-5 w-5 text-[var(--brand-yellow)] shrink-0" /><span>+91 1800 123 4567</span></li>
-              <li className="flex gap-3"><Mail className="h-5 w-5 text-[var(--brand-yellow)] shrink-0" /><span>care@xcapital.in</span></li>
+              <li className="flex gap-3"><MapPin className="h-5 w-5 text-[var(--brand-yellow)] shrink-0" /><span>Sakinaka, Andheri East, Mumbai 400072</span></li>
+              <li className="flex gap-3"><Phone className="h-5 w-5 text-[var(--brand-yellow)] shrink-0" /><span>+91 88791 09148</span></li>
+              <li className="flex gap-3"><Mail className="h-5 w-5 text-[var(--brand-yellow)] shrink-0" /><span>amey.jaguste@xcapital.co.in</span></li>
+              <li className="flex gap-3"><Globe className="h-5 w-5 text-[var(--brand-yellow)] shrink-0" /><span>www.xcapital.co.in</span></li>
             </ul>
           </div>
           {submitted ? (
