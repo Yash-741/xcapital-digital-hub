@@ -649,6 +649,27 @@ const tabs: { key: TabKey; label: string; icon: typeof Calculator }[] = [
 
 function CalculatorsPage() {
   const [tab, setTab] = useState<TabKey>("emi");
+  const [scenarios, setScenarios] = useState<Scenario[]>([]);
+
+  const tabScenarios = scenarios.filter((s) => s.kind === tab);
+
+  const handleSave: SaveFn = (data) => {
+    setScenarios((prev) => {
+      const sameKind = prev.filter((s) => s.kind === data.kind);
+      const id = `${data.kind}-${Date.now()}`;
+      const name = `Scenario ${sameKind.length + 1}`;
+      return [...prev, { ...data, id, name }];
+    });
+  };
+
+  const handleRemove = (id: string) =>
+    setScenarios((prev) => prev.filter((s) => s.id !== id));
+
+  const handleClear = () =>
+    setScenarios((prev) => prev.filter((s) => s.kind !== tab));
+
+  const handleRename = (id: string, name: string) =>
+    setScenarios((prev) => prev.map((s) => (s.id === id ? { ...s, name } : s)));
 
   return (
     <SiteLayout>
@@ -675,10 +696,17 @@ function CalculatorsPage() {
         </div>
 
         <div className="max-w-3xl mx-auto">
-          {tab === "emi" && <EMICalculator />}
-          {tab === "sip" && <SIPCalculator />}
-          {tab === "lumpsum" && <LumpsumCalculator />}
-          {tab === "fd" && <FDCalculator />}
+          {tab === "emi" && <EMICalculator onSave={handleSave} />}
+          {tab === "sip" && <SIPCalculator onSave={handleSave} />}
+          {tab === "lumpsum" && <LumpsumCalculator onSave={handleSave} />}
+          {tab === "fd" && <FDCalculator onSave={handleSave} />}
+
+          <ComparePanel
+            scenarios={tabScenarios}
+            onRemove={handleRemove}
+            onClear={handleClear}
+            onRename={handleRename}
+          />
         </div>
 
         <p className="text-xs text-muted-foreground text-center mt-8 max-w-2xl mx-auto">
