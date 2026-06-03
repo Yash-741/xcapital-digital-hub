@@ -36,7 +36,7 @@ function GridCard({
 function IconTile({
   icon: Icon, label, sub, to,
 }: {
-  icon: React.ComponentType<{ className?: string }>;
+  icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
   label: string;
   sub?: string;
   to?: string;
