@@ -3,7 +3,7 @@ import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
 import {
-  MapPin, Phone, Mail, Briefcase, Search, FileCheck, Building2,
+  MapPin, Phone, Mail, Search, FileCheck, Building2,
   FileText, CheckCircle2, RefreshCw, Clock, Users, Handshake,
   ShieldCheck, Sparkles, ChevronDown, CheckCircle, Globe,
   GraduationCap, Upload, User as UserIcon,
