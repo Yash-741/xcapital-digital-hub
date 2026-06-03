@@ -567,7 +567,6 @@ function FDCalculator() {
 
 /* ---------------- Page ---------------- */
 
-type TabKey = "emi" | "sip" | "lumpsum" | "fd";
 const tabs: { key: TabKey; label: string; icon: typeof Calculator }[] = [
   { key: "emi", label: "Loan EMI", icon: Calculator },
   { key: "sip", label: "SIP", icon: TrendingUp },
