@@ -9,6 +9,7 @@ const loanLinks = [
   "Loan Against Securities", "Used Car Loan", "Education Loan",
 ];
 const investmentLinks = ["Fixed Deposits", "Bonds"];
+const insuranceLinks = ["Health Insurance", "Life Insurance", "Medical Claim"];
 const aboutLinks = ["About Us", "Our Vision", "Reach Us", "Careers"];
 
 function Dropdown({ label, items, to }: { label: string; items: string[]; to: string }) {
@@ -95,7 +96,7 @@ export function Header() {
           <Link to="/" className="px-4 py-3 text-sm font-medium text-white hover:text-[var(--brand-yellow)]">Home</Link>
           <Dropdown label="Investments" items={investmentLinks} to="/investments" />
           <Dropdown label="Loans" items={loanLinks} to="/loans" />
-          <Link to="/insurance" className="px-4 py-3 text-sm font-medium text-white hover:text-[var(--brand-yellow)]">Insurance</Link>
+          <Dropdown label="Insurance" items={insuranceLinks} to="/insurance" />
           <Link to="/calculators" className="px-4 py-3 text-sm font-medium text-white hover:text-[var(--brand-yellow)]">Calculators</Link>
           <Dropdown label="About" items={aboutLinks} to="/about" />
         </div>
