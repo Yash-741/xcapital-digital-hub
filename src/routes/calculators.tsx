@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import {
   Calculator, PiggyBank, TrendingUp, Wallet, Home, Briefcase,
-  GraduationCap, Car, Building2,
+  GraduationCap, Car, Building2, Plus, X, Trash2, Trophy,
 } from "lucide-react";
 import { SiteLayout, PageHeader } from "@/components/site/Layout";
 
