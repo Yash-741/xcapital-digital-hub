@@ -111,6 +111,236 @@ function Donut({ a, b, labelA, labelB, center }: {
   );
 }
 
+/* ---------------- Scenarios ---------------- */
+
+type TabKey = "emi" | "sip" | "lumpsum" | "fd";
+type ScenarioRow = { label: string; value: string };
+type Scenario = {
+  id: string;
+  kind: TabKey;
+  name: string;
+  inputs: ScenarioRow[];
+  outputs: ScenarioRow[];
+  /** Label of the output row used to pick the "best" scenario */
+  primary: string;
+  /** Numeric value of the primary output (raw, not formatted) */
+  primaryValue: number;
+  /** Whether lower or higher primary wins */
+  better: "lower" | "higher";
+};
+
+type SaveFn = (s: Omit<Scenario, "id" | "name">) => void;
+
+function SaveScenarioButton({ onClick }: { onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className="mt-5 w-full inline-flex items-center justify-center gap-2 bg-[var(--brand-yellow)] text-[var(--brand-black)] font-semibold py-2.5 rounded-md hover:brightness-110 transition"
+    >
+      <Plus className="h-4 w-4" /> Save scenario to compare
+    </button>
+  );
+}
+
+function ComparePanel({
+  scenarios, onRemove, onClear, onRename,
+}: {
+  scenarios: Scenario[];
+  onRemove: (id: string) => void;
+  onClear: () => void;
+  onRename: (id: string, name: string) => void;
+}) {
+  if (scenarios.length === 0) {
+    return (
+      <div className="mt-8 border border-dashed border-border rounded-xl p-8 text-center bg-secondary/30">
+        <h4 className="font-semibold text-[var(--brand-black)]">Compare scenarios side-by-side</h4>
+        <p className="text-sm text-muted-foreground mt-2 max-w-md mx-auto">
+          Tweak the inputs above and tap <span className="font-semibold text-[var(--brand-black)]">Save scenario</span> to add it here. You can save as many as you'd like, then pick the one that works best.
+        </p>
+      </div>
+    );
+  }
+
+  // Determine best
+  const bestId = scenarios.reduce((best, s) => {
+    if (!best) return s;
+    const cmp = s.better === "lower" ? s.primaryValue < best.primaryValue : s.primaryValue > best.primaryValue;
+    return cmp ? s : best;
+  }, null as Scenario | null)?.id;
+
+  // Build unified row order using first scenario as template
+  const template = scenarios[0];
+  const inputLabels = template.inputs.map((r) => r.label);
+  const outputLabels = template.outputs.map((r) => r.label);
+  const get = (s: Scenario, label: string, source: "inputs" | "outputs") =>
+    s[source].find((r) => r.label === label)?.value ?? "—";
+
+  return (
+    <div className="mt-10">
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <h4 className="text-lg font-bold text-[var(--brand-black)]">
+            Comparison <span className="text-muted-foreground font-normal">({scenarios.length})</span>
+          </h4>
+          <p className="text-xs text-muted-foreground">
+            Best scenario for <span className="font-semibold text-[var(--brand-black)]">{template.primary}</span> is highlighted.
+          </p>
+        </div>
+        <button
+          onClick={onClear}
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-red-600"
+        >
+          <Trash2 className="h-3.5 w-3.5" /> Clear all
+        </button>
+      </div>
+
+      {/* Mobile: stacked cards */}
+      <div className="grid sm:grid-cols-2 lg:hidden gap-4">
+        {scenarios.map((s) => {
+          const isBest = s.id === bestId;
+          return (
+            <ScenarioCard
+              key={s.id}
+              s={s}
+              isBest={isBest}
+              inputLabels={inputLabels}
+              outputLabels={outputLabels}
+              get={get}
+              onRemove={onRemove}
+              onRename={onRename}
+            />
+          );
+        })}
+      </div>
+
+      {/* Desktop: comparison table */}
+      <div className="hidden lg:block overflow-x-auto bg-card border border-border rounded-xl shadow-card">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-b border-border bg-secondary/40">
+              <th className="text-left px-4 py-3 font-semibold text-[var(--brand-black)] sticky left-0 bg-secondary/40">Metric</th>
+              {scenarios.map((s) => {
+                const isBest = s.id === bestId;
+                return (
+                  <th key={s.id} className={`px-4 py-3 text-left font-semibold min-w-[180px] ${isBest ? "bg-[var(--brand-yellow-soft)]" : ""}`}>
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0">
+                        <input
+                          value={s.name}
+                          onChange={(e) => onRename(s.id, e.target.value)}
+                          className="w-full bg-transparent font-semibold text-[var(--brand-black)] outline-none border-b border-transparent focus:border-[var(--brand-black)]"
+                        />
+                        {isBest && (
+                          <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[var(--brand-black)] mt-1">
+                            <Trophy className="h-3 w-3" /> BEST
+                          </span>
+                        )}
+                      </div>
+                      <button
+                        onClick={() => onRemove(s.id)}
+                        className="text-muted-foreground hover:text-red-600 shrink-0"
+                        aria-label="Remove scenario"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </th>
+                );
+              })}
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="bg-secondary/20">
+              <td colSpan={scenarios.length + 1} className="px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Inputs</td>
+            </tr>
+            {inputLabels.map((label) => (
+              <tr key={label} className="border-t border-border">
+                <td className="px-4 py-2.5 text-muted-foreground sticky left-0 bg-card">{label}</td>
+                {scenarios.map((s) => (
+                  <td key={s.id} className={`px-4 py-2.5 text-[var(--brand-black)] ${s.id === bestId ? "bg-[var(--brand-yellow-soft)]/40" : ""}`}>
+                    {get(s, label, "inputs")}
+                  </td>
+                ))}
+              </tr>
+            ))}
+            <tr className="bg-secondary/20">
+              <td colSpan={scenarios.length + 1} className="px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Outputs</td>
+            </tr>
+            {outputLabels.map((label) => {
+              const isPrimary = label === template.primary;
+              return (
+                <tr key={label} className="border-t border-border">
+                  <td className={`px-4 py-2.5 sticky left-0 bg-card ${isPrimary ? "font-semibold text-[var(--brand-black)]" : "text-muted-foreground"}`}>{label}</td>
+                  {scenarios.map((s) => (
+                    <td key={s.id} className={`px-4 py-2.5 ${s.id === bestId ? "bg-[var(--brand-yellow-soft)]/40" : ""} ${isPrimary ? "font-bold text-[var(--brand-black)]" : "text-[var(--brand-black)]"}`}>
+                      {get(s, label, "outputs")}
+                    </td>
+                  ))}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+function ScenarioCard({
+  s, isBest, inputLabels, outputLabels, get, onRemove, onRename,
+}: {
+  s: Scenario;
+  isBest: boolean;
+  inputLabels: string[];
+  outputLabels: string[];
+  get: (s: Scenario, label: string, source: "inputs" | "outputs") => string;
+  onRemove: (id: string) => void;
+  onRename: (id: string, name: string) => void;
+}) {
+  return (
+    <div className={`rounded-xl border shadow-card p-4 ${isBest ? "border-[var(--brand-yellow)] bg-[var(--brand-yellow-soft)]/30" : "border-border bg-card"}`}>
+      <div className="flex items-start justify-between gap-2 mb-3">
+        <div className="min-w-0 flex-1">
+          <input
+            value={s.name}
+            onChange={(e) => onRename(s.id, e.target.value)}
+            className="w-full bg-transparent font-semibold text-[var(--brand-black)] outline-none border-b border-transparent focus:border-[var(--brand-black)]"
+          />
+          {isBest && (
+            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[var(--brand-black)] mt-1">
+              <Trophy className="h-3 w-3" /> BEST
+            </span>
+          )}
+        </div>
+        <button onClick={() => onRemove(s.id)} className="text-muted-foreground hover:text-red-600 shrink-0" aria-label="Remove scenario">
+          <X className="h-4 w-4" />
+        </button>
+      </div>
+      <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Inputs</div>
+      <dl className="text-xs space-y-1 mb-3">
+        {inputLabels.map((l) => (
+          <div key={l} className="flex justify-between gap-3">
+            <dt className="text-muted-foreground">{l}</dt>
+            <dd className="text-[var(--brand-black)] font-medium">{get(s, l, "inputs")}</dd>
+          </div>
+        ))}
+      </dl>
+      <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Outputs</div>
+      <dl className="text-xs space-y-1">
+        {outputLabels.map((l) => {
+          const isPrimary = l === s.primary;
+          return (
+            <div key={l} className="flex justify-between gap-3">
+              <dt className={isPrimary ? "font-semibold text-[var(--brand-black)]" : "text-muted-foreground"}>{l}</dt>
+              <dd className={`${isPrimary ? "font-bold" : "font-medium"} text-[var(--brand-black)]`}>{get(s, l, "outputs")}</dd>
+            </div>
+          );
+        })}
+      </dl>
+    </div>
+  );
+}
+
 /* ---------------- EMI ---------------- */
 
 type LoanPreset = { key: string; label: string; icon: typeof Home; defaultRate: number; defaultTenure: number; defaultAmount: number; maxAmount: number; };
