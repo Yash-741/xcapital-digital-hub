@@ -262,12 +262,12 @@ function AboutPage() {
           <div className="grid md:grid-cols-3 gap-6">
             {jobs.map((j) => (
               <div key={j.title} className="bg-card rounded-xl p-6 border border-border shadow-card hover:-translate-y-1 transition">
-                <div className="h-10 w-10 rounded-lg bg-[var(--brand-navy)] text-[var(--brand-gold)] grid place-items-center mb-4">
+                <div className="h-10 w-10 rounded-lg bg-[var(--brand-black)] text-[var(--brand-yellow)] grid place-items-center mb-4">
                   <Briefcase className="h-5 w-5" />
                 </div>
                 <h3 className="font-semibold text-lg">{j.title}</h3>
                 <p className="text-sm text-muted-foreground mt-1">{j.location} · {j.type}</p>
-                <button className="mt-4 text-sm font-semibold text-[var(--brand-navy)] hover:text-[var(--brand-gold)]">Apply →</button>
+                <button className="mt-4 text-sm font-semibold text-[var(--brand-black)] hover:text-amber-700">Apply →</button>
               </div>
             ))}
           </div>
