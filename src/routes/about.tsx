@@ -3,9 +3,10 @@ import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
 import {
-  MapPin, Phone, Mail, Briefcase, Search, FileCheck, Building2,
+  MapPin, Phone, Mail, Search, FileCheck, Building2,
   FileText, CheckCircle2, RefreshCw, Clock, Users, Handshake,
   ShieldCheck, Sparkles, ChevronDown, CheckCircle, Globe,
+  GraduationCap, Upload, User as UserIcon,
 } from "lucide-react";
 import { SiteLayout, PageHeader } from "@/components/site/Layout";
 
@@ -21,18 +22,25 @@ export const Route = createFileRoute("/about")({
   component: AboutPage,
 });
 
-const jobs = [
-  { title: "Relationship Manager", location: "Mumbai", type: "Full-time" },
-  { title: "Credit Risk Analyst", location: "Bengaluru", type: "Full-time" },
-  { title: "Mobile App Engineer", location: "Remote (India)", type: "Full-time" },
-];
-
 const careerPerks = [
   { icon: Sparkles, title: "Growth & Learning", desc: "Continuous learning, mentorship and clear career progression across functions." },
   { icon: Users, title: "Collaborative Culture", desc: "A respectful, transparent and team-first environment where ideas matter." },
   { icon: Handshake, title: "Meaningful Work", desc: "Help businesses, professionals and families access smarter financial solutions." },
   { icon: ShieldCheck, title: "Stability & Trust", desc: "Work with an established advisory firm backed by leading institutional partners." },
 ];
+
+const applicationSchema = z.object({
+  candidateName: z.string().trim().min(2, "Please enter your full name").max(100),
+  email: z.string().trim().email("Enter a valid email address").max(255),
+  contactNumber: z
+    .string()
+    .trim()
+    .regex(/^(\+?91[\-\s]?)?[6-9]\d{9}$/, "Enter a valid 10-digit Indian mobile number"),
+  education: z.string().trim().min(2, "Please enter your highest education").max(150),
+});
+
+type ApplicationForm = z.infer<typeof applicationSchema>;
+type ApplicationErrors = Partial<Record<keyof ApplicationForm | "resume", string>>;
 
 const steps = [
   { icon: Search, title: "Understand Your Requirement", desc: "We start by understanding your financial requirement, business profile, banking profile and existing liabilities." },
@@ -112,6 +120,48 @@ function AboutPage() {
   const [errors, setErrors] = useState<FieldErrors>({});
   const [submitted, setSubmitted] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+
+  const [appForm, setAppForm] = useState<ApplicationForm>({
+    candidateName: "", email: "", contactNumber: "", education: "",
+  });
+  const [resume, setResume] = useState<File | null>(null);
+  const [appErrors, setAppErrors] = useState<ApplicationErrors>({});
+  const [appSubmitted, setAppSubmitted] = useState(false);
+
+  const updateApp = (k: keyof ApplicationForm, v: string) => {
+    setAppForm((f) => ({ ...f, [k]: v }));
+    if (appErrors[k]) setAppErrors((e) => ({ ...e, [k]: undefined }));
+  };
+
+  const onApplicationSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const result = applicationSchema.safeParse(appForm);
+    const next: ApplicationErrors = {};
+    if (!result.success) {
+      for (const issue of result.error.issues) {
+        const k = issue.path[0] as keyof ApplicationForm;
+        if (!next[k]) next[k] = issue.message;
+      }
+    }
+    if (!resume) {
+      next.resume = "Please attach your resume";
+    } else {
+      const okType = /\.(pdf|doc|docx)$/i.test(resume.name);
+      const okSize = resume.size <= 5 * 1024 * 1024;
+      if (!okType) next.resume = "Resume must be PDF, DOC or DOCX";
+      else if (!okSize) next.resume = "Resume must be under 5MB";
+    }
+    if (Object.keys(next).length) {
+      setAppErrors(next);
+      toast.error("Please fix the highlighted fields");
+      return;
+    }
+    setAppErrors({});
+    setAppSubmitted(true);
+    setAppForm({ candidateName: "", email: "", contactNumber: "", education: "" });
+    setResume(null);
+    toast.success("Application received! We'll be in touch.");
+  };
 
   const update = (k: keyof ContactForm, v: string) => {
     setForm((f) => ({ ...f, [k]: v }));
@@ -431,34 +481,89 @@ function AboutPage() {
             ))}
           </div>
 
-          <div className="text-center mb-8">
-            <h3 className="text-xl font-bold text-foreground">Current Openings</h3>
-            <p className="text-sm text-muted-foreground mt-2">Explore roles across our growing teams.</p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-6">
-            {jobs.map((j) => (
-              <div key={j.title} className="bg-card rounded-xl p-6 border border-border shadow-card hover:-translate-y-1 transition">
-                <div className="h-10 w-10 rounded-lg bg-[var(--brand-black)] text-[var(--brand-yellow)] grid place-items-center mb-4">
-                  <Briefcase className="h-5 w-5" />
-                </div>
-                <h3 className="font-semibold text-lg">{j.title}</h3>
-                <p className="text-sm text-muted-foreground mt-1">{j.location} · {j.type}</p>
-                <button className="mt-4 text-sm font-semibold text-[var(--brand-black)] hover:text-amber-700">Apply →</button>
-              </div>
-            ))}
-          </div>
+          <div className="max-w-2xl mx-auto">
+            <div className="text-center mb-6">
+              <h3 className="text-2xl font-bold text-foreground">Apply Now</h3>
+              <p className="text-sm text-muted-foreground mt-2">
+                Share your details and resume — we'll reach out when the right opportunity opens up.
+              </p>
+            </div>
 
-          <div className="mt-12 bg-card border border-border rounded-xl p-8 shadow-card text-center max-w-3xl mx-auto border-b-[3px] border-b-[var(--brand-yellow)]">
-            <h3 className="text-xl font-bold text-[var(--brand-black)]">Don't see a role that fits?</h3>
-            <p className="text-sm text-muted-foreground mt-2">
-              We're always open to meeting talented people. Share your resume and a short note about how you'd like to contribute — we'll get in touch when the right opportunity opens up.
-            </p>
-            <a
-              href="mailto:careers@xcapital.co.in"
-              className="inline-flex items-center gap-2 mt-5 bg-[var(--brand-yellow)] text-[var(--brand-black)] font-semibold px-5 py-2.5 rounded-md hover:brightness-110"
-            >
-              <Mail className="h-4 w-4" /> careers@xcapital.co.in
-            </a>
+            {appSubmitted ? (
+              <div className="bg-card border border-border rounded-xl p-8 shadow-card flex flex-col items-center text-center border-b-[3px] border-b-[var(--brand-yellow)]">
+                <div className="h-14 w-14 rounded-full bg-green-100 text-green-700 grid place-items-center mb-4">
+                  <CheckCircle className="h-7 w-7" />
+                </div>
+                <h3 className="text-xl font-bold text-[var(--brand-black)]">Application Received</h3>
+                <p className="text-sm text-muted-foreground mt-2 max-w-sm">
+                  Thank you for applying to X Capital. Our team will review your profile and get back to you soon.
+                </p>
+                <button
+                  onClick={() => setAppSubmitted(false)}
+                  className="mt-6 text-sm font-semibold text-[var(--brand-black)] hover:text-amber-700"
+                >
+                  Submit another application →
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={onApplicationSubmit} noValidate className="bg-card border border-border rounded-xl p-7 shadow-card space-y-4">
+                {([
+                  { k: "candidateName", placeholder: "Candidate Name", type: "text", icon: UserIcon, maxLength: 100 },
+                  { k: "email", placeholder: "Email", type: "email", icon: Mail, maxLength: 255 },
+                  { k: "contactNumber", placeholder: "Contact Number (10-digit mobile)", type: "tel", icon: Phone, maxLength: 15 },
+                  { k: "education", placeholder: "Highest Education (e.g. MBA Finance, B.Com)", type: "text", icon: GraduationCap, maxLength: 150 },
+                ] as const).map(({ k, placeholder, type, icon: Icon, maxLength }) => (
+                  <div key={k}>
+                    <div className={`flex items-center gap-2 rounded-md border bg-background px-3 ${appErrors[k] ? "border-red-500" : "border-input"}`}>
+                      <Icon className="h-4 w-4 text-muted-foreground shrink-0" />
+                      <input
+                        type={type}
+                        value={appForm[k]}
+                        maxLength={maxLength}
+                        onChange={(e) => updateApp(k, e.target.value)}
+                        placeholder={placeholder}
+                        aria-invalid={!!appErrors[k]}
+                        className="w-full bg-transparent py-3 text-sm outline-none"
+                      />
+                    </div>
+                    {appErrors[k] && <p className="text-xs text-red-600 mt-1">{appErrors[k]}</p>}
+                  </div>
+                ))}
+
+                <div>
+                  <label className={`flex items-center gap-3 rounded-md border-2 border-dashed bg-background px-4 py-4 cursor-pointer hover:bg-secondary/40 transition ${appErrors.resume ? "border-red-500" : "border-input"}`}>
+                    <div className="h-10 w-10 rounded-lg bg-[var(--brand-yellow-soft)] text-[var(--brand-black)] grid place-items-center shrink-0">
+                      <Upload className="h-5 w-5" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="text-sm font-semibold text-[var(--brand-black)]">
+                        {resume ? resume.name : "Attach your resume"}
+                      </div>
+                      <div className="text-xs text-muted-foreground mt-0.5">
+                        PDF, DOC or DOCX · Max 5MB
+                      </div>
+                    </div>
+                    <input
+                      type="file"
+                      accept=".pdf,.doc,.docx"
+                      onChange={(e) => {
+                        setResume(e.target.files?.[0] ?? null);
+                        if (appErrors.resume) setAppErrors((er) => ({ ...er, resume: undefined }));
+                      }}
+                      className="hidden"
+                    />
+                  </label>
+                  {appErrors.resume && <p className="text-xs text-red-600 mt-1">{appErrors.resume}</p>}
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full bg-[var(--brand-yellow)] text-[var(--brand-black)] font-semibold py-3 rounded-md hover:brightness-110"
+                >
+                  Submit Application
+                </button>
+              </form>
+            )}
           </div>
         </div>
       </section>
