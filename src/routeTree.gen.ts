@@ -13,6 +13,7 @@ import { Route as LoansRouteImport } from './routes/loans'
 import { Route as InvestmentsRouteImport } from './routes/investments'
 import { Route as InsuranceRouteImport } from './routes/insurance'
 import { Route as CalculatorsRouteImport } from './routes/calculators'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 
 const LoansRoute = LoansRouteImport.update({
@@ -35,6 +36,11 @@ const CalculatorsRoute = CalculatorsRouteImport.update({
   path: '/calculators',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -43,6 +49,7 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/calculators': typeof CalculatorsRoute
   '/insurance': typeof InsuranceRoute
   '/investments': typeof InvestmentsRoute
@@ -50,6 +57,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/calculators': typeof CalculatorsRoute
   '/insurance': typeof InsuranceRoute
   '/investments': typeof InvestmentsRoute
@@ -58,6 +66,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/calculators': typeof CalculatorsRoute
   '/insurance': typeof InsuranceRoute
   '/investments': typeof InvestmentsRoute
@@ -65,12 +74,19 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/calculators' | '/insurance' | '/investments' | '/loans'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/calculators'
+    | '/insurance'
+    | '/investments'
+    | '/loans'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/calculators' | '/insurance' | '/investments' | '/loans'
+  to: '/' | '/about' | '/calculators' | '/insurance' | '/investments' | '/loans'
   id:
     | '__root__'
     | '/'
+    | '/about'
     | '/calculators'
     | '/insurance'
     | '/investments'
@@ -79,6 +95,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
   CalculatorsRoute: typeof CalculatorsRoute
   InsuranceRoute: typeof InsuranceRoute
   InvestmentsRoute: typeof InvestmentsRoute
@@ -115,6 +132,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CalculatorsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -127,6 +151,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
   CalculatorsRoute: CalculatorsRoute,
   InsuranceRoute: InsuranceRoute,
   InvestmentsRoute: InvestmentsRoute,
