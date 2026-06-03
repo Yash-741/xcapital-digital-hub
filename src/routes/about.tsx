@@ -70,9 +70,9 @@ function AboutPage() {
             <h2 className="text-3xl font-bold text-foreground">Reach Us</h2>
             <p className="text-muted-foreground mt-3">We'd love to hear from you. Fill the form or reach us directly.</p>
             <ul className="mt-6 space-y-4 text-sm">
-              <li className="flex gap-3"><MapPin className="h-5 w-5 text-[var(--brand-gold)]" /> XCapital Tower, Bandra Kurla Complex, Mumbai 400051</li>
-              <li className="flex gap-3"><Phone className="h-5 w-5 text-[var(--brand-gold)]" /> +91 1800 123 4567</li>
-              <li className="flex gap-3"><Mail className="h-5 w-5 text-[var(--brand-gold)]" /> care@xcapital.in</li>
+              <li className="flex gap-3"><MapPin className="h-5 w-5 text-[var(--brand-yellow)] shrink-0" /><span>XCapital Tower, Bandra Kurla Complex, Mumbai 400051</span></li>
+              <li className="flex gap-3"><Phone className="h-5 w-5 text-[var(--brand-yellow)] shrink-0" /><span>+91 1800 123 4567</span></li>
+              <li className="flex gap-3"><Mail className="h-5 w-5 text-[var(--brand-yellow)] shrink-0" /><span>care@xcapital.in</span></li>
             </ul>
           </div>
           <form
