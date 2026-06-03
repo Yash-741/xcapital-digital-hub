@@ -27,6 +27,13 @@ const jobs = [
   { title: "Mobile App Engineer", location: "Remote (India)", type: "Full-time" },
 ];
 
+const careerPerks = [
+  { icon: Sparkles, title: "Growth & Learning", desc: "Continuous learning, mentorship and clear career progression across functions." },
+  { icon: Users, title: "Collaborative Culture", desc: "A respectful, transparent and team-first environment where ideas matter." },
+  { icon: Handshake, title: "Meaningful Work", desc: "Help businesses, professionals and families access smarter financial solutions." },
+  { icon: ShieldCheck, title: "Stability & Trust", desc: "Work with an established advisory firm backed by leading institutional partners." },
+];
+
 const steps = [
   { icon: Search, title: "Understand Your Requirement", desc: "We start by understanding your financial requirement, business profile, banking profile and existing liabilities." },
   { icon: FileCheck, title: "Analyze Eligibility", desc: "Our team reviews your financial documents, credit profile, banking history and loan requirement." },
@@ -405,8 +412,28 @@ function AboutPage() {
       <section id="careers" className="bg-secondary/50">
         <div className="container-x py-16">
           <div className="text-center max-w-2xl mx-auto mb-10">
-            <h2 className="text-3xl font-bold text-foreground">Join Our Team</h2>
-            <p className="text-muted-foreground mt-3">Be part of a mission-driven team transforming finance in India.</p>
+            <span className="inline-block text-xs font-bold tracking-widest text-[var(--brand-black)] bg-[var(--brand-yellow)] px-3 py-1 rounded-full">CAREERS</span>
+            <h2 className="text-3xl font-bold text-foreground mt-3">Build Your Career at X Capital</h2>
+            <p className="text-muted-foreground mt-3">
+              We're always on the lookout for passionate, driven individuals who want to make a real impact in the world of finance. At X Capital, you'll work alongside experienced professionals, learn from industry experts and help shape financial solutions that matter.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            {careerPerks.map((p) => (
+              <div key={p.title} className="bg-card rounded-xl p-6 border border-border shadow-card">
+                <div className="h-11 w-11 rounded-lg bg-[var(--brand-yellow-soft)] text-[var(--brand-black)] grid place-items-center mb-3">
+                  <p.icon className="h-5 w-5" />
+                </div>
+                <h3 className="font-semibold text-[var(--brand-black)]">{p.title}</h3>
+                <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">{p.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center mb-8">
+            <h3 className="text-xl font-bold text-foreground">Current Openings</h3>
+            <p className="text-sm text-muted-foreground mt-2">Explore roles across our growing teams.</p>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {jobs.map((j) => (
@@ -419,6 +446,19 @@ function AboutPage() {
                 <button className="mt-4 text-sm font-semibold text-[var(--brand-black)] hover:text-amber-700">Apply →</button>
               </div>
             ))}
+          </div>
+
+          <div className="mt-12 bg-card border border-border rounded-xl p-8 shadow-card text-center max-w-3xl mx-auto border-b-[3px] border-b-[var(--brand-yellow)]">
+            <h3 className="text-xl font-bold text-[var(--brand-black)]">Don't see a role that fits?</h3>
+            <p className="text-sm text-muted-foreground mt-2">
+              We're always open to meeting talented people. Share your resume and a short note about how you'd like to contribute — we'll get in touch when the right opportunity opens up.
+            </p>
+            <a
+              href="mailto:careers@xcapital.co.in"
+              className="inline-flex items-center gap-2 mt-5 bg-[var(--brand-yellow)] text-[var(--brand-black)] font-semibold px-5 py-2.5 rounded-md hover:brightness-110"
+            >
+              <Mail className="h-4 w-4" /> careers@xcapital.co.in
+            </a>
           </div>
         </div>
       </section>
