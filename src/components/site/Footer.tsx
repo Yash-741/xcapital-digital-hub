@@ -1,18 +1,18 @@
 import { Link } from "@tanstack/react-router";
 import { Facebook, Twitter, Linkedin, Instagram, Youtube } from "lucide-react";
+import logo from "@/assets/xcapital-logo.asset.json";
 
 export function Footer() {
   return (
     <footer className="bg-[var(--brand-black)] text-white/75 mt-16">
       <div className="container-x py-14 grid gap-10 md:grid-cols-4">
         <div>
-          <div className="inline-block bg-[var(--brand-yellow)] px-3 py-1.5 rounded mb-3">
-            <div className="text-lg font-extrabold text-[var(--brand-black)] leading-none">XCapital</div>
-            <div className="text-[9px] font-semibold text-[var(--brand-black)]/70 tracking-widest text-right -mt-0.5">FINANCE</div>
+          <div className="inline-block bg-white px-3 py-2 rounded mb-3">
+            <img src={logo.url} alt="X Capital" className="h-8 w-auto" />
           </div>
           <p className="text-sm leading-relaxed text-white/70 mt-2">
-            A trusted Indian NBFC offering loans, investments and insurance to
-            millions of customers across India.
+            Strategic banking, lending and treasury solutions for businesses,
+            professionals and individuals.
           </p>
           <div className="flex gap-3 mt-4">
             {[Facebook, Twitter, Linkedin, Instagram, Youtube].map((Icon, i) => (
@@ -46,9 +46,10 @@ export function Footer() {
         <div>
           <h4 className="text-white font-semibold mb-4">Reach Us</h4>
           <ul className="space-y-2 text-sm text-white/70">
-            <li>XCapital Tower, Bandra Kurla Complex,<br />Mumbai, Maharashtra 400051</li>
-            <li>+91 1800 123 4567</li>
-            <li>care@xcapital.in</li>
+            <li>Sakinaka, Andheri East,<br />Mumbai 400072</li>
+            <li>+91 88791 09148</li>
+            <li>amey.jaguste@xcapital.co.in</li>
+            <li>www.xcapital.co.in</li>
           </ul>
         </div>
       </div>
