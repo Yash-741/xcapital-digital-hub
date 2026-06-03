@@ -27,6 +27,13 @@ const jobs = [
   { title: "Mobile App Engineer", location: "Remote (India)", type: "Full-time" },
 ];
 
+const careerPerks = [
+  { icon: Sparkles, title: "Growth & Learning", desc: "Continuous learning, mentorship and clear career progression across functions." },
+  { icon: Users, title: "Collaborative Culture", desc: "A respectful, transparent and team-first environment where ideas matter." },
+  { icon: Handshake, title: "Meaningful Work", desc: "Help businesses, professionals and families access smarter financial solutions." },
+  { icon: ShieldCheck, title: "Stability & Trust", desc: "Work with an established advisory firm backed by leading institutional partners." },
+];
+
 const steps = [
   { icon: Search, title: "Understand Your Requirement", desc: "We start by understanding your financial requirement, business profile, banking profile and existing liabilities." },
   { icon: FileCheck, title: "Analyze Eligibility", desc: "Our team reviews your financial documents, credit profile, banking history and loan requirement." },
