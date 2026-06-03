@@ -1,9 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import { z } from "zod";
+import { toast } from "sonner";
 import {
   MapPin, Phone, Mail, Briefcase, Search, FileCheck, Building2,
   FileText, CheckCircle2, RefreshCw, Clock, Users, Handshake,
-  ShieldCheck, Sparkles, ChevronDown,
+  ShieldCheck, Sparkles, ChevronDown, CheckCircle,
 } from "lucide-react";
 import { SiteLayout, PageHeader } from "@/components/site/Layout";
 
@@ -70,10 +72,48 @@ const coreValues = [
   { title: "Long-Term Relationships", desc: "Building partnerships, not transactions." },
 ];
 
+const contactSchema = z.object({
+  name: z.string().trim().min(2, "Please enter your full name").max(100, "Name must be under 100 characters"),
+  phone: z
+    .string()
+    .trim()
+    .regex(/^(\+?91[\-\s]?)?[6-9]\d{9}$/, "Enter a valid 10-digit Indian mobile number"),
+  email: z.string().trim().email("Enter a valid email address").max(255, "Email too long"),
+  message: z.string().trim().min(10, "Message must be at least 10 characters").max(1000, "Message must be under 1000 characters"),
+});
+
+type ContactForm = z.infer<typeof contactSchema>;
+type FieldErrors = Partial<Record<keyof ContactForm, string>>;
+
 function AboutPage() {
-  const [form, setForm] = useState({ name: "", phone: "", email: "", message: "" });
+  const [form, setForm] = useState<ContactForm>({ name: "", phone: "", email: "", message: "" });
+  const [errors, setErrors] = useState<FieldErrors>({});
   const [submitted, setSubmitted] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+
+  const update = (k: keyof ContactForm, v: string) => {
+    setForm((f) => ({ ...f, [k]: v }));
+    if (errors[k]) setErrors((e) => ({ ...e, [k]: undefined }));
+  };
+
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const result = contactSchema.safeParse(form);
+    if (!result.success) {
+      const fieldErrors: FieldErrors = {};
+      for (const issue of result.error.issues) {
+        const k = issue.path[0] as keyof ContactForm;
+        if (!fieldErrors[k]) fieldErrors[k] = issue.message;
+      }
+      setErrors(fieldErrors);
+      toast.error("Please fix the highlighted fields");
+      return;
+    }
+    setErrors({});
+    setSubmitted(true);
+    setForm({ name: "", phone: "", email: "", message: "" });
+    toast.success("Thanks! Our team will reach out shortly.");
+  };
 
   return (
     <SiteLayout>
@@ -240,16 +280,71 @@ function AboutPage() {
               <li className="flex gap-3"><Mail className="h-5 w-5 text-[var(--brand-yellow)] shrink-0" /><span>care@xcapital.in</span></li>
             </ul>
           </div>
-          <form
-            onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }}
-            className="bg-card border border-border rounded-xl p-7 shadow-card space-y-4"
-          >
-            <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Full Name" className="w-full rounded-md border border-input px-4 py-3 text-sm bg-background" />
-            <input required value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="Phone" className="w-full rounded-md border border-input px-4 py-3 text-sm bg-background" />
-            <input required type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="Email" className="w-full rounded-md border border-input px-4 py-3 text-sm bg-background" />
-            <textarea required rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} placeholder="Message" className="w-full rounded-md border border-input px-4 py-3 text-sm bg-background" />
-            <button className="w-full bg-[var(--brand-yellow)] text-[var(--brand-black)] font-semibold py-3 rounded-md hover:brightness-110">{submitted ? "Thanks! We'll reach out." : "Send Message"}</button>
-          </form>
+          {submitted ? (
+            <div className="bg-card border border-border rounded-xl p-8 shadow-card flex flex-col items-center text-center">
+              <div className="h-14 w-14 rounded-full bg-green-100 text-green-700 grid place-items-center mb-4">
+                <CheckCircle className="h-7 w-7" />
+              </div>
+              <h3 className="text-xl font-bold text-[var(--brand-black)]">Message Received</h3>
+              <p className="text-sm text-muted-foreground mt-2 max-w-sm">
+                Thank you for reaching out to X Capital. Our advisory team will get back to you within one business day.
+              </p>
+              <button
+                onClick={() => setSubmitted(false)}
+                className="mt-6 text-sm font-semibold text-[var(--brand-black)] hover:text-amber-700"
+              >
+                Send another message →
+              </button>
+            </div>
+          ) : (
+            <form onSubmit={onSubmit} noValidate className="bg-card border border-border rounded-xl p-7 shadow-card space-y-4">
+              {([
+                { k: "name", placeholder: "Full Name", type: "text", maxLength: 100 },
+                { k: "phone", placeholder: "Phone (10-digit mobile)", type: "tel", maxLength: 15 },
+                { k: "email", placeholder: "Email", type: "email", maxLength: 255 },
+              ] as const).map(({ k, placeholder, type, maxLength }) => (
+                <div key={k}>
+                  <input
+                    type={type}
+                    value={form[k]}
+                    maxLength={maxLength}
+                    onChange={(e) => update(k, e.target.value)}
+                    placeholder={placeholder}
+                    aria-invalid={!!errors[k]}
+                    className={`w-full rounded-md border px-4 py-3 text-sm bg-background ${
+                      errors[k] ? "border-red-500" : "border-input"
+                    }`}
+                  />
+                  {errors[k] && <p className="text-xs text-red-600 mt-1">{errors[k]}</p>}
+                </div>
+              ))}
+              <div>
+                <textarea
+                  rows={4}
+                  value={form.message}
+                  maxLength={1000}
+                  onChange={(e) => update("message", e.target.value)}
+                  placeholder="How can we help you?"
+                  aria-invalid={!!errors.message}
+                  className={`w-full rounded-md border px-4 py-3 text-sm bg-background ${
+                    errors.message ? "border-red-500" : "border-input"
+                  }`}
+                />
+                <div className="flex justify-between mt-1">
+                  {errors.message
+                    ? <p className="text-xs text-red-600">{errors.message}</p>
+                    : <span />}
+                  <span className="text-xs text-muted-foreground">{form.message.length}/1000</span>
+                </div>
+              </div>
+              <button
+                type="submit"
+                className="w-full bg-[var(--brand-yellow)] text-[var(--brand-black)] font-semibold py-3 rounded-md hover:brightness-110"
+              >
+                Send Message
+              </button>
+            </form>
+          )}
         </div>
       </section>
 
