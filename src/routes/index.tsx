@@ -1,9 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Wallet, Home as HomeIcon, Briefcase, Car, PiggyBank, Landmark, Coins,
-  HeartPulse, ShieldCheck, FileText, Calculator, Smartphone,
-  Zap, Lightbulb, Tv, Wifi, Flame, Droplets, CreditCard, Receipt,
-  BadgeCheck, Users, ArrowRight,
+  HeartPulse, ShieldCheck, FileText, Calculator,
+  ArrowRight,
 } from "lucide-react";
 import { SiteLayout } from "@/components/site/Layout";
 
@@ -122,35 +121,6 @@ function Index() {
         />
       </section>
 
-      {/* Bill payments row */}
-      <section className="container-x mt-4">
-        <div className="bg-white rounded-lg shadow-card border-b-[3px] border-[var(--brand-yellow)] p-5">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <h3 className="text-lg font-bold text-[var(--brand-black)]">Bill Payments</h3>
-              <span className="text-[10px] font-bold bg-green-100 text-green-700 px-2 py-1 rounded">⚡ EARN REWARDS</span>
-            </div>
-            <a href="#" className="text-sm font-semibold text-blue-600 hover:underline">View All</a>
-          </div>
-          <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-2">
-            {[
-              { icon: Smartphone, label: "Mobile Prepaid" },
-              { icon: Smartphone, label: "Mobile Postpaid" },
-              { icon: Receipt, label: "Landline" },
-              { icon: Tv, label: "DTH" },
-              { icon: Zap, label: "Electricity" },
-              { icon: Lightbulb, label: "LPG Gas" },
-              { icon: Flame, label: "Gas" },
-              { icon: Wifi, label: "Broadband" },
-              { icon: Droplets, label: "Water Bill" },
-              { icon: CreditCard, label: "Credit Card" },
-            ].map(({ icon, label }) => (
-              <IconTile key={label} icon={icon} label={label} />
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Insurance + Calculators row */}
       <section className="container-x mt-4 grid gap-4 md:grid-cols-2">
         <div className="bg-white rounded-lg shadow-card border-b-[3px] border-[var(--brand-yellow)] p-5">
@@ -202,46 +172,7 @@ function Index() {
         </div>
       </section>
 
-      {/* Why choose */}
-      <section className="container-x mt-12">
-        <div className="grid md:grid-cols-3 gap-4">
-          {[
-            { icon: Zap, title: "Fast Disbursal", desc: "Loan amount credited within 24 hours of approval." },
-            { icon: Users, title: "Trusted by Thousands", desc: "Over 25 lakh customers across 1,200+ branches." },
-            { icon: BadgeCheck, title: "RBI Registered", desc: "A regulated NBFC compliant with RBI guidelines." },
-          ].map(({ icon: Icon, title, desc }) => (
-            <div key={title} className="bg-white rounded-lg p-6 shadow-card border border-border flex gap-4">
-              <div className="h-12 w-12 shrink-0 rounded-lg grid place-items-center bg-[var(--brand-yellow-soft)] text-[var(--brand-black)]">
-                <Icon className="h-6 w-6" />
-              </div>
-              <div>
-                <h3 className="font-semibold text-[var(--brand-black)]">{title}</h3>
-                <p className="text-sm text-muted-foreground mt-1">{desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* App banner */}
-      <section id="apply" className="container-x mt-12 mb-4">
-        <div className="rounded-xl bg-[var(--brand-black)] text-white p-8 md:p-12 grid md:grid-cols-2 gap-8 items-center relative overflow-hidden">
-          <div className="absolute -right-16 -top-16 h-72 w-72 rounded-full bg-[var(--brand-yellow)]/20 blur-3xl" />
-          <div className="relative">
-            <h3 className="text-2xl md:text-3xl font-bold">Manage your money on the go</h3>
-            <p className="text-white/75 mt-3 text-sm md:text-base">Apply for loans, track FDs, pay EMIs and file claims — all from the XCapital app.</p>
-            <div className="flex gap-3 mt-6">
-              <a href="#" className="bg-white text-[var(--brand-black)] px-5 py-2.5 rounded-md font-semibold text-sm">App Store</a>
-              <a href="#" className="bg-[var(--brand-yellow)] text-[var(--brand-black)] px-5 py-2.5 rounded-md font-semibold text-sm">Google Play</a>
-            </div>
-          </div>
-          <div className="relative flex justify-center">
-            <div className="h-44 w-44 rounded-full bg-[var(--brand-yellow)]/20 grid place-items-center">
-              <Smartphone className="h-24 w-24 text-[var(--brand-yellow)]" />
-            </div>
-          </div>
-        </div>
-      </section>
+      <div className="mb-12" />
     </SiteLayout>
   );
 }
