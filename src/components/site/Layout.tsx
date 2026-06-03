@@ -4,7 +4,7 @@ import { Footer } from "./Footer";
 
 export function SiteLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="flex flex-col min-h-screen bg-background">
+    <div className="flex flex-col min-h-screen" style={{ background: "var(--page-bg)" }}>
       <Header />
       <main className="flex-1">{children}</main>
       <Footer />
@@ -14,11 +14,11 @@ export function SiteLayout({ children }: { children: ReactNode }) {
 
 export function PageHeader({ eyebrow, title, subtitle }: { eyebrow?: string; title: string; subtitle?: string }) {
   return (
-    <section className="bg-[var(--brand-navy)] text-white">
-      <div className="container-x py-16 md:py-20 text-center">
-        {eyebrow && <p className="text-[var(--brand-gold)] uppercase tracking-widest text-xs font-semibold mb-3">{eyebrow}</p>}
-        <h1 className="text-3xl md:text-5xl font-bold">{title}</h1>
-        {subtitle && <p className="mt-4 text-white/75 max-w-2xl mx-auto">{subtitle}</p>}
+    <section className="bg-white border-b-4 border-[var(--brand-yellow)]">
+      <div className="container-x py-12 md:py-16">
+        {eyebrow && <p className="text-[var(--brand-black)]/60 uppercase tracking-widest text-xs font-semibold mb-2">{eyebrow}</p>}
+        <h1 className="text-3xl md:text-4xl font-bold text-[var(--brand-black)]">{title}</h1>
+        {subtitle && <p className="mt-3 text-muted-foreground max-w-2xl">{subtitle}</p>}
       </div>
     </section>
   );
@@ -33,13 +33,13 @@ export function ProductCard({
   cta?: string;
 }) {
   return (
-    <div className="group bg-card rounded-xl border border-border p-6 shadow-card hover:-translate-y-1 hover:shadow-lg transition-all duration-300">
-      <div className="h-12 w-12 rounded-lg grid place-items-center bg-[var(--brand-gold)]/15 text-[var(--brand-navy)] mb-4 group-hover:bg-[var(--brand-gold)] transition-colors">
+    <div className="group bg-card rounded-lg border border-border p-6 shadow-card hover:-translate-y-0.5 hover:shadow-md hover:border-[var(--brand-yellow)] transition-all duration-200 border-b-2 border-b-transparent hover:border-b-[var(--brand-yellow)]">
+      <div className="h-12 w-12 rounded-lg grid place-items-center bg-[var(--brand-yellow-soft)] text-[var(--brand-black)] mb-4 group-hover:bg-[var(--brand-yellow)] transition-colors">
         <Icon className="h-6 w-6" />
       </div>
-      <h3 className="text-lg font-semibold text-foreground">{name}</h3>
+      <h3 className="text-base font-semibold text-foreground">{name}</h3>
       <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{description}</p>
-      <button className="mt-5 inline-flex items-center text-sm font-semibold text-[var(--brand-navy)] hover:text-[var(--brand-gold)] transition">
+      <button className="mt-5 inline-flex items-center text-sm font-semibold text-[var(--brand-black)] hover:text-[var(--brand-yellow)] transition">
         {cta} →
       </button>
     </div>
