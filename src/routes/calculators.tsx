@@ -700,7 +700,9 @@ function CalculatorsPage() {
           {tab === "sip" && <SIPCalculator onSave={handleSave} />}
           {tab === "lumpsum" && <LumpsumCalculator onSave={handleSave} />}
           {tab === "fd" && <FDCalculator onSave={handleSave} />}
+        </div>
 
+        <div className="max-w-6xl mx-auto">
           <ComparePanel
             scenarios={tabScenarios}
             onRemove={handleRemove}
