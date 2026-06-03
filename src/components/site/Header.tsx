@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Menu, X, ChevronDown, User, Bell } from "lucide-react";
+import logo from "@/assets/xcapital-logo.asset.json";
 
 const loanLinks = [
   "Personal Loan", "Home Loan", "Business Loan", "Loans for Doctors",
@@ -60,15 +61,8 @@ export function Header() {
             >
               {open ? <X /> : <Menu />}
             </button>
-            <Link to="/" className="flex items-center">
-              <div className="bg-[var(--brand-yellow)] px-4 py-2 rounded">
-                <div className="text-xl md:text-2xl font-extrabold tracking-tight text-[var(--brand-black)] leading-none">
-                  XCapital
-                </div>
-                <div className="text-[10px] font-semibold text-[var(--brand-black)]/70 tracking-widest text-right -mt-0.5">
-                  FINANCE
-                </div>
-              </div>
+            <Link to="/" className="flex items-center" aria-label="X Capital — Home">
+              <img src={logo.url} alt="X Capital" className="h-10 md:h-12 w-auto" />
             </Link>
           </div>
 
