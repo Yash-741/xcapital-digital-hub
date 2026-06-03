@@ -6,6 +6,7 @@ import {
   MapPin, Phone, Mail, Briefcase, Search, FileCheck, Building2,
   FileText, CheckCircle2, RefreshCw, Clock, Users, Handshake,
   ShieldCheck, Sparkles, ChevronDown, CheckCircle, Globe,
+  GraduationCap, Upload, User as UserIcon,
 } from "lucide-react";
 import { SiteLayout, PageHeader } from "@/components/site/Layout";
 
@@ -21,18 +22,25 @@ export const Route = createFileRoute("/about")({
   component: AboutPage,
 });
 
-const jobs = [
-  { title: "Relationship Manager", location: "Mumbai", type: "Full-time" },
-  { title: "Credit Risk Analyst", location: "Bengaluru", type: "Full-time" },
-  { title: "Mobile App Engineer", location: "Remote (India)", type: "Full-time" },
-];
-
 const careerPerks = [
   { icon: Sparkles, title: "Growth & Learning", desc: "Continuous learning, mentorship and clear career progression across functions." },
   { icon: Users, title: "Collaborative Culture", desc: "A respectful, transparent and team-first environment where ideas matter." },
   { icon: Handshake, title: "Meaningful Work", desc: "Help businesses, professionals and families access smarter financial solutions." },
   { icon: ShieldCheck, title: "Stability & Trust", desc: "Work with an established advisory firm backed by leading institutional partners." },
 ];
+
+const applicationSchema = z.object({
+  candidateName: z.string().trim().min(2, "Please enter your full name").max(100),
+  email: z.string().trim().email("Enter a valid email address").max(255),
+  contactNumber: z
+    .string()
+    .trim()
+    .regex(/^(\+?91[\-\s]?)?[6-9]\d{9}$/, "Enter a valid 10-digit Indian mobile number"),
+  education: z.string().trim().min(2, "Please enter your highest education").max(150),
+});
+
+type ApplicationForm = z.infer<typeof applicationSchema>;
+type ApplicationErrors = Partial<Record<keyof ApplicationForm | "resume", string>>;
 
 const steps = [
   { icon: Search, title: "Understand Your Requirement", desc: "We start by understanding your financial requirement, business profile, banking profile and existing liabilities." },
