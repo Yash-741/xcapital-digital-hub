@@ -1,7 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Menu, X, ChevronDown, User } from "lucide-react";
+import { Menu, X, ChevronDown, User, LogOut } from "lucide-react";
 import logo from "@/assets/xcapital-logo.asset.json";
+import { supabase } from "@/integrations/supabase/client";
 
 const loanLinks = [
   "Personal Loan", "Home Loan", "Business Loan", "Loans for Doctors",
@@ -40,6 +41,13 @@ function Dropdown({ label, items, to }: { label: string; items: string[]; to: st
 export function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [signedIn, setSignedIn] = useState(false);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setSignedIn(!!data.session));
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => setSignedIn(!!s));
+    return () => sub.subscription.unsubscribe();
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -67,12 +75,21 @@ export function Header() {
           </div>
 
           <div className="flex items-center gap-2 md:gap-4">
-            <a
-              href="#apply"
-              className="inline-flex items-center gap-2 rounded-full px-4 md:px-5 py-2.5 text-sm font-semibold text-[var(--brand-black)] bg-[var(--brand-yellow)] hover:brightness-105 transition"
-            >
-              <User className="h-4 w-4" /> <span className="hidden sm:inline">Register / Login</span><span className="sm:hidden">Login</span>
-            </a>
+            {signedIn ? (
+              <button
+                onClick={() => supabase.auth.signOut()}
+                className="inline-flex items-center gap-2 rounded-full px-4 md:px-5 py-2.5 text-sm font-semibold text-[var(--brand-black)] bg-[var(--brand-yellow)] hover:brightness-105 transition"
+              >
+                <LogOut className="h-4 w-4" /> <span className="hidden sm:inline">Sign out</span><span className="sm:hidden">Out</span>
+              </button>
+            ) : (
+              <Link
+                to="/auth"
+                className="inline-flex items-center gap-2 rounded-full px-4 md:px-5 py-2.5 text-sm font-semibold text-[var(--brand-black)] bg-[var(--brand-yellow)] hover:brightness-105 transition"
+              >
+                <User className="h-4 w-4" /> <span className="hidden sm:inline">Register / Login</span><span className="sm:hidden">Login</span>
+              </Link>
+            )}
           </div>
         </div>
       </div>
