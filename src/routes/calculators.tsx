@@ -1379,7 +1379,7 @@ function CalculatorsPage() {
       <PageHeader eyebrow="Tools" title="Calculators" subtitle="A complete suite for loans, investments, taxes and retirement planning." />
       <section className="container-x py-12">
         {/* Mobile category + calc dropdowns */}
-        <div className="lg:hidden mb-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="md:hidden mb-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
           <select value={catId} onChange={(e) => setCatId(e.target.value)} className="w-full border border-input rounded-md px-3 py-2 text-sm bg-background">
             {categories.map((c) => <option key={c.id} value={c.id}>{c.label}</option>)}
           </select>
@@ -1388,9 +1388,9 @@ function CalculatorsPage() {
           </select>
         </div>
 
-        <div className="grid lg:grid-cols-[220px_minmax(0,260px)_1fr] gap-6">
+        <div className="grid md:grid-cols-[180px_minmax(0,220px)_1fr] gap-4 md:gap-6">
           {/* Categories sidebar */}
-          <aside className="hidden lg:block">
+          <aside className="hidden md:block">
             <div className="bg-card rounded-lg border border-border overflow-hidden">
               {categories.map((c) => {
                 const active = c.id === catId;
@@ -1412,7 +1412,7 @@ function CalculatorsPage() {
           </aside>
 
           {/* Calculator list */}
-          <aside className="hidden lg:block">
+          <aside className="hidden md:block">
             <div className="bg-card rounded-lg border border-border p-2 max-h-[640px] overflow-y-auto">
               {cat.items.map((i) => {
                 const active = i.id === calcKey;
