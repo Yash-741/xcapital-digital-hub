@@ -1,8 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Calculator, PiggyBank, TrendingUp, Wallet, Home, Briefcase,
   GraduationCap, Car, Building2, Plus, X, Trash2, Trophy,
+  Landmark, Coins, Receipt, BarChart3, LineChart, Percent,
+  PieChart, BadgeIndianRupee, Banknote, HandCoins, Sigma,
 } from "lucide-react";
 import { SiteLayout, PageHeader } from "@/components/site/Layout";
 
