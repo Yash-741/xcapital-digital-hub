@@ -4,7 +4,7 @@ import {
   Calculator, PiggyBank, TrendingUp, Wallet, Home, Briefcase,
   GraduationCap, Car, Building2, Plus, X, Trash2, Trophy,
   Landmark, Coins, Receipt, BarChart3, LineChart, Percent,
-  PieChart, BadgeIndianRupee, Banknote, HandCoins, Sigma,
+  PieChart, BadgeIndianRupee, Banknote, HandCoins, Sigma, ShieldCheck,
 } from "lucide-react";
 import { SiteLayout, PageHeader } from "@/components/site/Layout";
 
@@ -355,8 +355,9 @@ const loanPresets: LoanPreset[] = [
   { key: "property", label: "LAP", icon: Building2, defaultRate: 10, defaultTenure: 180, defaultAmount: 3000000, maxAmount: 50000000 },
 ];
 
-function EMICalculator({ onSave }: { onSave: SaveFn }) {
-  const [preset, setPreset] = useState<LoanPreset>(loanPresets[0]);
+function EMICalculator({ onSave, initialPresetKey }: { onSave: SaveFn; initialPresetKey?: string }) {
+  const initial = loanPresets.find((p) => p.key === initialPresetKey) ?? loanPresets[0];
+  const [preset, setPreset] = useState<LoanPreset>(initial);
   const [amount, setAmount] = useState(preset.defaultAmount);
   const [rate, setRate] = useState(preset.defaultRate);
   const [tenure, setTenure] = useState(preset.defaultTenure);
@@ -889,7 +890,7 @@ const simpleCalcs: SimpleDef[] = [
     },
   },
   {
-    id: "ulip", title: "ULIP Calculator", desc: "Unit-linked insurance plan returns (post charges)", icon: ShieldFallback,
+    id: "ulip", title: "ULIP Calculator", desc: "Unit-linked insurance plan returns (post charges)", icon: ShieldCheck,
     inputs: [
       { key: "m", label: "Monthly Premium", default: 10000, min: 500, max: 200000, step: 500, prefix: "₹" },
       { key: "rate", label: "Expected Return (p.a.)", default: 10, min: 1, max: 25, step: 0.1, suffix: "%" },
@@ -1271,20 +1272,6 @@ const simpleCalcs: SimpleDef[] = [
     },
   },
 ];
-
-// alias to avoid breaking when ShieldFallback unavailable — re-use ShieldCheck-ish
-function ShieldFallback(props: { className?: string }) {
-  return <ShieldCheckIcon {...props} />;
-}
-function ShieldCheckIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-      strokeLinecap="round" strokeLinejoin="round" className={className}>
-      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-      <path d="m9 12 2 2 4-4" />
-    </svg>
-  );
-}
 
 /* ---------------- Categorized page ---------------- */
 
