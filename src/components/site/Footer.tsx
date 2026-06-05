@@ -48,7 +48,6 @@ export function Footer() {
           <ul className="space-y-2 text-sm text-white/70">
             <li>Sakinaka, Andheri East,<br />Mumbai 400072</li>
             <li>+91 88791 09148</li>
-            <li>amey.jaguste@xcapital.co.in</li>
             <li>info@xcapital.co.in</li>
             <li>www.xcapital.co.in</li>
           </ul>
