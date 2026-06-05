@@ -9,8 +9,8 @@ import { SiteLayout } from "@/components/site/Layout";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "XCapital — Grow. Protect. Invest. | Indian NBFC" },
-      { name: "description", content: "XCapital is a trusted Indian NBFC offering Loans, Investments and Insurance products with fast disbursal and RBI registration." },
+      { title: "XCapital — Grow. Protect. Invest." },
+      { name: "description", content: "XCapital is a trusted financial advisory firm offering Loans, Investments and Insurance solutions across leading banks and financial institutions." },
       { property: "og:title", content: "XCapital — Grow. Protect. Invest." },
       { property: "og:description", content: "Loans, Investments and Insurance for every Indian household and business." },
     ],
@@ -106,7 +106,7 @@ function Index() {
       <section className="container-x mt-4 grid gap-4 md:grid-cols-3">
         <PromoBanner
           title="Grow. Protect. Invest."
-          sub="One trusted NBFC for every Indian household."
+          sub="One trusted partner for every Indian household."
           gradient="bg-gradient-to-br from-[#2b2b2b] to-[#0a0a0a]"
         />
         <PromoBanner

@@ -14,7 +14,7 @@ export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
       { title: "About XCapital" },
-      { name: "description", content: "Learn about XCapital — vision, contact and careers at India's trusted NBFC." },
+      { name: "description", content: "Learn about XCapital — vision, contact and careers at India's trusted banking & financial advisory firm." },
       { property: "og:title", content: "About XCapital" },
       { property: "og:description", content: "About us, vision, contact and careers." },
     ],

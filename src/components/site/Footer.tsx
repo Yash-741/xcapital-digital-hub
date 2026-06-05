@@ -56,7 +56,7 @@ export function Footer() {
 
       <div className="border-t border-white/10">
         <div className="container-x py-5 text-xs text-white/50 flex flex-col md:flex-row justify-between gap-2">
-          <p>© {new Date().getFullYear()} XCapital Finance Ltd. All rights reserved. RBI Registered NBFC.</p>
+          <p>© {new Date().getFullYear()} XCapital. All rights reserved.</p>
           <p>Disclaimer: Loan, investment and insurance products are subject to terms and conditions and regulatory approvals.</p>
         </div>
       </div>
