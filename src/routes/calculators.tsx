@@ -4,7 +4,7 @@ import {
   Calculator, PiggyBank, TrendingUp, Wallet, Home, Briefcase,
   GraduationCap, Car, Building2, Plus, X, Trash2, Trophy,
   Landmark, Coins, Receipt, BarChart3, LineChart, Percent,
-  PieChart, BadgeIndianRupee, Banknote, HandCoins, Sigma, ShieldCheck,
+  PieChart, BadgeIndianRupee, Banknote, HandCoins, Sigma, ShieldCheck, Search,
 } from "lucide-react";
 import { SiteLayout, PageHeader } from "@/components/site/Layout";
 
@@ -1348,12 +1348,38 @@ function CalculatorsPage() {
   const [catId, setCatId] = useState(categories[0].id);
   const [calcKey, setCalcKey] = useState("emi"); // entry id from above lists
   const [scenarios, setScenarios] = useState<Scenario[]>([]);
+  const [query, setQuery] = useState("");
 
   const cat = categories.find((c) => c.id === catId)!;
   const entry = cat.items.find((i) => i.id === calcKey) ?? cat.items[0];
 
   // when switching category, default to first item
   useEffect(() => { setCalcKey(cat.items[0].id); }, [catId, cat.items]);
+
+  const q = query.trim().toLowerCase();
+  const searchResults = useMemo(() => {
+    if (!q) return [];
+    const out: { catId: string; catLabel: string; item: CalcEntry }[] = [];
+    const seen = new Set<string>();
+    for (const c of categories) {
+      for (const i of c.items) {
+        const k = `${c.id}:${i.id}`;
+        if (seen.has(k)) continue;
+        if (i.label.toLowerCase().includes(q)) {
+          seen.add(k);
+          out.push({ catId: c.id, catLabel: c.label, item: i });
+        }
+      }
+    }
+    return out;
+  }, [q]);
+
+  const selectResult = (r: { catId: string; item: CalcEntry }) => {
+    setCatId(r.catId);
+    // setCalcKey runs after effect that resets calcKey on catId change, so defer
+    setTimeout(() => setCalcKey(r.item.id), 0);
+    setQuery("");
+  };
 
   const handleSave: SaveFn = (data) => {
     setScenarios((prev) => {
@@ -1378,6 +1404,45 @@ function CalculatorsPage() {
     <SiteLayout>
       <PageHeader eyebrow="Tools" title="Calculators" subtitle="A complete suite for loans, investments, taxes and retirement planning." />
       <section className="container-x py-12">
+        {/* Search bar */}
+        <div className="mb-6 relative max-w-xl">
+          <Search className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search calculators by name…"
+            className="w-full border border-input rounded-md pl-9 pr-9 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-[var(--brand-yellow)]"
+          />
+          {query && (
+            <button
+              onClick={() => setQuery("")}
+              aria-label="Clear search"
+              className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-muted-foreground hover:text-foreground"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          )}
+          {q && (
+            <div className="absolute z-20 mt-1 w-full bg-card border border-border rounded-md shadow-lg max-h-80 overflow-y-auto">
+              {searchResults.length === 0 ? (
+                <div className="px-3 py-3 text-sm text-muted-foreground">No calculators found.</div>
+              ) : (
+                searchResults.map((r, idx) => (
+                  <button
+                    key={`${r.catId}-${r.item.id}-${idx}`}
+                    onClick={() => selectResult(r)}
+                    className="w-full text-left px-3 py-2 hover:bg-secondary flex justify-between items-center gap-3"
+                  >
+                    <span className="text-sm text-foreground">{r.item.label}</span>
+                    <span className="text-xs text-muted-foreground">{r.catLabel}</span>
+                  </button>
+                ))
+              )}
+            </div>
+          )}
+        </div>
+
         {/* Mobile category + calc dropdowns */}
         <div className="md:hidden mb-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
           <select value={catId} onChange={(e) => setCatId(e.target.value)} className="w-full border border-input rounded-md px-3 py-2 text-sm bg-background">
