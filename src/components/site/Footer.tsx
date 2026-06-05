@@ -15,8 +15,12 @@ export function Footer() {
             professionals and individuals.
           </p>
           <div className="flex gap-3 mt-4">
-            {[Facebook, Twitter, Linkedin, Instagram, Youtube].map((Icon, i) => (
-              <a key={i} href="#" className="h-9 w-9 grid place-items-center rounded-full bg-white/10 hover:bg-[var(--brand-yellow)] hover:text-[var(--brand-black)] transition">
+            {[
+              { Icon: Twitter, href: "https://x.com/XCapital_tweets", label: "X (Twitter)" },
+              { Icon: Instagram, href: "https://www.instagram.com/xcapital.co.in/", label: "Instagram" },
+              { Icon: Facebook, href: "https://www.facebook.com/profile.php?id=61590165826852", label: "Facebook" },
+            ].map(({ Icon, href, label }) => (
+              <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label} className="h-9 w-9 grid place-items-center rounded-full bg-white/10 hover:bg-[var(--brand-yellow)] hover:text-[var(--brand-black)] transition">
                 <Icon className="h-4 w-4" />
               </a>
             ))}
