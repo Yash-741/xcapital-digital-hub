@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Facebook, Twitter, Linkedin, Instagram, Youtube } from "lucide-react";
+import { Facebook, Twitter, Instagram } from "lucide-react";
 import logo from "@/assets/xcapital-logo.asset.json";
 
 export function Footer() {
