@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, Check, Phone, Mail } from "lucide-react";
 import { SiteLayout } from "@/components/site/Layout";
-import { findProduct } from "@/lib/store-products";
+import { findProduct, type Product } from "@/lib/store-products";
 
 export const Route = createFileRoute("/store/$productId")({
   loader: ({ params }) => {
@@ -47,7 +47,7 @@ export const Route = createFileRoute("/store/$productId")({
 function ProductPage() {
   const { product, category, sub } = Route.useLoaderData();
   const Icon = product.icon;
-  const related = sub.items.filter((i) => i.slug !== product.slug).slice(0, 6);
+  const related = sub.items.filter((i: Product) => i.slug !== product.slug).slice(0, 6);
 
   return (
     <SiteLayout>
@@ -90,7 +90,7 @@ function ProductPage() {
         <div className="bg-white rounded-lg shadow-card border-b-[3px] border-[var(--brand-yellow)] p-6">
           <h2 className="text-sm font-bold text-[var(--brand-black)] uppercase tracking-wide mb-4">Key Features</h2>
           <ul className="space-y-3">
-            {product.features.map((f) => (
+            {product.features.map((f: string) => (
               <li key={f} className="flex items-start gap-2 text-sm text-[var(--brand-black)]/85">
                 <Check className="h-4 w-4 text-[var(--brand-black)] bg-[var(--brand-yellow)] rounded-full p-0.5 mt-0.5 shrink-0" />
                 <span>{f}</span>
@@ -102,7 +102,7 @@ function ProductPage() {
         <div className="bg-white rounded-lg shadow-card border-b-[3px] border-[var(--brand-yellow)] p-6">
           <h2 className="text-sm font-bold text-[var(--brand-black)] uppercase tracking-wide mb-4">Best For</h2>
           <ul className="space-y-2">
-            {product.useCases.map((u) => (
+            {product.useCases.map((u: string) => (
               <li key={u} className="text-sm text-[var(--brand-black)]/85 leading-relaxed">• {u}</li>
             ))}
           </ul>
@@ -111,7 +111,7 @@ function ProductPage() {
         <div className="bg-white rounded-lg shadow-card border-b-[3px] border-[var(--brand-yellow)] p-6">
           <h2 className="text-sm font-bold text-[var(--brand-black)] uppercase tracking-wide mb-4">Specs & Pricing</h2>
           <ul className="space-y-2">
-            {product.specs.map((s) => (
+            {product.specs.map((s: string) => (
               <li key={s} className="text-sm text-[var(--brand-black)]/85 leading-relaxed">• {s}</li>
             ))}
           </ul>
@@ -122,7 +122,7 @@ function ProductPage() {
         <section className="container-x pb-12">
           <h2 className="text-lg font-bold text-[var(--brand-black)] mb-4">More in {sub.name}</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-            {related.map((r) => {
+            {related.map((r: Product) => {
               const RIcon = r.icon;
               return (
                 <Link
