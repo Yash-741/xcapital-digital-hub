@@ -388,8 +388,8 @@ function AboutPage() {
             <p className="text-muted-foreground mt-3">We'd love to hear from you. Fill the form or reach us directly.</p>
             <ul className="mt-6 space-y-4 text-sm">
               <li className="flex gap-3"><MapPin className="h-5 w-5 text-[var(--brand-yellow)] shrink-0" /><span>Sakinaka, Andheri East, Mumbai 400072</span></li>
-              <li className="flex gap-3"><Phone className="h-5 w-5 text-[var(--brand-yellow)] shrink-0" /><span>+91 88791 09148</span></li>
-              <li className="flex gap-3"><Mail className="h-5 w-5 text-[var(--brand-yellow)] shrink-0" /><span>amey.jaguste@xcapital.co.in</span></li>
+              <li className="flex gap-3"><Phone className="h-5 w-5 text-[var(--brand-yellow)] shrink-0" /><a href="tel:+918879109148" className="hover:text-[var(--brand-yellow)]">+91 88791 09148</a></li>
+              <li className="flex gap-3"><Mail className="h-5 w-5 text-[var(--brand-yellow)] shrink-0" /><a href="mailto:info@xcapital.co.in" className="hover:text-[var(--brand-yellow)]">info@xcapital.co.in</a></li>
               <li className="flex gap-3"><Globe className="h-5 w-5 text-[var(--brand-yellow)] shrink-0" /><span>www.xcapital.co.in</span></li>
             </ul>
           </div>
