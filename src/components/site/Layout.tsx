@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
+import logo from "@/assets/xcapital-logo.asset.json";
 
 export function SiteLayout({ children }: { children: ReactNode }) {
   return (
@@ -17,6 +18,7 @@ export function PageHeader({ eyebrow, title, subtitle }: { eyebrow?: string; tit
   return (
     <section className="bg-white border-b-4 border-[var(--brand-yellow)]">
       <div className="container-x py-12 md:py-16">
+        <img src={logo.url} alt="XCapital" className="h-8 md:h-10 w-auto mb-5" />
         {eyebrow && <p className="text-[var(--brand-black)]/60 uppercase tracking-widest text-xs font-semibold mb-2">{eyebrow}</p>}
         <h1 className="text-3xl md:text-4xl font-bold text-[var(--brand-black)]">{title}</h1>
         {subtitle && <p className="mt-3 text-muted-foreground max-w-2xl">{subtitle}</p>}
