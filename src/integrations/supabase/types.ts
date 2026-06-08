@@ -38,6 +38,57 @@ export type Database = {
         }
         Relationships: []
       }
+      service_leads: {
+        Row: {
+          age: number | null
+          amount: number | null
+          category: string
+          coverage: number | null
+          created_at: string
+          email: string
+          full_name: string
+          horizon: string | null
+          id: string
+          notes: string | null
+          phone: string
+          product_name: string
+          product_slug: string
+          tenure: string | null
+        }
+        Insert: {
+          age?: number | null
+          amount?: number | null
+          category: string
+          coverage?: number | null
+          created_at?: string
+          email: string
+          full_name: string
+          horizon?: string | null
+          id?: string
+          notes?: string | null
+          phone: string
+          product_name: string
+          product_slug: string
+          tenure?: string | null
+        }
+        Update: {
+          age?: number | null
+          amount?: number | null
+          category?: string
+          coverage?: number | null
+          created_at?: string
+          email?: string
+          full_name?: string
+          horizon?: string | null
+          id?: string
+          notes?: string | null
+          phone?: string
+          product_name?: string
+          product_slug?: string
+          tenure?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
