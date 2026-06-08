@@ -13,11 +13,13 @@ import { SiteLayout, PageHeader } from "@/components/site/Layout";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About XCapital" },
-      { name: "description", content: "Learn about XCapital — vision, contact and careers at India's trusted banking & financial advisory firm." },
-      { property: "og:title", content: "About XCapital" },
-      { property: "og:description", content: "About us, vision, contact and careers." },
+      { title: "About XCapital — Our Vision, Team & Careers" },
+      { name: "description", content: "XCapital is a trusted Indian financial advisory firm partnering with 50+ banks. Learn our vision, meet the team, find our offices and explore careers." },
+      { property: "og:title", content: "About XCapital — Our Vision, Team & Careers" },
+      { property: "og:description", content: "Who we are, what drives us, and how to reach or join the XCapital team." },
+      { property: "og:url", content: "/about" },
     ],
+    links: [{ rel: "canonical", href: "/about" }],
   }),
   component: AboutPage,
 });
