@@ -119,29 +119,29 @@ export function Header() {
           <div className="flex items-center gap-2 md:gap-4">
             <div className="hidden md:flex items-center gap-5 mr-2">
               <a
-                href="tel:+919876543210"
+                href="tel:+918879109148"
                 className="flex items-center gap-2 text-sm text-[var(--brand-black)] hover:text-amber-700 transition rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-yellow)]"
-                aria-label="Call us at +91 98765 43210"
+                aria-label="Call us at +91 88791 09148"
               >
                 <span aria-hidden="true" className="h-9 w-9 grid place-items-center rounded-full bg-[var(--brand-yellow-soft)]">
                   <Phone className="h-4 w-4" />
                 </span>
                 <span aria-hidden="true" className="leading-tight">
                   <span className="block text-[10px] uppercase tracking-wider text-muted-foreground">Call us</span>
-                  <span className="block font-semibold">+91 98765 43210</span>
+                  <span className="block font-semibold">+91 88791 09148</span>
                 </span>
               </a>
               <a
-                href="mailto:support@xcapital.co.in"
+                href="mailto:info@xcapital.co.in"
                 className="hidden xl:flex items-center gap-2 text-sm text-[var(--brand-black)] hover:text-amber-700 transition rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-yellow)]"
-                aria-label="Email support at support@xcapital.co.in"
+                aria-label="Email us at info@xcapital.co.in"
               >
                 <span aria-hidden="true" className="h-9 w-9 grid place-items-center rounded-full bg-[var(--brand-yellow-soft)]">
                   <Mail className="h-4 w-4" />
                 </span>
                 <span aria-hidden="true" className="leading-tight">
                   <span className="block text-[10px] uppercase tracking-wider text-muted-foreground">Email</span>
-                  <span className="block font-semibold">support@xcapital.co.in</span>
+                  <span className="block font-semibold">info@xcapital.co.in</span>
                 </span>
               </a>
             </div>
