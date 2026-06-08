@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Link } from "@tanstack/react-router";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
 
@@ -25,14 +26,16 @@ export function PageHeader({ eyebrow, title, subtitle }: { eyebrow?: string; tit
 }
 
 export function ProductCard({
-  icon: Icon, name, description, cta = "Apply Now", id,
+  icon: Icon, name, description, cta = "Apply Now", id, category,
 }: {
   icon: React.ComponentType<{ className?: string }>;
   name: string;
   description: string;
   cta?: string;
   id?: string;
+  category?: "loan" | "insurance" | "investment";
 }) {
+  const href = category && id ? { to: "/apply/$category/$slug" as const, params: { category, slug: id } } : null;
   return (
     <div id={id} className="group scroll-mt-32 bg-card rounded-lg border border-border p-6 shadow-card hover:-translate-y-0.5 hover:shadow-md hover:border-[var(--brand-yellow)] transition-all duration-200 border-b-2 border-b-transparent hover:border-b-[var(--brand-yellow)]">
       <div className="h-12 w-12 rounded-lg grid place-items-center bg-[var(--brand-yellow-soft)] text-[var(--brand-black)] mb-4 group-hover:bg-[var(--brand-yellow)] transition-colors">
@@ -40,9 +43,15 @@ export function ProductCard({
       </div>
       <h3 className="text-base font-semibold text-foreground">{name}</h3>
       <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{description}</p>
-      <a href="/about#reach-us" className="mt-5 inline-flex items-center text-sm font-semibold text-[var(--brand-black)] hover:text-[var(--brand-yellow)] transition">
-        {cta} →
-      </a>
+      {href ? (
+        <Link {...href} className="mt-5 inline-flex items-center text-sm font-semibold text-[var(--brand-black)] hover:text-[var(--brand-yellow)] transition">
+          {cta} →
+        </Link>
+      ) : (
+        <a href="/about#reach-us" className="mt-5 inline-flex items-center text-sm font-semibold text-[var(--brand-black)] hover:text-[var(--brand-yellow)] transition">
+          {cta} →
+        </a>
+      )}
     </div>
   );
 }
