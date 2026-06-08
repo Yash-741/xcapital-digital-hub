@@ -134,6 +134,7 @@ function Index() {
       {/* Hero card grid */}
       <section className="pt-6 md:pt-8">
         <div className="container-x grid gap-4 md:grid-cols-3">
+          <div id="investments" className="scroll-mt-32">
           <GridCard title="Investments" viewAllTo="/investments">
             <div className="grid grid-cols-2 gap-2">
               <div className="bg-[var(--brand-yellow-soft)]/60 rounded-lg p-3 flex flex-col items-center text-center">
@@ -148,7 +149,9 @@ function Index() {
               </div>
             </div>
           </GridCard>
+          </div>
 
+          <div id="loans" className="scroll-mt-32">
           <GridCard title="Loans" viewAllTo="/loans">
             <div className="grid grid-cols-4 gap-1">
               <IconTile icon={Wallet} label="Personal Loan" to="/loans" />
@@ -157,7 +160,9 @@ function Index() {
               <IconTile icon={Briefcase} label="Business Loan" to="/loans" />
             </div>
           </GridCard>
+          </div>
 
+          <div id="insurance" className="scroll-mt-32">
           <GridCard title="Insurance" viewAllTo="/insurance">
             <div className="grid grid-cols-3 gap-1">
               <IconTile icon={HeartPulse} label="Health" to="/insurance" />
@@ -165,6 +170,7 @@ function Index() {
               <IconTile icon={FileText} label="Claim" to="/insurance" />
             </div>
           </GridCard>
+          </div>
         </div>
       </section>
 
