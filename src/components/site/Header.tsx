@@ -102,6 +102,7 @@ export function Header() {
           <Dropdown label="Loans" items={loanLinks} to="/loans" />
           <Dropdown label="Insurance" items={insuranceLinks} to="/insurance" />
           <Link to="/calculators" className="px-4 py-3 text-sm font-medium text-white hover:text-[var(--brand-yellow)]">Calculators</Link>
+          <Link to="/store" className="px-4 py-3 text-sm font-medium text-white hover:text-[var(--brand-yellow)]">Store</Link>
           <Dropdown label="About" items={aboutLinks} to="/about" />
         </div>
       </nav>
@@ -115,6 +116,7 @@ export function Header() {
               ["Loans", "/loans"],
               ["Insurance", "/insurance"],
               ["Calculators", "/calculators"],
+              ["Store", "/store"],
               ["About", "/about"],
             ].map(([label, to]) => (
               <Link
