@@ -42,7 +42,7 @@ function LoansPage() {
       <PageHeader eyebrow="Loans" title="Borrow with confidence" subtitle="From personal goals to business growth — choose from our wide range of loan products." />
       <section className="container-x py-16">
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {loans.map((l) => <ProductCard key={l.name} id={slug(l.name)} {...l} />)}
+          {loans.map((l) => <ProductCard key={l.name} id={slug(l.name)} category="loan" {...l} />)}
         </div>
       </section>
     </SiteLayout>

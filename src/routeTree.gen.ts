@@ -18,6 +18,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as StoreProductIdRouteImport } from './routes/store.$productId'
+import { Route as ApplyCategorySlugRouteImport } from './routes/apply.$category.$slug'
 
 const StoreRoute = StoreRouteImport.update({
   id: '/store',
@@ -64,6 +65,11 @@ const StoreProductIdRoute = StoreProductIdRouteImport.update({
   path: '/$productId',
   getParentRoute: () => StoreRoute,
 } as any)
+const ApplyCategorySlugRoute = ApplyCategorySlugRouteImport.update({
+  id: '/apply/$category/$slug',
+  path: '/apply/$category/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -75,6 +81,7 @@ export interface FileRoutesByFullPath {
   '/loans': typeof LoansRoute
   '/store': typeof StoreRouteWithChildren
   '/store/$productId': typeof StoreProductIdRoute
+  '/apply/$category/$slug': typeof ApplyCategorySlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -86,6 +93,7 @@ export interface FileRoutesByTo {
   '/loans': typeof LoansRoute
   '/store': typeof StoreRouteWithChildren
   '/store/$productId': typeof StoreProductIdRoute
+  '/apply/$category/$slug': typeof ApplyCategorySlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -98,6 +106,7 @@ export interface FileRoutesById {
   '/loans': typeof LoansRoute
   '/store': typeof StoreRouteWithChildren
   '/store/$productId': typeof StoreProductIdRoute
+  '/apply/$category/$slug': typeof ApplyCategorySlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -111,6 +120,7 @@ export interface FileRouteTypes {
     | '/loans'
     | '/store'
     | '/store/$productId'
+    | '/apply/$category/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -122,6 +132,7 @@ export interface FileRouteTypes {
     | '/loans'
     | '/store'
     | '/store/$productId'
+    | '/apply/$category/$slug'
   id:
     | '__root__'
     | '/'
@@ -133,6 +144,7 @@ export interface FileRouteTypes {
     | '/loans'
     | '/store'
     | '/store/$productId'
+    | '/apply/$category/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -144,6 +156,7 @@ export interface RootRouteChildren {
   InvestmentsRoute: typeof InvestmentsRoute
   LoansRoute: typeof LoansRoute
   StoreRoute: typeof StoreRouteWithChildren
+  ApplyCategorySlugRoute: typeof ApplyCategorySlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -211,6 +224,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StoreProductIdRouteImport
       parentRoute: typeof StoreRoute
     }
+    '/apply/$category/$slug': {
+      id: '/apply/$category/$slug'
+      path: '/apply/$category/$slug'
+      fullPath: '/apply/$category/$slug'
+      preLoaderRoute: typeof ApplyCategorySlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -233,6 +253,7 @@ const rootRouteChildren: RootRouteChildren = {
   InvestmentsRoute: InvestmentsRoute,
   LoansRoute: LoansRoute,
   StoreRoute: StoreRouteWithChildren,
+  ApplyCategorySlugRoute: ApplyCategorySlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

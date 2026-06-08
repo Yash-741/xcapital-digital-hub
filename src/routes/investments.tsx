@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { PiggyBank, Landmark } from "lucide-react";
 import { SiteLayout, PageHeader, ProductCard } from "@/components/site/Layout";
 
@@ -28,9 +28,9 @@ function Investments() {
           </div>
           <h3 className="text-xl font-semibold">Fixed Deposits</h3>
           <p className="text-sm text-muted-foreground mt-2">Highest-in-industry returns with monthly, quarterly or cumulative payout options. Special rates for senior citizens.</p>
-          <a href="/about#reach-us" className="mt-5 inline-block px-5 py-2.5 text-sm font-semibold rounded-md bg-[var(--brand-navy)] text-white hover:brightness-110">Invest Now</a>
+          <Link to="/apply/$category/$slug" params={{ category: "investment", slug: "fixed-deposits" }} className="mt-5 inline-block px-5 py-2.5 text-sm font-semibold rounded-md bg-[var(--brand-navy)] text-white hover:brightness-110">Invest Now</Link>
         </div>
-        <ProductCard id="bonds" icon={Landmark} name="Bonds" description="AAA-rated NCDs and corporate bonds with stable returns and tradable liquidity." cta="Explore Bonds" />
+        <ProductCard id="bonds" category="investment" icon={Landmark} name="Bonds" description="AAA-rated NCDs and corporate bonds with stable returns and tradable liquidity." cta="Explore Bonds" />
       </section>
     </SiteLayout>
   );
