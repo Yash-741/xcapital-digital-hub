@@ -5,7 +5,6 @@ import {
   ArrowRight, Sparkles, Clock, CheckCircle2,
 } from "lucide-react";
 import { SiteLayout } from "@/components/site/Layout";
-import logo from "@/assets/xcapital-logo.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -80,7 +79,6 @@ function Index() {
         />
         <div className="container-x relative py-12 md:py-20 grid md:grid-cols-2 gap-10 items-center">
           <div>
-            <img src={logo.url} alt="XCapital" className="h-10 md:h-12 w-auto mb-5 bg-white rounded-md px-2 py-1 inline-block" />
             <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--brand-yellow)]/15 text-[var(--brand-yellow)] px-3 py-1 text-xs font-semibold uppercase tracking-wider">
               <Sparkles className="h-3.5 w-3.5" /> Grow. Protect. Invest.
             </span>
