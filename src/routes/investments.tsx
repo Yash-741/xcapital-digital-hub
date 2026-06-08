@@ -21,16 +21,16 @@ function Investments() {
     <SiteLayout>
       <PageHeader eyebrow="Investments" title="Make your money work harder" subtitle="Safe, regulated investment options with attractive returns." />
       <section className="container-x py-16 grid md:grid-cols-2 gap-6">
-        <div className="relative bg-card rounded-xl border border-border p-7 shadow-card overflow-hidden">
+        <div id="fixed-deposits" className="relative scroll-mt-32 bg-card rounded-xl border border-border p-7 shadow-card overflow-hidden">
           <span className="absolute top-4 right-4 text-xs font-bold bg-[var(--brand-gold)] text-[var(--brand-navy)] px-2.5 py-1 rounded-full">UP TO 8.5% P.A.</span>
           <div className="h-12 w-12 rounded-lg grid place-items-center bg-[var(--brand-gold)]/15 text-[var(--brand-navy)] mb-4">
             <PiggyBank className="h-6 w-6" />
           </div>
           <h3 className="text-xl font-semibold">Fixed Deposits</h3>
           <p className="text-sm text-muted-foreground mt-2">Highest-in-industry returns with monthly, quarterly or cumulative payout options. Special rates for senior citizens.</p>
-          <button className="mt-5 px-5 py-2.5 text-sm font-semibold rounded-md bg-[var(--brand-navy)] text-white hover:brightness-110">Invest Now</button>
+          <a href="/about#reach-us" className="mt-5 inline-block px-5 py-2.5 text-sm font-semibold rounded-md bg-[var(--brand-navy)] text-white hover:brightness-110">Invest Now</a>
         </div>
-        <ProductCard icon={Landmark} name="Bonds" description="AAA-rated NCDs and corporate bonds with stable returns and tradable liquidity." cta="Explore Bonds" />
+        <ProductCard id="bonds" icon={Landmark} name="Bonds" description="AAA-rated NCDs and corporate bonds with stable returns and tradable liquidity." cta="Explore Bonds" />
       </section>
     </SiteLayout>
   );
