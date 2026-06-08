@@ -206,7 +206,7 @@ function Index() {
             <IconTile icon={FileText} label="Medical Claim" to="/insurance" />
           </div>
         </div>
-        <div className="bg-white rounded-lg shadow-card border-b-[3px] border-[var(--brand-yellow)] p-5">
+        <div id="calculators" className="scroll-mt-32 bg-white rounded-lg shadow-card border-b-[3px] border-[var(--brand-yellow)] p-5">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-bold text-[var(--brand-black)]">Calculators</h3>
             <Link to="/calculators" className="text-sm font-semibold text-blue-600 hover:underline">View all</Link>
@@ -220,7 +220,7 @@ function Index() {
       </section>
 
       {/* We have your finances covered */}
-      <section className="container-x mt-12">
+      <section id="about" className="scroll-mt-32 container-x mt-12">
         <div className="grid md:grid-cols-4 gap-6 items-start">
           <div className="md:col-span-1">
             <h2 className="text-2xl md:text-3xl font-bold text-[var(--brand-black)]">We have your finances covered</h2>
