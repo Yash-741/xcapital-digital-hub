@@ -2,6 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { HeartPulse, ShieldCheck, FileText } from "lucide-react";
 import { SiteLayout, PageHeader, ProductCard } from "@/components/site/Layout";
 
+const slug = (s: string) => s.toLowerCase().replace(/\s+/g, "-");
+
 export const Route = createFileRoute("/insurance")({
   head: () => ({
     meta: [
@@ -28,7 +30,7 @@ function InsurancePage() {
       <PageHeader eyebrow="Insurance" title="Protection for life's uncertainties" subtitle="Comprehensive cover backed by India's top insurers." />
       <section className="container-x py-16">
         <div className="grid md:grid-cols-3 gap-6">
-          {items.map((i) => <ProductCard key={i.name} {...i} cta="Get Quote" />)}
+          {items.map((i) => <ProductCard key={i.name} id={slug(i.name)} {...i} cta="Get Quote" />)}
         </div>
       </section>
     </SiteLayout>

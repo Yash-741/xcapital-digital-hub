@@ -25,23 +25,24 @@ export function PageHeader({ eyebrow, title, subtitle }: { eyebrow?: string; tit
 }
 
 export function ProductCard({
-  icon: Icon, name, description, cta = "Apply Now",
+  icon: Icon, name, description, cta = "Apply Now", id,
 }: {
   icon: React.ComponentType<{ className?: string }>;
   name: string;
   description: string;
   cta?: string;
+  id?: string;
 }) {
   return (
-    <div className="group bg-card rounded-lg border border-border p-6 shadow-card hover:-translate-y-0.5 hover:shadow-md hover:border-[var(--brand-yellow)] transition-all duration-200 border-b-2 border-b-transparent hover:border-b-[var(--brand-yellow)]">
+    <div id={id} className="group scroll-mt-32 bg-card rounded-lg border border-border p-6 shadow-card hover:-translate-y-0.5 hover:shadow-md hover:border-[var(--brand-yellow)] transition-all duration-200 border-b-2 border-b-transparent hover:border-b-[var(--brand-yellow)]">
       <div className="h-12 w-12 rounded-lg grid place-items-center bg-[var(--brand-yellow-soft)] text-[var(--brand-black)] mb-4 group-hover:bg-[var(--brand-yellow)] transition-colors">
         <Icon className="h-6 w-6" />
       </div>
       <h3 className="text-base font-semibold text-foreground">{name}</h3>
       <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{description}</p>
-      <button className="mt-5 inline-flex items-center text-sm font-semibold text-[var(--brand-black)] hover:text-[var(--brand-yellow)] transition">
+      <a href="/about#reach-us" className="mt-5 inline-flex items-center text-sm font-semibold text-[var(--brand-black)] hover:text-[var(--brand-yellow)] transition">
         {cta} →
-      </button>
+      </a>
     </div>
   );
 }
