@@ -80,7 +80,7 @@ export function Header() {
       setActiveSection(null);
       return;
     }
-    const ids = ["investments", "loans", "insurance"];
+    const ids = ["investments", "loans", "insurance", "calculators", "about"];
     const els = ids
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => !!el);
@@ -130,7 +130,7 @@ export function Header() {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
-  const isActive = (key: "investments" | "loans" | "insurance", route: string) => {
+  const isActive = (key: "investments" | "loans" | "insurance" | "calculators" | "about", route: string) => {
     if (pathname === route) return true;
     if (pathname === "/" && activeSection === key) return true;
     return false;
@@ -234,9 +234,14 @@ export function Header() {
           <Dropdown label="Investments" items={investmentLinks} to="/investments" active={isActive("investments", "/investments")} />
           <Dropdown label="Loans" items={loanLinks} to="/loans" active={isActive("loans", "/loans")} />
           <Dropdown label="Insurance" items={insuranceLinks} to="/insurance" active={isActive("insurance", "/insurance")} />
-          <Link to="/calculators" className="px-4 py-3 text-sm font-medium text-white hover:text-[var(--brand-yellow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-yellow)] rounded-sm">Calculators</Link>
+          <Link to="/calculators" className={`relative px-4 py-3 text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-yellow)] rounded-sm ${isActive("calculators", "/calculators") ? "text-[var(--brand-yellow)]" : "text-white hover:text-[var(--brand-yellow)]"}`}>
+            Calculators
+            {isActive("calculators", "/calculators") && (
+              <span aria-hidden="true" className="absolute left-3 right-3 -bottom-px h-[3px] rounded-t bg-[var(--brand-yellow)]" />
+            )}
+          </Link>
           <Link to="/store" className="px-4 py-3 text-sm font-medium text-white hover:text-[var(--brand-yellow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-yellow)] rounded-sm">Store</Link>
-          <Dropdown label="About" items={aboutLinks} to="/about" />
+          <Dropdown label="About" items={aboutLinks} to="/about" active={isActive("about", "/about")} />
         </div>
       </nav>
 
