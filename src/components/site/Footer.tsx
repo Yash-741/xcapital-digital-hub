@@ -5,7 +5,7 @@ import logo from "@/assets/xcapital-logo.asset.json";
 export function Footer() {
   return (
     <footer className="bg-[var(--brand-black)] text-white/75 mt-16">
-      <div className="container-x py-14 grid gap-10 md:grid-cols-4">
+      <div className="container-x py-14 grid gap-10 md:grid-cols-5">
         <div>
           <div className="inline-block bg-white px-3 py-2 rounded mb-3">
             <img src={logo.url} alt="X Capital" className="h-8 w-auto" />
@@ -34,6 +34,25 @@ export function Footer() {
             <li><Link to="/investments" className="hover:text-[var(--brand-yellow)]">Investments</Link></li>
             <li><Link to="/insurance" className="hover:text-[var(--brand-yellow)]">Insurance</Link></li>
             <li><Link to="/calculators" className="hover:text-[var(--brand-yellow)]">Calculators</Link></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 className="text-white font-semibold mb-4">Store</h4>
+          <ul className="space-y-2 text-sm">
+            {[
+              ["Payment & Merchant", "payment-merchant"],
+              ["Retail & Billing", "retail-billing"],
+              ["Biometric & KYC", "biometric-kyc"],
+              ["Banking & Fintech", "banking-fintech"],
+              ["Security & Surveillance", "security-surveillance"],
+              ["Office Infrastructure", "office-infrastructure"],
+              ["Business Consumables", "business-consumables"],
+            ].map(([label, hash]) => (
+              <li key={hash}>
+                <a href={`/store#${hash}`} className="hover:text-[var(--brand-yellow)]">{label}</a>
+              </li>
+            ))}
           </ul>
         </div>
 
