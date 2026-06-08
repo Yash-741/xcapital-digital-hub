@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Wallet, Home as HomeIcon, Briefcase, Car, PiggyBank, Landmark, Coins,
   HeartPulse, ShieldCheck, FileText, Calculator,
-  ArrowRight,
+  ArrowRight, ShieldCheck as ShieldIcon, Sparkles, Clock,
 } from "lucide-react";
 import { SiteLayout } from "@/components/site/Layout";
 
