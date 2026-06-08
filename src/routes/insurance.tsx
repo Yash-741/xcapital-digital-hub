@@ -30,7 +30,7 @@ function InsurancePage() {
       <PageHeader eyebrow="Insurance" title="Protection for life's uncertainties" subtitle="Comprehensive cover backed by India's top insurers." />
       <section className="container-x py-16">
         <div className="grid md:grid-cols-3 gap-6">
-          {items.map((i) => <ProductCard key={i.name} id={slug(i.name)} {...i} cta="Get Quote" />)}
+          {items.map((i) => <ProductCard key={i.name} id={slug(i.name)} category="insurance" {...i} cta="Get Quote" />)}
         </div>
       </section>
     </SiteLayout>
