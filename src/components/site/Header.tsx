@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { useRouterState } from "@tanstack/react-router";
 import { Menu, X, ChevronDown, User, LogOut, Phone, Mail, Search } from "lucide-react";
 import logo from "@/assets/xcapital-logo.asset.json";
 import { supabase } from "@/integrations/supabase/client";
@@ -15,17 +16,21 @@ const investmentLinks = ["Fixed Deposits", "Bonds"];
 const insuranceLinks = ["Health Insurance", "Life Insurance", "Medical Claim"];
 const aboutLinks = ["About Us", "Our Vision", "Reach Us", "Careers"];
 
-function Dropdown({ label, items, to }: { label: string; items: string[]; to: string }) {
+function Dropdown({ label, items, to, active }: { label: string; items: string[]; to: string; active?: boolean }) {
   const panelId = `menu-${label.toLowerCase()}`;
   return (
     <div className="relative group focus-within:[&>div]:visible focus-within:[&>div]:opacity-100">
       <Link
         to={to}
-        className="flex items-center gap-1 px-4 py-3 text-sm font-medium text-white hover:text-[var(--brand-yellow)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-yellow)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--brand-black)] rounded-sm"
+        className={`relative flex items-center gap-1 px-4 py-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-yellow)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--brand-black)] rounded-sm ${active ? "text-[var(--brand-yellow)]" : "text-white hover:text-[var(--brand-yellow)]"}`}
         aria-haspopup="menu"
         aria-controls={panelId}
+        aria-current={active ? "true" : undefined}
       >
         {label} <ChevronDown className="h-3.5 w-3.5" aria-hidden="true" />
+        {active && (
+          <span aria-hidden="true" className="absolute left-3 right-3 -bottom-px h-[3px] rounded-t bg-[var(--brand-yellow)] transition-all" />
+        )}
       </Link>
       <div
         id={panelId}
@@ -53,6 +58,8 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [signedIn, setSignedIn] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string | null>(null);
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setSignedIn(!!data.session));
@@ -66,6 +73,40 @@ export function Header() {
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Scroll-spy for home page sections: Investments / Loans / Insurance
+  useEffect(() => {
+    if (pathname !== "/") {
+      setActiveSection(null);
+      return;
+    }
+    const ids = ["investments", "loans", "insurance"];
+    const els = ids
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => !!el);
+    if (els.length === 0) return;
+
+    const visible = new Map<string, number>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          visible.set(e.target.id, e.isIntersecting ? e.intersectionRatio : 0);
+        }
+        let best: string | null = null;
+        let bestRatio = 0;
+        for (const [id, ratio] of visible) {
+          if (ratio > bestRatio) {
+            best = id;
+            bestRatio = ratio;
+          }
+        }
+        setActiveSection(bestRatio > 0 ? best : null);
+      },
+      { rootMargin: "-96px 0px -40% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] }
+    );
+    els.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [pathname]);
 
   // Cmd/Ctrl+K opens search
   useEffect(() => {
@@ -88,6 +129,12 @@ export function Header() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
+
+  const isActive = (key: "investments" | "loans" | "insurance", route: string) => {
+    if (pathname === route) return true;
+    if (pathname === "/" && activeSection === key) return true;
+    return false;
+  };
 
   return (
     <header className={`sticky top-0 z-50 bg-white transition-shadow ${scrolled ? "shadow-md" : "shadow-sm"}`}>
@@ -178,10 +225,15 @@ export function Header() {
       {/* Black secondary nav */}
       <nav aria-label="Primary" className="hidden lg:block bg-[var(--brand-black)]">
         <div className="container-x flex items-center justify-center">
-          <Link to="/" className="px-4 py-3 text-sm font-medium text-white hover:text-[var(--brand-yellow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-yellow)] rounded-sm">Home</Link>
-          <Dropdown label="Investments" items={investmentLinks} to="/investments" />
-          <Dropdown label="Loans" items={loanLinks} to="/loans" />
-          <Dropdown label="Insurance" items={insuranceLinks} to="/insurance" />
+          <Link to="/" className={`relative px-4 py-3 text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-yellow)] rounded-sm ${pathname === "/" && !activeSection ? "text-[var(--brand-yellow)]" : "text-white hover:text-[var(--brand-yellow)]"}`}>
+            Home
+            {pathname === "/" && !activeSection && (
+              <span aria-hidden="true" className="absolute left-3 right-3 -bottom-px h-[3px] rounded-t bg-[var(--brand-yellow)]" />
+            )}
+          </Link>
+          <Dropdown label="Investments" items={investmentLinks} to="/investments" active={isActive("investments", "/investments")} />
+          <Dropdown label="Loans" items={loanLinks} to="/loans" active={isActive("loans", "/loans")} />
+          <Dropdown label="Insurance" items={insuranceLinks} to="/insurance" active={isActive("insurance", "/insurance")} />
           <Link to="/calculators" className="px-4 py-3 text-sm font-medium text-white hover:text-[var(--brand-yellow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-yellow)] rounded-sm">Calculators</Link>
           <Link to="/store" className="px-4 py-3 text-sm font-medium text-white hover:text-[var(--brand-yellow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-yellow)] rounded-sm">Store</Link>
           <Dropdown label="About" items={aboutLinks} to="/about" />
