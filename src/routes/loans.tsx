@@ -8,11 +8,13 @@ import { SiteLayout, PageHeader, ProductCard } from "@/components/site/Layout";
 export const Route = createFileRoute("/loans")({
   head: () => ({
     meta: [
-      { title: "Loans — XCapital" },
-      { name: "description", content: "Personal, Home, Business and specialised loans from XCapital — fast disbursal, competitive rates." },
-      { property: "og:title", content: "Loans — XCapital" },
-      { property: "og:description", content: "Explore 12+ loan products designed for every Indian." },
+      { title: "Loans Online — Personal, Home & Business Loans | XCapital" },
+      { name: "description", content: "Apply for Personal Loan up to ₹40L, Home Loan from 8.35% p.a., Business, LAP, Education & Car loans. 50+ banks, 24-hour disbursal, lowest EMI." },
+      { property: "og:title", content: "Loans Online — Personal, Home & Business Loans | XCapital" },
+      { property: "og:description", content: "12+ loan products with the best rates from India's top banks. Quick approval, minimal paperwork, dedicated advisor." },
+      { property: "og:url", content: "/loans" },
     ],
+    links: [{ rel: "canonical", href: "/loans" }],
   }),
   component: LoansPage,
 });
