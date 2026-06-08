@@ -65,6 +65,70 @@ function PromoBanner({ title, sub, gradient }: { title: string; sub: string; gra
 function Index() {
   return (
     <SiteLayout>
+      {/* Hero */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#1a1a1a] via-[#0a0a0a] to-[#2b2b2b] text-white">
+        <div
+          aria-hidden
+          className="absolute inset-0 opacity-30"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 20% 20%, var(--brand-yellow) 0%, transparent 40%), radial-gradient(circle at 80% 60%, #b45309 0%, transparent 45%)",
+          }}
+        />
+        <div className="container-x relative py-12 md:py-20 grid md:grid-cols-2 gap-10 items-center">
+          <div>
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--brand-yellow)]/15 text-[var(--brand-yellow)] px-3 py-1 text-xs font-semibold uppercase tracking-wider">
+              <Sparkles className="h-3.5 w-3.5" /> Grow. Protect. Invest.
+            </span>
+            <h1 className="mt-4 text-3xl md:text-5xl font-bold leading-tight">
+              Smarter money decisions for every Indian household
+            </h1>
+            <p className="mt-4 text-white/80 text-base md:text-lg max-w-xl">
+              Loans, investments and insurance from India's leading banks &
+              financial institutions — all under one trusted roof.
+            </p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Link
+                to="/loans"
+                className="inline-flex items-center gap-2 rounded-full bg-[var(--brand-yellow)] text-[var(--brand-black)] px-6 py-3 text-sm font-semibold hover:brightness-105 transition"
+              >
+                Apply for a Loan <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link
+                to="/calculators"
+                className="inline-flex items-center gap-2 rounded-full border border-white/25 px-6 py-3 text-sm font-semibold hover:bg-white/10 transition"
+              >
+                Try our Calculators
+              </Link>
+            </div>
+            <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-sm text-white/80">
+              <span className="inline-flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-[var(--brand-yellow)]" /> 50+ partner banks</span>
+              <span className="inline-flex items-center gap-2"><Clock className="h-4 w-4 text-[var(--brand-yellow)]" /> Disbursal in 24 hrs</span>
+              <span className="inline-flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-[var(--brand-yellow)]" /> Secure & transparent</span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3 md:gap-4">
+            {[
+              { label: "Fixed Deposit", value: "8.50%*", sub: "p.a. interest", icon: PiggyBank },
+              { label: "Personal Loan", value: "₹40L", sub: "up to disbursal", icon: Wallet },
+              { label: "Home Loan", value: "8.35%*", sub: "starting rate", icon: HomeIcon },
+              { label: "Health Cover", value: "₹1Cr", sub: "sum insured", icon: HeartPulse },
+            ].map((s) => (
+              <div
+                key={s.label}
+                className="rounded-xl bg-white/5 border border-white/10 backdrop-blur p-4 hover:bg-white/10 transition"
+              >
+                <s.icon className="h-6 w-6 text-[var(--brand-yellow)]" strokeWidth={1.5} />
+                <div className="mt-3 text-2xl font-bold">{s.value}</div>
+                <div className="text-[11px] uppercase tracking-wider text-white/60 mt-0.5">{s.sub}</div>
+                <div className="text-sm font-medium mt-1">{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Hero card grid */}
       <section className="pt-6 md:pt-8">
         <div className="container-x grid gap-4 md:grid-cols-3">
