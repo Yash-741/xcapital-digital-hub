@@ -5,11 +5,13 @@ import { SiteLayout, PageHeader, ProductCard } from "@/components/site/Layout";
 export const Route = createFileRoute("/insurance")({
   head: () => ({
     meta: [
-      { title: "Insurance — XCapital" },
-      { name: "description", content: "Health, Life and Medical Claim solutions from XCapital." },
-      { property: "og:title", content: "Insurance — XCapital" },
-      { property: "og:description", content: "Protect what matters most." },
+      { title: "Insurance — Health, Life & Medical Claim Cover | XCapital" },
+      { name: "description", content: "Family health cover up to ₹1Cr, term life plans and end-to-end claim assistance from India's top insurers. Compare quotes in minutes on XCapital." },
+      { property: "og:title", content: "Insurance — Health, Life & Medical Claim Cover | XCapital" },
+      { property: "og:description", content: "Cashless treatment at 10,000+ hospitals, transparent premiums, dedicated claim support." },
+      { property: "og:url", content: "/insurance" },
     ],
+    links: [{ rel: "canonical", href: "/insurance" }],
   }),
   component: InsurancePage,
 });

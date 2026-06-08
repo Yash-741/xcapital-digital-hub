@@ -9,11 +9,13 @@ import { SiteLayout } from "@/components/site/Layout";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "XCapital — Grow. Protect. Invest." },
-      { name: "description", content: "XCapital is a trusted financial advisory firm offering Loans, Investments and Insurance solutions across leading banks and financial institutions." },
-      { property: "og:title", content: "XCapital — Grow. Protect. Invest." },
-      { property: "og:description", content: "Loans, Investments and Insurance for every Indian household and business." },
+      { title: "XCapital — Loans, Investments & Insurance in India" },
+      { name: "description", content: "Compare loans, fixed deposits, bonds and insurance from 50+ leading Indian banks. Fast approvals, transparent rates, expert advisory — all under one trusted roof." },
+      { property: "og:title", content: "XCapital — Loans, Investments & Insurance in India" },
+      { property: "og:description", content: "Personal & home loans, FDs up to 8.5%, health & life cover from India's top banks and insurers. Apply online with XCapital." },
+      { property: "og:url", content: "/" },
     ],
+    links: [{ rel: "canonical", href: "/" }],
   }),
   component: Index,
 });

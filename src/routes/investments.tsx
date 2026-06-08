@@ -5,11 +5,13 @@ import { SiteLayout, PageHeader, ProductCard } from "@/components/site/Layout";
 export const Route = createFileRoute("/investments")({
   head: () => ({
     meta: [
-      { title: "Investments — XCapital" },
-      { name: "description", content: "Fixed Deposits up to 8.5% p.a. and AAA-rated bonds from XCapital." },
-      { property: "og:title", content: "Investments — XCapital" },
-      { property: "og:description", content: "Grow your wealth with FDs and Bonds." },
+      { title: "Investments — Fixed Deposits & AAA Bonds | XCapital" },
+      { name: "description", content: "Earn up to 8.5% p.a. with corporate Fixed Deposits and AAA-rated bonds. Senior-citizen bonus rates, flexible tenures, fully online booking." },
+      { property: "og:title", content: "Investments — Fixed Deposits & AAA Bonds | XCapital" },
+      { property: "og:description", content: "Safe, regulated investments with industry-best returns. Compare FD rates from leading NBFCs and banks on XCapital." },
+      { property: "og:url", content: "/investments" },
     ],
+    links: [{ rel: "canonical", href: "/investments" }],
   }),
   component: Investments,
 });

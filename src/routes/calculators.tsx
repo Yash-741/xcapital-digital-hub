@@ -11,11 +11,13 @@ import { SiteLayout, PageHeader } from "@/components/site/Layout";
 export const Route = createFileRoute("/calculators")({
   head: () => ({
     meta: [
-      { title: "Calculators — XCapital" },
-      { name: "description", content: "Interactive EMI, SIP, Lumpsum and FD calculators by XCapital." },
-      { property: "og:title", content: "Calculators — XCapital" },
-      { property: "og:description", content: "Plan your loans and investments with live, accurate calculators." },
+      { title: "EMI, SIP, FD & Lumpsum Calculators | XCapital" },
+      { name: "description", content: "Free online EMI, SIP, Lumpsum, FD and Home Loan calculators. Plan your loan EMIs and investment returns instantly with accurate, India-ready tools." },
+      { property: "og:title", content: "EMI, SIP, FD & Lumpsum Calculators | XCapital" },
+      { property: "og:description", content: "Live calculators for every loan and investment decision — built for Indian borrowers and investors." },
+      { property: "og:url", content: "/calculators" },
     ],
+    links: [{ rel: "canonical", href: "/calculators" }],
   }),
   component: CalculatorsPage,
 });
