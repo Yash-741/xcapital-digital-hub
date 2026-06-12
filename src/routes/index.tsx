@@ -57,17 +57,18 @@ function IconTile({
 }
 
 function PromoBanner({ title, sub, gradient }: { title: string; sub: string; gradient: string }) {
+  const { tEn } = useI18n();
   return (
     <div className={`rounded-lg p-6 text-white relative overflow-hidden h-32 md:h-36 ${gradient}`}>
       <h4 className="font-bold text-lg leading-snug max-w-[60%]">{title}</h4>
       <p className="text-sm text-white/90 mt-1 max-w-[60%]">{sub}</p>
-      <span className="absolute bottom-2 right-3 text-[10px] text-white/70">*T&amp;C Apply</span>
+      <span className="absolute bottom-2 right-3 text-[10px] text-white/70">{tEn("*T&C Apply")}</span>
     </div>
   );
 }
 
 function Index() {
-  const { t } = useI18n();
+  const { t, tEn } = useI18n();
   return (
     <SiteLayout>
       {/* Hero */}
@@ -114,10 +115,10 @@ function Index() {
 
           <div className="grid grid-cols-2 gap-3 md:gap-4">
             {[
-              { label: "Fixed Deposit", value: "8.50%*", sub: "p.a. interest", icon: PiggyBank },
-              { label: "Personal Loan", value: "₹40L", sub: "up to disbursal", icon: Wallet },
-              { label: "Home Loan", value: "8.35%*", sub: "starting rate", icon: HomeIcon },
-              { label: "Health Cover", value: "₹1Cr", sub: "sum insured", icon: HeartPulse },
+              { label: tEn("Fixed Deposit"), value: "8.50%*", sub: tEn("p.a. interest"), icon: PiggyBank },
+              { label: tEn("Personal Loan"), value: "₹40L", sub: tEn("up to disbursal"), icon: Wallet },
+              { label: tEn("Home Loan"), value: "8.35%*", sub: tEn("starting rate"), icon: HomeIcon },
+              { label: tEn("Health Cover"), value: "₹1Cr", sub: tEn("sum insured"), icon: HeartPulse },
             ].map((s) => (
               <div
                 key={s.label}
@@ -141,13 +142,13 @@ function Index() {
             <div className="grid grid-cols-2 gap-2">
               <div className="bg-[var(--brand-yellow-soft)]/60 rounded-lg p-3 flex flex-col items-center text-center">
                 <PiggyBank className="h-9 w-9 text-[var(--brand-black)]" strokeWidth={1.5} />
-                <span className="mt-2 text-[11px] font-bold text-green-700">Earn up to 8.50%* p.a.</span>
-                <span className="text-xs font-medium mt-0.5">Fixed Deposit</span>
+                <span className="mt-2 text-[11px] font-bold text-green-700">{tEn("Earn up to 8.50%* p.a.")}</span>
+                <span className="text-xs font-medium mt-0.5">{tEn("Fixed Deposit")}</span>
               </div>
               <div className="bg-[var(--brand-yellow-soft)]/60 rounded-lg p-3 flex flex-col items-center text-center">
                 <Landmark className="h-9 w-9 text-[var(--brand-black)]" strokeWidth={1.5} />
-                <span className="mt-2 text-[11px] font-bold text-green-700">AAA Rated</span>
-                <span className="text-xs font-medium mt-0.5">Bonds</span>
+                <span className="mt-2 text-[11px] font-bold text-green-700">{tEn("AAA Rated")}</span>
+                <span className="text-xs font-medium mt-0.5">{tEn("Bonds")}</span>
               </div>
             </div>
           </GridCard>
@@ -156,10 +157,10 @@ function Index() {
           <div id="loans" className="scroll-mt-32">
           <GridCard title={t("section.loans")} viewAllTo="/loans">
             <div className="grid grid-cols-4 gap-1">
-              <IconTile icon={Wallet} label="Personal Loan" to="/loans" />
-              <IconTile icon={HomeIcon} label="Home Loan" to="/loans" />
-              <IconTile icon={Car} label="Used Car Loan" to="/loans" />
-              <IconTile icon={Briefcase} label="Business Loan" to="/loans" />
+              <IconTile icon={Wallet} label={tEn("Personal Loan")} to="/loans" />
+              <IconTile icon={HomeIcon} label={tEn("Home Loan")} to="/loans" />
+              <IconTile icon={Car} label={tEn("Used Car Loan")} to="/loans" />
+              <IconTile icon={Briefcase} label={tEn("Business Loan")} to="/loans" />
             </div>
           </GridCard>
           </div>
@@ -167,9 +168,9 @@ function Index() {
           <div id="insurance" className="scroll-mt-32">
           <GridCard title={t("section.insurance")} viewAllTo="/insurance">
             <div className="grid grid-cols-3 gap-1">
-              <IconTile icon={HeartPulse} label="Health" to="/insurance" />
-              <IconTile icon={ShieldCheck} label="Life" to="/insurance" />
-              <IconTile icon={FileText} label="Claim" to="/insurance" />
+              <IconTile icon={HeartPulse} label={tEn("Health")} to="/insurance" />
+              <IconTile icon={ShieldCheck} label={tEn("Life")} to="/insurance" />
+              <IconTile icon={FileText} label={tEn("Claim")} to="/insurance" />
             </div>
           </GridCard>
           </div>
@@ -179,18 +180,18 @@ function Index() {
       {/* Promo banners */}
       <section className="container-x mt-4 grid gap-4 md:grid-cols-3">
         <PromoBanner
-          title="Grow. Protect. Invest."
-          sub="One trusted partner for every Indian household."
+          title={tEn("Grow. Protect. Invest.")}
+          sub={tEn("One trusted partner for every Indian household.")}
           gradient="bg-gradient-to-br from-[#2b2b2b] to-[#0a0a0a]"
         />
         <PromoBanner
-          title="Fixed Deposits up to 8.50% p.a."
-          sub="Stable returns with flexible tenures."
+          title={tEn("Fixed Deposits up to 8.50% p.a.")}
+          sub={tEn("Stable returns with flexible tenures.")}
           gradient="bg-gradient-to-br from-amber-700 to-amber-500"
         />
         <PromoBanner
-          title="Apply for a Personal Loan"
-          sub="Get up to ₹40 Lakh disbursed in 24 hours."
+          title={tEn("Apply for a Personal Loan")}
+          sub={tEn("Get up to ₹40 Lakh disbursed in 24 hours.")}
           gradient="bg-gradient-to-br from-[#b45309] to-[#FDB813]"
         />
       </section>
@@ -203,9 +204,9 @@ function Index() {
             <Link to="/insurance" className="text-sm font-semibold text-blue-600 hover:underline">{t("common.viewAll")}</Link>
           </div>
           <div className="grid grid-cols-3 gap-2">
-            <IconTile icon={HeartPulse} label="Health Insurance" to="/insurance" />
-            <IconTile icon={ShieldCheck} label="Life Insurance" to="/insurance" />
-            <IconTile icon={FileText} label="Medical Claim" to="/insurance" />
+            <IconTile icon={HeartPulse} label={tEn("Health Insurance")} to="/insurance" />
+            <IconTile icon={ShieldCheck} label={tEn("Life Insurance")} to="/insurance" />
+            <IconTile icon={FileText} label={tEn("Medical Claim")} to="/insurance" />
           </div>
         </div>
         <div id="calculators" className="scroll-mt-32 bg-white rounded-lg shadow-card border-b-[3px] border-[var(--brand-yellow)] p-5">
@@ -214,9 +215,9 @@ function Index() {
             <Link to="/calculators" className="text-sm font-semibold text-blue-600 hover:underline">{t("common.viewAll")}</Link>
           </div>
           <div className="grid grid-cols-3 gap-2">
-            <IconTile icon={Calculator} label="EMI Calculator" to="/calculators" />
-            <IconTile icon={PiggyBank} label="FD Calculator" to="/calculators" />
-            <IconTile icon={Coins} label="Gold Calculator" to="/calculators" />
+            <IconTile icon={Calculator} label={tEn("EMI Calculator")} to="/calculators" />
+            <IconTile icon={PiggyBank} label={tEn("FD Calculator")} to="/calculators" />
+            <IconTile icon={Coins} label={tEn("Gold Calculator")} to="/calculators" />
           </div>
         </div>
       </section>
@@ -232,9 +233,9 @@ function Index() {
             </Link>
           </div>
           {[
-            { title: "Invest", body: "Grow your savings with industry-leading FD rates and bonds.", color: "bg-purple-50" },
-            { title: "Borrow", body: "Quick approvals on personal, home, business and vehicle loans.", color: "bg-yellow-50" },
-            { title: "Protect", body: "Comprehensive health and life cover for your family.", color: "bg-blue-50" },
+            { title: tEn("Invest"), body: tEn("Grow your savings with industry-leading FD rates and bonds."), color: "bg-purple-50" },
+            { title: tEn("Borrow"), body: tEn("Quick approvals on personal, home, business and vehicle loans."), color: "bg-yellow-50" },
+            { title: tEn("Protect"), body: tEn("Comprehensive health and life cover for your family."), color: "bg-blue-50" },
           ].map((c) => (
             <div key={c.title} className={`${c.color} rounded-xl p-6 h-full`}>
               <h3 className="font-bold text-lg text-[var(--brand-black)]">{c.title}</h3>
