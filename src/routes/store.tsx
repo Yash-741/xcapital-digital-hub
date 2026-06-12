@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { Search } from "lucide-react";
 import { SiteLayout, PageHeader } from "@/components/site/Layout";
@@ -21,6 +21,7 @@ export const Route = createFileRoute("/store")({
 function StorePage() {
   const [query, setQuery] = useState("");
   const [enquiryOpen, setEnquiryOpen] = useState(false);
+  const [enquiryCtx, setEnquiryCtx] = useState<{ productName?: string; categoryName?: string }>({});
   const { tEn } = useI18n();
   const q = query.trim().toLowerCase();
 
@@ -94,11 +95,14 @@ function StorePage() {
                       {(sub.items ?? []).map((it) => {
                         const Icon = it.icon;
                         return (
-                          <Link
+                          <button
+                            type="button"
                             key={it.slug}
-                            to="/store/$productId"
-                            params={{ productId: it.slug }}
-                            className="group flex flex-col items-center text-center p-3 rounded-md border border-transparent hover:border-[var(--brand-yellow)] hover:bg-[var(--brand-yellow-soft)] transition cursor-pointer"
+                            onClick={() => {
+                              setEnquiryCtx({ productName: it.name, categoryName: cat.title });
+                              setEnquiryOpen(true);
+                            }}
+                            className="group flex flex-col items-center text-center p-3 rounded-md border border-transparent hover:border-[var(--brand-yellow)] hover:bg-[var(--brand-yellow-soft)] transition cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-yellow)]"
                           >
                             <div className="h-12 w-12 grid place-items-center rounded-md bg-[var(--brand-yellow-soft)] text-[var(--brand-black)] group-hover:bg-white">
                               <Icon className="h-6 w-6" strokeWidth={1.5} />
@@ -106,7 +110,7 @@ function StorePage() {
                             <span className="mt-2 text-xs font-medium text-[var(--brand-black)] leading-tight">
                               {tEn(it.name)}
                             </span>
-                          </Link>
+                          </button>
                         );
                       })}
                     </div>
@@ -124,14 +128,19 @@ function StorePage() {
           </div>
           <button
             type="button"
-            onClick={() => setEnquiryOpen(true)}
+            onClick={() => { setEnquiryCtx({}); setEnquiryOpen(true); }}
             className="inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold text-[var(--brand-black)] bg-[var(--brand-yellow)] hover:brightness-105 transition"
           >
             {tEn("Contact Sales")}
           </button>
         </div>
       </section>
-      <StoreEnquiryDialog open={enquiryOpen} onOpenChange={setEnquiryOpen} />
+      <StoreEnquiryDialog
+        open={enquiryOpen}
+        onOpenChange={setEnquiryOpen}
+        productName={enquiryCtx.productName}
+        categoryName={enquiryCtx.categoryName}
+      />
     </SiteLayout>
   );
 }
