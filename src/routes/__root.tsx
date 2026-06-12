@@ -109,8 +109,28 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+        <style>{`
+          .goog-te-banner-frame, .goog-te-balloon-frame, .skiptranslate iframe { display: none !important; }
+          body { top: 0 !important; }
+          .goog-tooltip, .goog-tooltip:hover { display: none !important; }
+          .goog-text-highlight { background: transparent !important; box-shadow: none !important; }
+          #google_translate_element { position: absolute; left: -9999px; top: -9999px; height: 0; overflow: hidden; }
+        `}</style>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.googleTranslateElementInit = function() {
+              new window.google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'en,hi,mr',
+                autoDisplay: false,
+              }, 'google_translate_element');
+            };`,
+          }}
+        />
+        <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async />
       </head>
       <body>
+        <div id="google_translate_element" aria-hidden="true" />
         {children}
         <Scripts />
       </body>
