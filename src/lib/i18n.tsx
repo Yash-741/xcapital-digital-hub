@@ -1593,6 +1593,31 @@ type Ctx = {
 };
 const I18nContext = createContext<Ctx | null>(null);
 
+function applyGoogleTranslate(lang: Lang) {
+  if (typeof document === "undefined") return;
+  const cookieVal = lang === "en" ? "" : `/en/${lang}`;
+  const host = typeof location !== "undefined" ? location.hostname : "";
+  const expires = lang === "en" ? "Thu, 01 Jan 1970 00:00:00 GMT" : "";
+  const attr = expires ? `; expires=${expires}` : "";
+  document.cookie = `googtrans=${cookieVal}; path=/${attr}`;
+  if (host) {
+    document.cookie = `googtrans=${cookieVal}; path=/; domain=${host}${attr}`;
+    document.cookie = `googtrans=${cookieVal}; path=/; domain=.${host}${attr}`;
+  }
+  const combo = document.querySelector<HTMLSelectElement>(".goog-te-combo");
+  if (combo) {
+    combo.value = lang === "en" ? "" : lang;
+    combo.dispatchEvent(new Event("change"));
+    if (lang === "en") {
+      // Combo back-to-original sometimes leaves stale text; force restore.
+      window.setTimeout(() => location.reload(), 50);
+    }
+  } else {
+    // Widget not ready yet — reload so cookie kicks in on next load.
+    if (lang !== "en") window.setTimeout(() => location.reload(), 50);
+  }
+}
+
 export function I18nProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>("en");
 
@@ -1607,6 +1632,24 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     if (typeof window !== "undefined") {
       localStorage.setItem(STORAGE_KEY, l);
       document.documentElement.lang = l;
+      applyGoogleTranslate(l);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const saved = (localStorage.getItem(STORAGE_KEY) as Lang) || "en";
+    if (saved !== "en") {
+      // Wait until the Google widget injects .goog-te-combo, then apply.
+      let tries = 0;
+      const id = window.setInterval(() => {
+        tries += 1;
+        if (document.querySelector(".goog-te-combo") || tries > 40) {
+          window.clearInterval(id);
+          applyGoogleTranslate(saved);
+        }
+      }, 250);
+      return () => window.clearInterval(id);
     }
   }, []);
 
