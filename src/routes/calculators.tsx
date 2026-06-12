@@ -46,7 +46,7 @@ function Field({
   return (
     <div>
       <div className="flex justify-between items-center mb-2">
-        <label className="text-sm font-medium text-foreground">{label}</label>
+        <label className="text-sm font-medium text-foreground"><Tx s={label}/></label>
         <div className={`flex items-center rounded-md border px-2 py-1 bg-background border-input focus-within:border-[var(--brand-yellow)] focus-within:ring-2 focus-within:ring-[var(--brand-yellow)]/30`}>
           {prefix && <span className="text-sm font-semibold text-[var(--brand-black)]">{prefix}</span>}
           <input
