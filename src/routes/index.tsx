@@ -5,6 +5,7 @@ import {
   ArrowRight, Sparkles, Clock, CheckCircle2,
 } from "lucide-react";
 import { SiteLayout } from "@/components/site/Layout";
+import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -23,11 +24,12 @@ export const Route = createFileRoute("/")({
 function GridCard({
   title, viewAllTo, children,
 }: { title: string; viewAllTo: string; children: React.ReactNode }) {
+  const { t } = useI18n();
   return (
     <div className="bg-white rounded-lg shadow-card border-b-[3px] border-[var(--brand-yellow)] overflow-hidden">
       <div className="flex items-center justify-between px-5 pt-5">
         <h3 className="text-lg font-bold text-[var(--brand-black)]">{title}</h3>
-        <Link to={viewAllTo} className="text-sm font-semibold text-blue-600 hover:underline">View all</Link>
+        <Link to={viewAllTo} className="text-sm font-semibold text-blue-600 hover:underline">{t("common.viewAll")}</Link>
       </div>
       <div className="px-3 pb-5 pt-4">{children}</div>
     </div>
@@ -65,6 +67,7 @@ function PromoBanner({ title, sub, gradient }: { title: string; sub: string; gra
 }
 
 function Index() {
+  const { t } = useI18n();
   return (
     <SiteLayout>
       {/* Hero */}
@@ -80,33 +83,32 @@ function Index() {
         <div className="container-x relative py-12 md:py-20 grid md:grid-cols-2 gap-10 items-center">
           <div>
             <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--brand-yellow)]/15 text-[var(--brand-yellow)] px-3 py-1 text-xs font-semibold uppercase tracking-wider">
-              <Sparkles className="h-3.5 w-3.5" /> Grow. Protect. Invest.
+              <Sparkles className="h-3.5 w-3.5" /> {t("hero.eyebrow")}
             </span>
             <h1 className="mt-4 text-3xl md:text-5xl font-bold leading-tight">
-              Smarter money decisions for every Indian household
+              {t("hero.title")}
             </h1>
             <p className="mt-4 text-white/80 text-base md:text-lg max-w-xl">
-              Loans, investments and insurance from India's leading banks &
-              financial institutions — all under one trusted roof.
+              {t("hero.subtitle")}
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
                 to="/loans"
                 className="inline-flex items-center gap-2 rounded-full bg-[var(--brand-yellow)] text-[var(--brand-black)] px-6 py-3 text-sm font-semibold hover:brightness-105 transition"
               >
-                Apply for a Loan <ArrowRight className="h-4 w-4" />
+                {t("hero.applyLoan")} <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 to="/calculators"
                 className="inline-flex items-center gap-2 rounded-full border border-white/25 px-6 py-3 text-sm font-semibold hover:bg-white/10 transition"
               >
-                Try our Calculators
+                {t("hero.tryCalc")}
               </Link>
             </div>
             <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-sm text-white/80">
-              <span className="inline-flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-[var(--brand-yellow)]" /> 50+ partner banks</span>
-              <span className="inline-flex items-center gap-2"><Clock className="h-4 w-4 text-[var(--brand-yellow)]" /> Disbursal in 24 hrs</span>
-              <span className="inline-flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-[var(--brand-yellow)]" /> Secure & transparent</span>
+              <span className="inline-flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-[var(--brand-yellow)]" /> {t("hero.partners")}</span>
+              <span className="inline-flex items-center gap-2"><Clock className="h-4 w-4 text-[var(--brand-yellow)]" /> {t("hero.disbursal")}</span>
+              <span className="inline-flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-[var(--brand-yellow)]" /> {t("hero.secure")}</span>
             </div>
           </div>
 
@@ -135,7 +137,7 @@ function Index() {
       <section className="pt-6 md:pt-8">
         <div className="container-x grid gap-4 md:grid-cols-3">
           <div id="investments" className="scroll-mt-32">
-          <GridCard title="Investments" viewAllTo="/investments">
+          <GridCard title={t("section.investments")} viewAllTo="/investments">
             <div className="grid grid-cols-2 gap-2">
               <div className="bg-[var(--brand-yellow-soft)]/60 rounded-lg p-3 flex flex-col items-center text-center">
                 <PiggyBank className="h-9 w-9 text-[var(--brand-black)]" strokeWidth={1.5} />
@@ -152,7 +154,7 @@ function Index() {
           </div>
 
           <div id="loans" className="scroll-mt-32">
-          <GridCard title="Loans" viewAllTo="/loans">
+          <GridCard title={t("section.loans")} viewAllTo="/loans">
             <div className="grid grid-cols-4 gap-1">
               <IconTile icon={Wallet} label="Personal Loan" to="/loans" />
               <IconTile icon={HomeIcon} label="Home Loan" to="/loans" />
@@ -163,7 +165,7 @@ function Index() {
           </div>
 
           <div id="insurance" className="scroll-mt-32">
-          <GridCard title="Insurance" viewAllTo="/insurance">
+          <GridCard title={t("section.insurance")} viewAllTo="/insurance">
             <div className="grid grid-cols-3 gap-1">
               <IconTile icon={HeartPulse} label="Health" to="/insurance" />
               <IconTile icon={ShieldCheck} label="Life" to="/insurance" />
@@ -197,8 +199,8 @@ function Index() {
       <section className="container-x mt-4 grid gap-4 md:grid-cols-2">
         <div className="bg-white rounded-lg shadow-card border-b-[3px] border-[var(--brand-yellow)] p-5">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-bold text-[var(--brand-black)]">General Insurance</h3>
-            <Link to="/insurance" className="text-sm font-semibold text-blue-600 hover:underline">View all</Link>
+            <h3 className="text-lg font-bold text-[var(--brand-black)]">{t("section.generalInsurance")}</h3>
+            <Link to="/insurance" className="text-sm font-semibold text-blue-600 hover:underline">{t("common.viewAll")}</Link>
           </div>
           <div className="grid grid-cols-3 gap-2">
             <IconTile icon={HeartPulse} label="Health Insurance" to="/insurance" />
@@ -208,8 +210,8 @@ function Index() {
         </div>
         <div id="calculators" className="scroll-mt-32 bg-white rounded-lg shadow-card border-b-[3px] border-[var(--brand-yellow)] p-5">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-bold text-[var(--brand-black)]">Calculators</h3>
-            <Link to="/calculators" className="text-sm font-semibold text-blue-600 hover:underline">View all</Link>
+            <h3 className="text-lg font-bold text-[var(--brand-black)]">{t("section.calculators")}</h3>
+            <Link to="/calculators" className="text-sm font-semibold text-blue-600 hover:underline">{t("common.viewAll")}</Link>
           </div>
           <div className="grid grid-cols-3 gap-2">
             <IconTile icon={Calculator} label="EMI Calculator" to="/calculators" />
@@ -223,12 +225,10 @@ function Index() {
       <section id="about" className="scroll-mt-32 container-x mt-12">
         <div className="grid md:grid-cols-4 gap-6 items-start">
           <div className="md:col-span-1">
-            <h2 className="text-2xl md:text-3xl font-bold text-[var(--brand-black)]">We have your finances covered</h2>
-            <p className="text-sm text-muted-foreground mt-3">
-              Explore our diverse financial solutions — from high-yield deposits to versatile loans — built to power every milestone of your life.
-            </p>
+            <h2 className="text-2xl md:text-3xl font-bold text-[var(--brand-black)]">{t("about.title")}</h2>
+            <p className="text-sm text-muted-foreground mt-3">{t("about.body")}</p>
             <Link to="/loans" className="inline-flex items-center gap-1.5 mt-4 text-sm font-semibold text-[var(--brand-black)] hover:text-amber-700">
-              Explore Products <ArrowRight className="h-4 w-4" />
+              {t("about.cta")} <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
           {[
