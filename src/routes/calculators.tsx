@@ -1448,8 +1448,8 @@ function CalculatorsPage() {
                     onClick={() => selectResult(r)}
                     className="w-full text-left px-3 py-2 hover:bg-secondary flex justify-between items-center gap-3"
                   >
-                    <span className="text-sm text-foreground">{r.item.label}</span>
-                    <span className="text-xs text-muted-foreground">{r.catLabel}</span>
+                    <span className="text-sm text-foreground"><Tx s={r.item.label} /></span>
+                    <span className="text-xs text-muted-foreground"><Tx s={r.catLabel} /></span>
                   </button>
                 ))
               )}
@@ -1460,10 +1460,10 @@ function CalculatorsPage() {
         {/* Mobile category + calc dropdowns */}
         <div className="md:hidden mb-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
           <select value={catId} onChange={(e) => setCatId(e.target.value)} className="w-full border border-input rounded-md px-3 py-2 text-sm bg-background">
-            {categories.map((c) => <option key={c.id} value={c.id}>{c.label}</option>)}
+            {categories.map((c) => <option key={c.id} value={c.id}>{tEn(c.label)}</option>)}
           </select>
           <select value={calcKey} onChange={(e) => setCalcKey(e.target.value)} className="w-full border border-input rounded-md px-3 py-2 text-sm bg-background">
-            {cat.items.map((i) => <option key={i.id} value={i.id}>{i.label}</option>)}
+            {cat.items.map((i) => <option key={i.id} value={i.id}>{tEn(i.label)}</option>)}
           </select>
         </div>
 
@@ -1483,7 +1483,7 @@ function CalculatorsPage() {
                         : "border-transparent text-muted-foreground hover:bg-secondary/50"
                     }`}
                   >
-                    {c.label}
+                    {tEn(c.label)}
                   </button>
                 );
               })}
@@ -1505,7 +1505,7 @@ function CalculatorsPage() {
                         : "text-foreground hover:bg-secondary"
                     }`}
                   >
-                    {i.label}
+                    {tEn(i.label)}
                   </button>
                 );
               })}
