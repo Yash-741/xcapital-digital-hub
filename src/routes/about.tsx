@@ -103,6 +103,7 @@ type ContactForm = z.infer<typeof contactSchema>;
 type FieldErrors = Partial<Record<keyof ContactForm, string>>;
 
 function AboutPage() {
+  const { t } = useI18n();
   const [form, setForm] = useState<ContactForm>({ name: "", phone: "", email: "", message: "" });
   const [errors, setErrors] = useState<FieldErrors>({});
   const [submitted, setSubmitted] = useState(false);
@@ -176,24 +177,20 @@ function AboutPage() {
 
   return (
     <SiteLayout>
-      <PageHeader eyebrow="About" title="About X Capital" subtitle="Strategic Banking, Lending & Treasury Solutions — helping businesses, professionals and individuals access smarter financial solutions." />
+      <PageHeader eyebrow={t("about.header.eyebrow")} title={t("about.header.title")} subtitle={t("about.header.subtitle")} />
 
       <section id="about-us" className="container-x py-16 grid md:grid-cols-2 gap-10 items-center">
         <div>
-          <h2 className="text-3xl font-bold text-foreground">Who We Are</h2>
-          <p className="text-muted-foreground mt-4 leading-relaxed">
-            X Capital is a financial solutions and banking advisory firm that helps businesses, professionals and individuals access the right banking, lending and treasury solutions through a network of leading banks, NBFCs and financial institutions.
-          </p>
-          <p className="text-muted-foreground mt-3 leading-relaxed">
-            Our objective is simple — help our clients save time, secure better financial opportunities, and build stronger banking relationships.
-          </p>
+          <h2 className="text-3xl font-bold text-foreground">{t("about.who.title")}</h2>
+          <p className="text-muted-foreground mt-4 leading-relaxed">{t("about.who.p1")}</p>
+          <p className="text-muted-foreground mt-3 leading-relaxed">{t("about.who.p2")}</p>
         </div>
         <div className="grid grid-cols-2 gap-4">
           {[
-            ["50+", "Partner Institutions"],
-            ["6-Step", "Advisory Process"],
-            ["100%", "Transparent Fees"],
-            ["End-to-End", "Relationship Support"],
+            ["50+", t("about.stat.partners")],
+            ["6-Step", t("about.stat.process")],
+            ["100%", t("about.stat.fees")],
+            ["End-to-End", t("about.stat.support")],
           ].map(([v, l]) => (
             <div key={l} className="bg-secondary/50 rounded-xl p-6 text-center border border-border">
               <div className="text-2xl font-bold text-[var(--brand-black)]">{v}</div>
