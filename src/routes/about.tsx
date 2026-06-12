@@ -203,12 +203,12 @@ function AboutPage() {
       <section id="our-vision" className="bg-secondary/50">
         <div className="container-x py-16 grid md:grid-cols-2 gap-8">
           <div className="bg-card rounded-xl p-8 border border-border shadow-card">
-            <h3 className="text-xl font-semibold text-[var(--brand-black)]">Our Mission</h3>
-            <p className="text-muted-foreground mt-3">To simplify access to capital, banking and treasury solutions through expertise, transparency and strategic partnerships.</p>
+            <h3 className="text-xl font-semibold text-[var(--brand-black)]">{t("about.mission.title")}</h3>
+            <p className="text-muted-foreground mt-3">{t("about.mission.body")}</p>
           </div>
           <div className="bg-card rounded-xl p-8 border border-border shadow-card">
-            <h3 className="text-xl font-semibold text-[var(--brand-black)]">Our Vision</h3>
-            <p className="text-muted-foreground mt-3">To become India's most trusted financial solutions ecosystem for businesses, professionals and high-net-worth individuals.</p>
+            <h3 className="text-xl font-semibold text-[var(--brand-black)]">{t("about.vision.title")}</h3>
+            <p className="text-muted-foreground mt-3">{t("about.vision.body")}</p>
           </div>
         </div>
       </section>
