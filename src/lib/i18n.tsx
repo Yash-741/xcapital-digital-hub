@@ -447,6 +447,23 @@ const hi: Dict = {
   "about.faq.8.a": "हाँ — बैलेंस ट्रांसफ़र, लोन रिस्ट्रक्चरिंग चर्चा, सुविधा वृद्धि और अतिरिक्त फंडिंग ज़रूरतें.",
   "about.faq.9.q": "क्या X Capital बड़ी फंडिंग ज़रूरतों में मदद कर सकता है?",
   "about.faq.9.a": "हाँ. हम छोटे व्यवसाय लोन से लेकर बड़े कॉर्पोरेट और संरचित वित्तपोषण अवसरों तक का समर्थन करते हैं.",
+  "about.role.founder": "संस्थापक",
+  "about.role.cofounder": "सह-संस्थापक",
+  "about.benefit.item.smes": "SMEs",
+  "about.benefit.item.manufacturers": "निर्माता",
+  "about.benefit.item.traders": "व्यापारी",
+  "about.benefit.item.retailers": "रिटेलर",
+  "about.benefit.item.service-providers": "सेवा प्रदाता",
+  "about.benefit.item.doctors": "डॉक्टर",
+  "about.benefit.item.cas": "चार्टर्ड अकाउंटेंट",
+  "about.benefit.item.architects": "आर्किटेक्ट",
+  "about.benefit.item.consultants": "सलाहकार",
+  "about.benefit.item.salaried": "वेतनभोगी पेशेवर",
+  "about.benefit.item.self-employed": "स्व-नियोजित",
+  "about.benefit.item.property-owners": "संपत्ति मालिक",
+  "about.benefit.item.investors": "निवेशक",
+  "about.benefit.item.business-owners": "व्यवसाय मालिक",
+  "about.benefit.item.family-offices": "फ़ैमिली ऑफ़िस",
 };
 
 const mr: Dict = {
