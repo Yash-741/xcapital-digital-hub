@@ -72,7 +72,6 @@ export function Footer() {
             <li>Sakinaka, Andheri East,<br />Mumbai 400072</li>
             <li>+91 88791 09148</li>
             <li>info@xcapital.co.in</li>
-            <li>www.xcapital.co.in</li>
           </ul>
         </div>
       </div>
