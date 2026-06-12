@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { submitLead } from "@/lib/leads.functions";
+import { useI18n } from "@/lib/i18n";
 
 type Cat = "loan" | "insurance" | "investment";
 
@@ -49,6 +50,7 @@ export const Route = createFileRoute("/apply/$category/$slug")({
 
 function ApplyPage() {
   const { category, slug } = Route.useParams();
+  const { t } = useI18n();
   const navigate = useNavigate();
   const cat = category as Cat;
   const product = useMemo(
@@ -66,9 +68,9 @@ function ApplyPage() {
   if (!product) {
     return (
       <SiteLayout>
-        <PageHeader title="Product not found" subtitle="Please choose a service from our menu." />
+        <PageHeader title={t("apply.notFound.title")} subtitle={t("apply.notFound.subtitle")} />
         <div className="container-x py-12">
-          <Link to="/" className="text-[var(--brand-navy)] underline">Back to home</Link>
+          <Link to="/" className="text-[var(--brand-navy)] underline">{t("apply.notFound.back")}</Link>
         </div>
       </SiteLayout>
     );
@@ -102,56 +104,56 @@ function ApplyPage() {
       if (form.notes) payload.notes = form.notes;
 
       await send({ data: payload as never });
-      toast.success("Thanks! Our advisor will reach out shortly.");
+      toast.success(t("toast.advisorSuccess"));
       navigate({ to: "/" });
     } catch (err) {
-      const msg = err instanceof Error ? err.message : "Something went wrong";
+      const msg = err instanceof Error ? err.message : t("toast.somethingWrong");
       toast.error(msg);
     } finally {
       setLoading(false);
     }
   }
 
-  const catLabel = cat === "loan" ? "Loan" : cat === "insurance" ? "Insurance" : "Investment";
+  const catLabel = cat === "loan" ? t("apply.cat.loan") : cat === "insurance" ? t("apply.cat.insurance") : t("apply.cat.investment");
 
   return (
     <SiteLayout>
       <PageHeader
-        eyebrow={`Apply · ${catLabel}`}
-        title={`Get started with ${product.name}`}
-        subtitle="Share a few details and a XCapital advisor will call you back."
+        eyebrow={`${t("apply.eyebrow")} · ${catLabel}`}
+        title={`${t("apply.title")} ${product.name}`}
+        subtitle={t("apply.subtitle")}
       />
       <section className="container-x py-12">
         <form onSubmit={onSubmit} className="max-w-2xl bg-card border border-border rounded-xl shadow-card p-6 md:p-8 space-y-5">
           <div className="grid md:grid-cols-2 gap-4">
-            <Field label="Full name" required>
+            <Field label={t("apply.field.fullName")} required>
               <Input required minLength={2} maxLength={120} value={form.full_name} onChange={set("full_name")} />
             </Field>
-            <Field label="Phone" required>
+            <Field label={t("apply.field.phone")} required>
               <Input required type="tel" pattern="[0-9+\-\s]{7,20}" value={form.phone} onChange={set("phone")} />
             </Field>
           </div>
-          <Field label="Email" required>
+          <Field label={t("apply.field.email")} required>
             <Input required type="email" maxLength={255} value={form.email} onChange={set("email")} />
           </Field>
 
           {cat === "loan" && (
             <div className="grid md:grid-cols-2 gap-4">
-              <Field label="Loan amount (₹)">
+              <Field label={t("apply.field.loanAmount")}>
                 <Input type="number" min={0} value={form.amount} onChange={set("amount")} placeholder="e.g. 500000" />
               </Field>
-              <Field label="Preferred tenure">
-                <Input value={form.tenure} onChange={set("tenure")} placeholder="e.g. 3 years" />
+              <Field label={t("apply.field.tenure")}>
+                <Input value={form.tenure} onChange={set("tenure")} placeholder={t("apply.placeholder.tenure")} />
               </Field>
             </div>
           )}
 
           {cat === "insurance" && (
             <div className="grid md:grid-cols-2 gap-4">
-              <Field label="Coverage amount (₹)">
+              <Field label={t("apply.field.coverage")}>
                 <Input type="number" min={0} value={form.coverage} onChange={set("coverage")} placeholder="e.g. 1000000" />
               </Field>
-              <Field label="Age">
+              <Field label={t("apply.field.age")}>
                 <Input type="number" min={0} max={120} value={form.age} onChange={set("age")} placeholder="e.g. 32" />
               </Field>
             </div>
@@ -159,24 +161,24 @@ function ApplyPage() {
 
           {cat === "investment" && (
             <div className="grid md:grid-cols-2 gap-4">
-              <Field label="Investment amount (₹)">
+              <Field label={t("apply.field.investAmount")}>
                 <Input type="number" min={0} value={form.amount} onChange={set("amount")} placeholder="e.g. 100000" />
               </Field>
-              <Field label="Investment horizon">
-                <Input value={form.horizon} onChange={set("horizon")} placeholder="e.g. 5 years" />
+              <Field label={t("apply.field.horizon")}>
+                <Input value={form.horizon} onChange={set("horizon")} placeholder={t("apply.placeholder.horizon")} />
               </Field>
             </div>
           )}
 
-          <Field label="Message / notes">
-            <Textarea rows={4} maxLength={1000} value={form.notes} onChange={set("notes")} placeholder="Anything we should know?" />
+          <Field label={t("apply.field.notes")}>
+            <Textarea rows={4} maxLength={1000} value={form.notes} onChange={set("notes")} placeholder={t("apply.placeholder.notes")} />
           </Field>
 
           <div className="flex items-center gap-3 pt-2">
             <Button type="submit" disabled={loading} className="bg-[var(--brand-navy)] text-white hover:brightness-110">
-              {loading ? "Submitting…" : "Submit application"}
+              {loading ? t("apply.submitting") : t("apply.submit")}
             </Button>
-            <Link to="/about" className="text-sm text-muted-foreground hover:underline">Or contact us directly</Link>
+            <Link to="/about" className="text-sm text-muted-foreground hover:underline">{t("apply.contactDirect")}</Link>
           </div>
         </form>
       </section>
