@@ -1,8 +1,10 @@
 import { Link } from "@tanstack/react-router";
 import { Facebook, Twitter, Instagram } from "lucide-react";
 import logo from "@/assets/xcapital-logo.asset.json";
+import { useI18n } from "@/lib/i18n";
 
 export function Footer() {
+  const { t } = useI18n();
   return (
     <footer className="bg-[var(--brand-black)] text-white/75 mt-16">
       <div className="container-x py-14 grid gap-10 md:grid-cols-5">
@@ -11,8 +13,7 @@ export function Footer() {
             <img src={logo.url} alt="X Capital" className="h-8 w-auto" />
           </div>
           <p className="text-sm leading-relaxed text-white/70 mt-2">
-            Strategic banking, lending and treasury solutions for businesses,
-            professionals and individuals.
+            {t("footer.tagline")}
           </p>
           <div className="flex gap-3 mt-4">
             {[
@@ -28,17 +29,17 @@ export function Footer() {
         </div>
 
         <div>
-          <h4 className="text-white font-semibold mb-4">Products</h4>
+          <h4 className="text-white font-semibold mb-4">{t("footer.products")}</h4>
           <ul className="space-y-2 text-sm">
-            <li><Link to="/loans" className="hover:text-[var(--brand-yellow)]">Loans</Link></li>
-            <li><Link to="/investments" className="hover:text-[var(--brand-yellow)]">Investments</Link></li>
-            <li><Link to="/insurance" className="hover:text-[var(--brand-yellow)]">Insurance</Link></li>
-            <li><Link to="/calculators" className="hover:text-[var(--brand-yellow)]">Calculators</Link></li>
+            <li><Link to="/loans" className="hover:text-[var(--brand-yellow)]">{t("nav.loans")}</Link></li>
+            <li><Link to="/investments" className="hover:text-[var(--brand-yellow)]">{t("nav.investments")}</Link></li>
+            <li><Link to="/insurance" className="hover:text-[var(--brand-yellow)]">{t("nav.insurance")}</Link></li>
+            <li><Link to="/calculators" className="hover:text-[var(--brand-yellow)]">{t("nav.calculators")}</Link></li>
           </ul>
         </div>
 
         <div>
-          <h4 className="text-white font-semibold mb-4">Store</h4>
+          <h4 className="text-white font-semibold mb-4">{t("footer.store")}</h4>
           <ul className="space-y-2 text-sm">
             {[
               ["Payment & Merchant", "payment-merchant"],
@@ -57,7 +58,7 @@ export function Footer() {
         </div>
 
         <div>
-          <h4 className="text-white font-semibold mb-4">Company</h4>
+          <h4 className="text-white font-semibold mb-4">{t("footer.company")}</h4>
           <ul className="space-y-2 text-sm">
             <li><Link to="/about" className="hover:text-[var(--brand-yellow)]">About Us</Link></li>
             <li><a href="/about#our-vision" className="hover:text-[var(--brand-yellow)]">Vision</a></li>
@@ -67,7 +68,7 @@ export function Footer() {
         </div>
 
         <div>
-          <h4 className="text-white font-semibold mb-4">Reach Us</h4>
+          <h4 className="text-white font-semibold mb-4">{t("footer.reachUs")}</h4>
           <ul className="space-y-2 text-sm text-white/70">
             <li>Sakinaka, Andheri East,<br />Mumbai 400072</li>
             <li>+91 88791 09148</li>
@@ -78,8 +79,8 @@ export function Footer() {
 
       <div className="border-t border-white/10">
         <div className="container-x py-5 text-xs text-white/50 flex flex-col md:flex-row justify-between gap-2">
-          <p>© {new Date().getFullYear()} XCapital. All rights reserved.</p>
-          <p>Disclaimer: Loan, investment and insurance products are subject to terms and conditions and regulatory approvals.</p>
+          <p>© {new Date().getFullYear()} XCapital. {t("footer.rights")}</p>
+          <p>{t("footer.disclaimer")}</p>
         </div>
       </div>
     </footer>
