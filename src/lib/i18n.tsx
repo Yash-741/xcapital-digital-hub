@@ -1683,6 +1683,22 @@ const commonMr: Dict = {
   "Thermal Paper Roll": "थर्मल पेपर रोल",
   "Printer Toner": "प्रिंटर टोनर",
   "Packaging Material": "पॅकेजिंग साहित्य",
+  "eKYC Device": "eKYC डिव्हाइस",
+  "Printer": "प्रिंटर",
+  "Payment Acceptance Devices": "पेमेंट स्वीकृती डिव्हाइस",
+  "Android Billing Machines": "अँड्रॉइड बिलिंग मशीन",
+  "Label Printers": "लेबल प्रिंटर",
+  "Inventory Management Devices": "इन्व्हेंटरी व्यवस्थापन डिव्हाइस",
+  "Biometric Attendance Machines": "बायोमेट्रिक अटेंडन्स मशीन",
+  "Customer Verification Devices": "ग्राहक पडताळणी डिव्हाइस",
+  "CSP Devices": "CSP डिव्हाइस",
+  "Merchant Collection Devices": "मर्चंट कलेक्शन डिव्हाइस",
+  "Financial Inclusion Devices": "आर्थिक समावेशन डिव्हाइस",
+  "CCTV Kits": "CCTV किट",
+  "Projectors": "प्रोजेक्टर",
+  "Wi-Fi Routers": "वाय-फाय राउटर",
+  "Barcode Labels": "बारकोड लेबल",
+  "Printer Toners": "प्रिंटर टोनर",
 };
 
 const EN_DICTS: Record<Lang, Dict> = {
