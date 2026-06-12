@@ -2,6 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, Check, Phone, Mail } from "lucide-react";
 import { SiteLayout } from "@/components/site/Layout";
 import { findProduct, type Product } from "@/lib/store-products";
+import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/store/$productId")({
   loader: ({ params }) => {
@@ -23,29 +24,40 @@ export const Route = createFileRoute("/store/$productId")({
       ],
     };
   },
-  notFoundComponent: () => (
-    <SiteLayout>
-      <div className="container-x py-20 text-center">
-        <h1 className="text-2xl font-bold text-[var(--brand-black)]">Product not found</h1>
-        <p className="text-muted-foreground mt-2">The product you're looking for doesn't exist.</p>
-        <Link to="/store" className="inline-block mt-6 text-sm font-semibold text-[var(--brand-black)] underline">Back to Store</Link>
-      </div>
-    </SiteLayout>
-  ),
-  errorComponent: ({ error, reset }) => (
-    <SiteLayout>
-      <div className="container-x py-20 text-center">
-        <h1 className="text-2xl font-bold text-[var(--brand-black)]">Something went wrong</h1>
-        <p className="text-muted-foreground mt-2">{error.message}</p>
-        <button onClick={reset} className="mt-6 text-sm font-semibold underline">Try again</button>
-      </div>
-    </SiteLayout>
-  ),
+  notFoundComponent: NotFoundView,
+  errorComponent: ErrorView,
   component: ProductPage,
 });
 
+function NotFoundView() {
+  const { tEn } = useI18n();
+  return (
+    <SiteLayout>
+      <div className="container-x py-20 text-center">
+        <h1 className="text-2xl font-bold text-[var(--brand-black)]">{tEn("Product not found")}</h1>
+        <p className="text-muted-foreground mt-2">{tEn("The product you're looking for doesn't exist.")}</p>
+        <Link to="/store" className="inline-block mt-6 text-sm font-semibold text-[var(--brand-black)] underline">{tEn("Back to Store")}</Link>
+      </div>
+    </SiteLayout>
+  );
+}
+
+function ErrorView({ error, reset }: { error: Error; reset: () => void }) {
+  const { tEn } = useI18n();
+  return (
+    <SiteLayout>
+      <div className="container-x py-20 text-center">
+        <h1 className="text-2xl font-bold text-[var(--brand-black)]">{tEn("Something went wrong")}</h1>
+        <p className="text-muted-foreground mt-2">{error.message}</p>
+        <button onClick={reset} className="mt-6 text-sm font-semibold underline">{tEn("Try again")}</button>
+      </div>
+    </SiteLayout>
+  );
+}
+
 function ProductPage() {
   const { product, category, sub } = Route.useLoaderData();
+  const { tEn } = useI18n();
   const Icon = product.icon;
   const related = sub.items.filter((i: Product) => i.slug !== product.slug).slice(0, 6);
 
@@ -54,11 +66,11 @@ function ProductPage() {
       {/* Breadcrumb */}
       <div className="bg-white border-b border-border">
         <div className="container-x py-3 text-xs text-muted-foreground flex items-center gap-2 flex-wrap">
-          <Link to="/store" className="hover:text-[var(--brand-black)]">Store</Link>
+          <Link to="/store" className="hover:text-[var(--brand-black)]">{tEn("Store")}</Link>
           <span>/</span>
-          <a href={`/store#${category.id}`} className="hover:text-[var(--brand-black)]">{category.title}</a>
+          <a href={`/store#${category.id}`} className="hover:text-[var(--brand-black)]">{tEn(category.title)}</a>
           <span>/</span>
-          <span className="text-[var(--brand-black)] font-medium">{product.name}</span>
+          <span className="text-[var(--brand-black)] font-medium">{tEn(product.name)}</span>
         </div>
       </div>
 
@@ -68,18 +80,18 @@ function ProductPage() {
             <Icon className="h-16 w-16 md:h-20 md:w-20" strokeWidth={1.25} />
           </div>
           <div>
-            <p className="text-xs uppercase tracking-widest text-[var(--brand-black)]/60 font-semibold">{sub.name}</p>
-            <h1 className="text-3xl md:text-4xl font-bold text-[var(--brand-black)] mt-1">{product.name}</h1>
-            <p className="mt-3 text-muted-foreground max-w-2xl leading-relaxed">{product.description}</p>
+            <p className="text-xs uppercase tracking-widest text-[var(--brand-black)]/60 font-semibold">{tEn(sub.name)}</p>
+            <h1 className="text-3xl md:text-4xl font-bold text-[var(--brand-black)] mt-1">{tEn(product.name)}</h1>
+            <p className="mt-3 text-muted-foreground max-w-2xl leading-relaxed">{tEn(product.description)}</p>
             <div className="mt-5 flex flex-wrap gap-3">
               <Link to="/about" hash="reach-us" className="inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold text-[var(--brand-black)] bg-[var(--brand-yellow)] hover:brightness-105 transition">
-                Request a Quote
+                {tEn("Request a Quote")}
               </Link>
               <a href="tel:+918879109148" className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold border border-border bg-white hover:border-[var(--brand-yellow)] transition">
                 <Phone className="h-4 w-4" /> +91 88791 09148
               </a>
               <a href="mailto:info@xcapital.co.in" className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold border border-border bg-white hover:border-[var(--brand-yellow)] transition">
-                <Mail className="h-4 w-4" /> Email Sales
+                <Mail className="h-4 w-4" /> {tEn("Email Sales")}
               </a>
             </div>
           </div>
@@ -88,31 +100,31 @@ function ProductPage() {
 
       <section className="container-x py-10 grid gap-8 md:grid-cols-3">
         <div className="bg-white rounded-lg shadow-card border-b-[3px] border-[var(--brand-yellow)] p-6">
-          <h2 className="text-sm font-bold text-[var(--brand-black)] uppercase tracking-wide mb-4">Key Features</h2>
+          <h2 className="text-sm font-bold text-[var(--brand-black)] uppercase tracking-wide mb-4">{tEn("Key Features")}</h2>
           <ul className="space-y-3">
             {product.features.map((f: string) => (
               <li key={f} className="flex items-start gap-2 text-sm text-[var(--brand-black)]/85">
                 <Check className="h-4 w-4 text-[var(--brand-black)] bg-[var(--brand-yellow)] rounded-full p-0.5 mt-0.5 shrink-0" />
-                <span>{f}</span>
+                <span>{tEn(f)}</span>
               </li>
             ))}
           </ul>
         </div>
 
         <div className="bg-white rounded-lg shadow-card border-b-[3px] border-[var(--brand-yellow)] p-6">
-          <h2 className="text-sm font-bold text-[var(--brand-black)] uppercase tracking-wide mb-4">Best For</h2>
+          <h2 className="text-sm font-bold text-[var(--brand-black)] uppercase tracking-wide mb-4">{tEn("Best For")}</h2>
           <ul className="space-y-2">
             {product.useCases.map((u: string) => (
-              <li key={u} className="text-sm text-[var(--brand-black)]/85 leading-relaxed">• {u}</li>
+              <li key={u} className="text-sm text-[var(--brand-black)]/85 leading-relaxed">• {tEn(u)}</li>
             ))}
           </ul>
         </div>
 
         <div className="bg-white rounded-lg shadow-card border-b-[3px] border-[var(--brand-yellow)] p-6">
-          <h2 className="text-sm font-bold text-[var(--brand-black)] uppercase tracking-wide mb-4">Specs & Pricing</h2>
+          <h2 className="text-sm font-bold text-[var(--brand-black)] uppercase tracking-wide mb-4">{tEn("Specs & Pricing")}</h2>
           <ul className="space-y-2">
             {product.specs.map((s: string) => (
-              <li key={s} className="text-sm text-[var(--brand-black)]/85 leading-relaxed">• {s}</li>
+              <li key={s} className="text-sm text-[var(--brand-black)]/85 leading-relaxed">• {tEn(s)}</li>
             ))}
           </ul>
         </div>
@@ -120,7 +132,7 @@ function ProductPage() {
 
       {related.length > 0 && (
         <section className="container-x pb-12">
-          <h2 className="text-lg font-bold text-[var(--brand-black)] mb-4">More in {sub.name}</h2>
+          <h2 className="text-lg font-bold text-[var(--brand-black)] mb-4">{tEn("More in")} {tEn(sub.name)}</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
             {related.map((r: Product) => {
               const RIcon = r.icon;
@@ -134,7 +146,7 @@ function ProductPage() {
                   <div className="h-12 w-12 grid place-items-center rounded-md bg-[var(--brand-yellow-soft)] text-[var(--brand-black)] group-hover:bg-white">
                     <RIcon className="h-6 w-6" strokeWidth={1.5} />
                   </div>
-                  <span className="mt-2 text-xs font-medium text-[var(--brand-black)] leading-tight">{r.name}</span>
+                  <span className="mt-2 text-xs font-medium text-[var(--brand-black)] leading-tight">{tEn(r.name)}</span>
                 </Link>
               );
             })}
@@ -144,7 +156,7 @@ function ProductPage() {
 
       <section className="container-x pb-16">
         <Link to="/store" className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--brand-black)] hover:text-[var(--brand-black)]/70">
-          <ArrowLeft className="h-4 w-4" /> Back to Store
+          <ArrowLeft className="h-4 w-4" /> {tEn("Back to Store")}
         </Link>
       </section>
     </SiteLayout>
