@@ -4,6 +4,7 @@ import { Search } from "lucide-react";
 import { SiteLayout, PageHeader } from "@/components/site/Layout";
 import { categories } from "@/lib/store-products";
 import { useI18n } from "@/lib/i18n";
+import { StoreEnquiryDialog } from "@/components/site/StoreEnquiryDialog";
 
 export const Route = createFileRoute("/store")({
   head: () => ({
@@ -19,6 +20,7 @@ export const Route = createFileRoute("/store")({
 
 function StorePage() {
   const [query, setQuery] = useState("");
+  const [enquiryOpen, setEnquiryOpen] = useState(false);
   const { tEn } = useI18n();
   const q = query.trim().toLowerCase();
 
@@ -120,14 +122,16 @@ function StorePage() {
             <h3 className="text-lg md:text-xl font-bold">{tEn("Need help choosing the right device?")}</h3>
             <p className="text-sm text-white/80 mt-1">{tEn("Talk to our specialists for bulk orders, custom bundles and onboarding.")}</p>
           </div>
-          <Link
-            to="/about"
+          <button
+            type="button"
+            onClick={() => setEnquiryOpen(true)}
             className="inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold text-[var(--brand-black)] bg-[var(--brand-yellow)] hover:brightness-105 transition"
           >
             {tEn("Contact Sales")}
-          </Link>
+          </button>
         </div>
       </section>
+      <StoreEnquiryDialog open={enquiryOpen} onOpenChange={setEnquiryOpen} />
     </SiteLayout>
   );
 }
