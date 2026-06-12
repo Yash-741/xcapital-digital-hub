@@ -323,7 +323,7 @@ function ScenarioCard({
           />
           {isBest && (
             <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[var(--brand-black)] mt-1">
-              <Trophy className="h-3 w-3" /> BEST
+              <Trophy className="h-3 w-3" /> <Tx s="BEST" />
             </span>
           )}
         </div>
@@ -331,23 +331,23 @@ function ScenarioCard({
           <X className="h-4 w-4" />
         </button>
       </div>
-      <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Inputs</div>
+      <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1"><Tx s="Inputs" /></div>
       <dl className="text-xs space-y-1 mb-3">
         {inputLabels.map((l) => (
           <div key={l} className="flex justify-between gap-3">
-            <dt className="text-muted-foreground">{l}</dt>
-            <dd className="text-[var(--brand-black)] font-medium">{get(s, l, "inputs")}</dd>
+            <dt className="text-muted-foreground"><Tx s={l} /></dt>
+            <dd className="text-[var(--brand-black)] font-medium"><Tx s={get(s, l, "inputs")} /></dd>
           </div>
         ))}
       </dl>
-      <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Outputs</div>
+      <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1"><Tx s="Outputs" /></div>
       <dl className="text-xs space-y-1">
         {outputLabels.map((l) => {
           const isPrimary = l === s.primary;
           return (
             <div key={l} className="flex justify-between gap-3">
-              <dt className={isPrimary ? "font-semibold text-[var(--brand-black)]" : "text-muted-foreground"}>{l}</dt>
-              <dd className={`${isPrimary ? "font-bold" : "font-medium"} text-[var(--brand-black)]`}>{get(s, l, "outputs")}</dd>
+              <dt className={isPrimary ? "font-semibold text-[var(--brand-black)]" : "text-muted-foreground"}><Tx s={l} /></dt>
+              <dd className={`${isPrimary ? "font-bold" : "font-medium"} text-[var(--brand-black)]`}><Tx s={get(s, l, "outputs")} /></dd>
             </div>
           );
         })}
