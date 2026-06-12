@@ -1702,6 +1702,9 @@ const commonMr: Dict = {
   "Wi-Fi Routers": "वाय-फाय राउटर",
   "Barcode Labels": "बारकोड लेबल",
   "Printer Toners": "प्रिंटर टोनर",
+  "I'd like a quote for": "मला यासाठी कोटेशन हवे आहे",
+  "Share a few details and our team will reach out within one business day.": "काही तपशील शेअर करा, आमची टीम एका कार्यदिवसात संपर्क करेल.",
+  "Sending…": "पाठवत आहे…",
 };
 
 const EN_DICTS: Record<Lang, Dict> = {
