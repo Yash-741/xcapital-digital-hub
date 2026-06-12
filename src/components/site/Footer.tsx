@@ -42,16 +42,16 @@ export function Footer() {
           <h4 className="text-white font-semibold mb-4">{t("footer.store")}</h4>
           <ul className="space-y-2 text-sm">
             {[
-              ["Payment & Merchant", "payment-merchant"],
-              ["Retail & Billing", "retail-billing"],
-              ["Biometric & KYC", "biometric-kyc"],
-              ["Banking & Fintech", "banking-fintech"],
-              ["Security & Surveillance", "security-surveillance"],
-              ["Office Infrastructure", "office-infrastructure"],
-              ["Business Consumables", "business-consumables"],
-            ].map(([label, hash]) => (
+              "payment-merchant",
+              "retail-billing",
+              "biometric-kyc",
+              "banking-fintech",
+              "security-surveillance",
+              "office-infrastructure",
+              "business-consumables",
+            ].map((hash) => (
               <li key={hash}>
-                <a href={`/store#${hash}`} className="hover:text-[var(--brand-yellow)]">{label}</a>
+                <a href={`/store#${hash}`} className="hover:text-[var(--brand-yellow)]">{t(`footer.store.${hash}`)}</a>
               </li>
             ))}
           </ul>
@@ -60,10 +60,10 @@ export function Footer() {
         <div>
           <h4 className="text-white font-semibold mb-4">{t("footer.company")}</h4>
           <ul className="space-y-2 text-sm">
-            <li><Link to="/about" className="hover:text-[var(--brand-yellow)]">About Us</Link></li>
-            <li><a href="/about#our-vision" className="hover:text-[var(--brand-yellow)]">Vision</a></li>
-            <li><a href="/about#reach-us" className="hover:text-[var(--brand-yellow)]">Contact</a></li>
-            <li><a href="/about#careers" className="hover:text-[var(--brand-yellow)]">Careers</a></li>
+            <li><Link to="/about" className="hover:text-[var(--brand-yellow)]">{t("footer.company.about")}</Link></li>
+            <li><a href="/about#our-vision" className="hover:text-[var(--brand-yellow)]">{t("footer.company.vision")}</a></li>
+            <li><a href="/about#reach-us" className="hover:text-[var(--brand-yellow)]">{t("footer.company.contact")}</a></li>
+            <li><a href="/about#careers" className="hover:text-[var(--brand-yellow)]">{t("footer.company.careers")}</a></li>
           </ul>
         </div>
 
