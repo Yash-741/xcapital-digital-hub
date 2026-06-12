@@ -715,6 +715,17 @@ const mr: Dict = {
   "about.benefit.item.investors": "गुंतवणूकदार",
   "about.benefit.item.business-owners": "व्यवसाय मालक",
   "about.benefit.item.family-offices": "फॅमिली ऑफिस",
+  "footer.store.payment-merchant": "पेमेंट व मर्चंट",
+  "footer.store.retail-billing": "रिटेल व बिलिंग",
+  "footer.store.biometric-kyc": "बायोमेट्रिक व KYC",
+  "footer.store.banking-fintech": "बँकिंग व फिनटेक",
+  "footer.store.security-surveillance": "सुरक्षा व पाळत",
+  "footer.store.office-infrastructure": "ऑफिस इन्फ्रास्ट्रक्चर",
+  "footer.store.business-consumables": "व्यवसाय उपभोग्य वस्तू",
+  "footer.company.about": "आमच्याबद्दल",
+  "footer.company.vision": "व्हिजन",
+  "footer.company.contact": "संपर्क",
+  "footer.company.careers": "करिअर",
 };
 
 const DICTS: Record<Lang, Dict> = { en, hi, mr };
