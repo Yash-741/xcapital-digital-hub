@@ -64,10 +64,10 @@ const whyChoose = [
 ];
 
 const beneficiaries = [
-  { key: "1", items: ["SMEs", "Manufacturers", "Traders", "Retailers", "Service Providers"] },
-  { key: "2", items: ["Doctors", "Chartered Accountants", "Architects", "Consultants"] },
-  { key: "3", items: ["Salaried Professionals", "Self-Employed", "Property Owners"] },
-  { key: "4", items: ["Investors", "Business Owners", "Family Offices"] },
+  { key: "1", items: ["smes", "manufacturers", "traders", "retailers", "service-providers"] },
+  { key: "2", items: ["doctors", "cas", "architects", "consultants"] },
+  { key: "3", items: ["salaried", "self-employed", "property-owners"] },
+  { key: "4", items: ["investors", "business-owners", "family-offices"] },
 ];
 
 const faqs = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
@@ -77,13 +77,13 @@ const coreValues = ["1", "2", "3", "4", "5"];
 const leaders = [
   {
     name: "Amey Jaguste",
-    role: "Founder",
+    roleKey: "about.role.founder",
     phone: "+91 88791 09148",
     email: "amey.jaguste@xcapital.co.in",
   },
   {
     name: "Durgesh Patel",
-    role: "Co-Founder",
+    roleKey: "about.role.cofounder",
     phone: "+91 99678 90467",
     email: "durgesh.patel@xcapital.co.in",
   },
@@ -270,7 +270,7 @@ function AboutPage() {
               <h3 className="font-bold text-[var(--brand-black)]">{t(`about.benefit.${b.key}.title`)}</h3>
               <ul className="mt-3 space-y-1.5 text-sm text-muted-foreground">
                 {b.items.map((i) => (
-                  <li key={i} className="flex gap-2"><span className="text-[var(--brand-yellow)]">•</span><span>{i}</span></li>
+                  <li key={i} className="flex gap-2"><span className="text-[var(--brand-yellow)]">•</span><span>{t(`about.benefit.item.${i}`)}</span></li>
                 ))}
               </ul>
             </div>
@@ -344,7 +344,7 @@ function AboutPage() {
                   </div>
                   <div className="min-w-0">
                     <h3 className="text-xl font-bold text-[var(--brand-black)] tracking-wide">{l.name}</h3>
-                    <p className="text-sm text-muted-foreground mt-0.5">{l.role}{t("about.leadership.roleSuffix")}</p>
+                    <p className="text-sm text-muted-foreground mt-0.5">{t(l.roleKey)}{t("about.leadership.roleSuffix")}</p>
                     <ul className="mt-4 space-y-2 text-sm">
                       <li className="flex items-center gap-2">
                         <Phone className="h-4 w-4 text-[var(--brand-yellow)] shrink-0" />
