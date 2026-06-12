@@ -9,6 +9,7 @@ import {
   GraduationCap, Upload, User as UserIcon,
 } from "lucide-react";
 import { SiteLayout, PageHeader } from "@/components/site/Layout";
+import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -25,10 +26,10 @@ export const Route = createFileRoute("/about")({
 });
 
 const careerPerks = [
-  { icon: Sparkles, title: "Growth & Learning", desc: "Continuous learning, mentorship and clear career progression across functions." },
-  { icon: Users, title: "Collaborative Culture", desc: "A respectful, transparent and team-first environment where ideas matter." },
-  { icon: Handshake, title: "Meaningful Work", desc: "Help businesses, professionals and families access smarter financial solutions." },
-  { icon: ShieldCheck, title: "Stability & Trust", desc: "Work with an established advisory firm backed by leading institutional partners." },
+  { icon: Sparkles, key: "1" },
+  { icon: Users, key: "2" },
+  { icon: Handshake, key: "3" },
+  { icon: ShieldCheck, key: "4" },
 ];
 
 const applicationSchema = z.object({
@@ -45,49 +46,33 @@ type ApplicationForm = z.infer<typeof applicationSchema>;
 type ApplicationErrors = Partial<Record<keyof ApplicationForm | "resume", string>>;
 
 const steps = [
-  { icon: Search, title: "Understand Your Requirement", desc: "We start by understanding your financial requirement, business profile, banking profile and existing liabilities." },
-  { icon: FileCheck, title: "Analyze Eligibility", desc: "Our team reviews your financial documents, credit profile, banking history and loan requirement." },
-  { icon: Building2, title: "Identify Suitable Institutions", desc: "We compare banks, NBFCs and financial institutions to identify the most suitable option." },
-  { icon: FileText, title: "Application & Documentation", desc: "We assist with documentation, application submission, follow-up and coordination." },
-  { icon: CheckCircle2, title: "Approval & Disbursement", desc: "We coordinate with lenders until successful approval and disbursement." },
-  { icon: RefreshCw, title: "Ongoing Relationship Support", desc: "Continued support for renewals, enhancements, additional facilities and treasury solutions." },
+  { icon: Search, key: "1" },
+  { icon: FileCheck, key: "2" },
+  { icon: Building2, key: "3" },
+  { icon: FileText, key: "4" },
+  { icon: CheckCircle2, key: "5" },
+  { icon: RefreshCw, key: "6" },
 ];
 
 const whyChoose = [
-  { icon: Building2, title: "Access to Multiple Institutions", desc: "Evaluate options across leading banks and NBFCs instead of approaching a single lender." },
-  { icon: Clock, title: "Time Saving", desc: "No need to visit multiple branches or institutions — we handle the legwork." },
-  { icon: Sparkles, title: "Expert Guidance", desc: "We help you understand available options and navigate the process with clarity." },
-  { icon: Handshake, title: "Faster Coordination", desc: "We coordinate documentation and communication efficiently end-to-end." },
-  { icon: Users, title: "Relationship Driven", desc: "We focus on long-term partnerships rather than one-time transactions." },
-  { icon: ShieldCheck, title: "Transparency", desc: "Ethical, transparent business practices at every stage of engagement." },
+  { icon: Building2, key: "1" },
+  { icon: Clock, key: "2" },
+  { icon: Sparkles, key: "3" },
+  { icon: Handshake, key: "4" },
+  { icon: Users, key: "5" },
+  { icon: ShieldCheck, key: "6" },
 ];
 
 const beneficiaries = [
-  { title: "Businesses", items: ["SMEs", "Manufacturers", "Traders", "Retailers", "Service Providers"] },
-  { title: "Professionals", items: ["Doctors", "Chartered Accountants", "Architects", "Consultants"] },
-  { title: "Individuals", items: ["Salaried Professionals", "Self-Employed", "Property Owners"] },
-  { title: "HNIs", items: ["Investors", "Business Owners", "Family Offices"] },
+  { key: "1", items: ["SMEs", "Manufacturers", "Traders", "Retailers", "Service Providers"] },
+  { key: "2", items: ["Doctors", "Chartered Accountants", "Architects", "Consultants"] },
+  { key: "3", items: ["Salaried Professionals", "Self-Employed", "Property Owners"] },
+  { key: "4", items: ["Investors", "Business Owners", "Family Offices"] },
 ];
 
-const faqs = [
-  { q: "Is X Capital a bank?", a: "No. X Capital is an independent financial solutions and banking advisory firm." },
-  { q: "Does X Capital provide loans directly?", a: "No. We assist clients in identifying and accessing suitable financial institutions." },
-  { q: "Why use X Capital instead of approaching a bank directly?", a: "Every institution has different policies, products and eligibility criteria. X Capital helps you evaluate available options and navigate the process more efficiently." },
-  { q: "Will my information remain confidential?", a: "Yes. Client information is handled with strict confidentiality and professionalism." },
-  { q: "Does X Capital charge fees?", a: "Fees, if applicable, are communicated transparently before engagement. Certain services may also be compensated through institutional partnerships." },
-  { q: "What documents are required?", a: "Requirements vary depending on the product and institution. Our team provides a customized document checklist for every case." },
-  { q: "How long does the process take?", a: "Timelines depend on product type, documentation readiness and institution policies. Our team works to facilitate the process as efficiently as possible." },
-  { q: "Can X Capital help with existing loans?", a: "Yes — balance transfers, loan restructuring discussions, facility enhancement and additional funding requirements." },
-  { q: "Can X Capital help with large funding requirements?", a: "Yes. We support funding from small business loans to large corporate and structured financing opportunities." },
-];
+const faqs = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
-const coreValues = [
-  { title: "Integrity", desc: "Doing business ethically." },
-  { title: "Transparency", desc: "Clear communication at every stage." },
-  { title: "Professionalism", desc: "Maintaining the highest standards." },
-  { title: "Client First", desc: "Client success comes first." },
-  { title: "Long-Term Relationships", desc: "Building partnerships, not transactions." },
-];
+const coreValues = ["1", "2", "3", "4", "5"];
 
 const leaders = [
   {
