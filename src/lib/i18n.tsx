@@ -236,6 +236,18 @@ const en: Dict = {
   "about.benefit.item.investors": "Investors",
   "about.benefit.item.business-owners": "Business Owners",
   "about.benefit.item.family-offices": "Family Offices",
+  // Footer extras
+  "footer.store.payment-merchant": "Payment & Merchant",
+  "footer.store.retail-billing": "Retail & Billing",
+  "footer.store.biometric-kyc": "Biometric & KYC",
+  "footer.store.banking-fintech": "Banking & Fintech",
+  "footer.store.security-surveillance": "Security & Surveillance",
+  "footer.store.office-infrastructure": "Office Infrastructure",
+  "footer.store.business-consumables": "Business Consumables",
+  "footer.company.about": "About Us",
+  "footer.company.vision": "Vision",
+  "footer.company.contact": "Contact",
+  "footer.company.careers": "Careers",
 };
 
 const hi: Dict = {
@@ -464,6 +476,17 @@ const hi: Dict = {
   "about.benefit.item.investors": "निवेशक",
   "about.benefit.item.business-owners": "व्यवसाय मालिक",
   "about.benefit.item.family-offices": "फ़ैमिली ऑफ़िस",
+  "footer.store.payment-merchant": "पेमेंट और मर्चेंट",
+  "footer.store.retail-billing": "रिटेल और बिलिंग",
+  "footer.store.biometric-kyc": "बायोमेट्रिक और KYC",
+  "footer.store.banking-fintech": "बैंकिंग और फिनटेक",
+  "footer.store.security-surveillance": "सुरक्षा और निगरानी",
+  "footer.store.office-infrastructure": "ऑफ़िस इन्फ्रास्ट्रक्चर",
+  "footer.store.business-consumables": "व्यवसाय उपभोग्य वस्तुएँ",
+  "footer.company.about": "हमारे बारे में",
+  "footer.company.vision": "विज़न",
+  "footer.company.contact": "संपर्क",
+  "footer.company.careers": "करियर",
 };
 
 const mr: Dict = {
@@ -692,6 +715,17 @@ const mr: Dict = {
   "about.benefit.item.investors": "गुंतवणूकदार",
   "about.benefit.item.business-owners": "व्यवसाय मालक",
   "about.benefit.item.family-offices": "फॅमिली ऑफिस",
+  "footer.store.payment-merchant": "पेमेंट व मर्चंट",
+  "footer.store.retail-billing": "रिटेल व बिलिंग",
+  "footer.store.biometric-kyc": "बायोमेट्रिक व KYC",
+  "footer.store.banking-fintech": "बँकिंग व फिनटेक",
+  "footer.store.security-surveillance": "सुरक्षा व पाळत",
+  "footer.store.office-infrastructure": "ऑफिस इन्फ्रास्ट्रक्चर",
+  "footer.store.business-consumables": "व्यवसाय उपभोग्य वस्तू",
+  "footer.company.about": "आमच्याबद्दल",
+  "footer.company.vision": "व्हिजन",
+  "footer.company.contact": "संपर्क",
+  "footer.company.careers": "करिअर",
 };
 
 const DICTS: Record<Lang, Dict> = { en, hi, mr };
