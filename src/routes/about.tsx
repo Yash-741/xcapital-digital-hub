@@ -32,17 +32,12 @@ const careerPerks = [
   { icon: ShieldCheck, key: "4" },
 ];
 
-const applicationSchema = z.object({
-  candidateName: z.string().trim().min(2, "Please enter your full name").max(100),
-  email: z.string().trim().email("Enter a valid email address").max(255),
-  contactNumber: z
-    .string()
-    .trim()
-    .regex(/^(\+?91[\-\s]?)?[6-9]\d{9}$/, "Enter a valid 10-digit Indian mobile number"),
-  education: z.string().trim().min(2, "Please enter your highest education").max(150),
-});
-
-type ApplicationForm = z.infer<typeof applicationSchema>;
+type ApplicationForm = {
+  candidateName: string;
+  email: string;
+  contactNumber: string;
+  education: string;
+};
 type ApplicationErrors = Partial<Record<keyof ApplicationForm | "resume", string>>;
 
 const steps = [
@@ -89,21 +84,28 @@ const leaders = [
   },
 ];
 
-const contactSchema = z.object({
-  name: z.string().trim().min(2, "Please enter your full name").max(100, "Name must be under 100 characters"),
-  phone: z
-    .string()
-    .trim()
-    .regex(/^(\+?91[\-\s]?)?[6-9]\d{9}$/, "Enter a valid 10-digit Indian mobile number"),
-  email: z.string().trim().email("Enter a valid email address").max(255, "Email too long"),
-  message: z.string().trim().min(10, "Message must be at least 10 characters").max(1000, "Message must be under 1000 characters"),
-});
-
-type ContactForm = z.infer<typeof contactSchema>;
+type ContactForm = {
+  name: string;
+  phone: string;
+  email: string;
+  message: string;
+};
 type FieldErrors = Partial<Record<keyof ContactForm, string>>;
 
 function AboutPage() {
   const { t } = useI18n();
+  const contactSchema = z.object({
+    name: z.string().trim().min(2, t("validation.name")).max(100, t("validation.nameMax")),
+    phone: z.string().trim().regex(/^(\+?91[\-\s]?)?[6-9]\d{9}$/, t("validation.phoneIN")),
+    email: z.string().trim().email(t("validation.email")).max(255, t("validation.emailMax")),
+    message: z.string().trim().min(10, t("validation.messageMin")).max(1000, t("validation.messageMax")),
+  });
+  const applicationSchema = z.object({
+    candidateName: z.string().trim().min(2, t("validation.name")).max(100),
+    email: z.string().trim().email(t("validation.email")).max(255),
+    contactNumber: z.string().trim().regex(/^(\+?91[\-\s]?)?[6-9]\d{9}$/, t("validation.phoneIN")),
+    education: z.string().trim().min(2, t("validation.education")).max(150),
+  });
   const [form, setForm] = useState<ContactForm>({ name: "", phone: "", email: "", message: "" });
   const [errors, setErrors] = useState<FieldErrors>({});
   const [submitted, setSubmitted] = useState(false);
@@ -132,23 +134,23 @@ function AboutPage() {
       }
     }
     if (!resume) {
-      next.resume = "Please attach your resume";
+      next.resume = t("validation.resumeRequired");
     } else {
       const okType = /\.(pdf|doc|docx)$/i.test(resume.name);
       const okSize = resume.size <= 5 * 1024 * 1024;
-      if (!okType) next.resume = "Resume must be PDF, DOC or DOCX";
-      else if (!okSize) next.resume = "Resume must be under 5MB";
+      if (!okType) next.resume = t("validation.resumeType");
+      else if (!okSize) next.resume = t("validation.resumeSize");
     }
     if (Object.keys(next).length) {
       setAppErrors(next);
-      toast.error("Please fix the highlighted fields");
+      toast.error(t("toast.fixFields"));
       return;
     }
     setAppErrors({});
     setAppSubmitted(true);
     setAppForm({ candidateName: "", email: "", contactNumber: "", education: "" });
     setResume(null);
-    toast.success("Application received! We'll be in touch.");
+    toast.success(t("toast.applicationSuccess"));
   };
 
   const update = (k: keyof ContactForm, v: string) => {
@@ -166,13 +168,13 @@ function AboutPage() {
         if (!fieldErrors[k]) fieldErrors[k] = issue.message;
       }
       setErrors(fieldErrors);
-      toast.error("Please fix the highlighted fields");
+      toast.error(t("toast.fixFields"));
       return;
     }
     setErrors({});
     setSubmitted(true);
     setForm({ name: "", phone: "", email: "", message: "" });
-    toast.success("Thanks! Our team will reach out shortly.");
+    toast.success(t("toast.contactSuccess"));
   };
 
   return (
