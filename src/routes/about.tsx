@@ -329,8 +329,8 @@ function AboutPage() {
       <section id="leadership" className="bg-secondary/50">
         <div className="container-x py-16">
           <div className="text-center max-w-2xl mx-auto mb-10">
-            <h2 className="text-3xl font-bold text-foreground">Leadership</h2>
-            <p className="text-muted-foreground mt-3">Meet the people behind X Capital.</p>
+            <h2 className="text-3xl font-bold text-foreground">{t("about.leadership.title")}</h2>
+            <p className="text-muted-foreground mt-3">{t("about.leadership.intro")}</p>
           </div>
           <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {leaders.map((l) => (
@@ -344,7 +344,7 @@ function AboutPage() {
                   </div>
                   <div className="min-w-0">
                     <h3 className="text-xl font-bold text-[var(--brand-black)] tracking-wide">{l.name}</h3>
-                    <p className="text-sm text-muted-foreground mt-0.5">{l.role}, X Capital</p>
+                    <p className="text-sm text-muted-foreground mt-0.5">{l.role}{t("about.leadership.roleSuffix")}</p>
                     <ul className="mt-4 space-y-2 text-sm">
                       <li className="flex items-center gap-2">
                         <Phone className="h-4 w-4 text-[var(--brand-yellow)] shrink-0" />
@@ -366,8 +366,8 @@ function AboutPage() {
       <section id="reach-us" className="container-x py-16">
         <div className="grid md:grid-cols-2 gap-10">
           <div>
-            <h2 className="text-3xl font-bold text-foreground">Reach Us</h2>
-            <p className="text-muted-foreground mt-3">We'd love to hear from you. Fill the form or reach us directly.</p>
+            <h2 className="text-3xl font-bold text-foreground">{t("about.reach.title")}</h2>
+            <p className="text-muted-foreground mt-3">{t("about.reach.intro")}</p>
             <ul className="mt-6 space-y-4 text-sm">
               <li className="flex gap-3"><MapPin className="h-5 w-5 text-[var(--brand-yellow)] shrink-0" /><span>Sakinaka, Andheri East, Mumbai 400072</span></li>
               <li className="flex gap-3"><Phone className="h-5 w-5 text-[var(--brand-yellow)] shrink-0" /><a href="tel:+918879109148" className="hover:text-[var(--brand-yellow)]">+91 88791 09148</a></li>
@@ -380,23 +380,21 @@ function AboutPage() {
               <div className="h-14 w-14 rounded-full bg-green-100 text-green-700 grid place-items-center mb-4">
                 <CheckCircle className="h-7 w-7" />
               </div>
-              <h3 className="text-xl font-bold text-[var(--brand-black)]">Message Received</h3>
-              <p className="text-sm text-muted-foreground mt-2 max-w-sm">
-                Thank you for reaching out to X Capital. Our advisory team will get back to you within one business day.
-              </p>
+              <h3 className="text-xl font-bold text-[var(--brand-black)]">{t("about.reach.success.title")}</h3>
+              <p className="text-sm text-muted-foreground mt-2 max-w-sm">{t("about.reach.success.body")}</p>
               <button
                 onClick={() => setSubmitted(false)}
                 className="mt-6 text-sm font-semibold text-[var(--brand-black)] hover:text-amber-700"
               >
-                Send another message →
+                {t("about.reach.success.again")}
               </button>
             </div>
           ) : (
             <form onSubmit={onSubmit} noValidate className="bg-card border border-border rounded-xl p-7 shadow-card space-y-4">
               {([
-                { k: "name", placeholder: "Full Name", type: "text", maxLength: 100 },
-                { k: "phone", placeholder: "Phone (10-digit mobile)", type: "tel", maxLength: 15 },
-                { k: "email", placeholder: "Email", type: "email", maxLength: 255 },
+                { k: "name", placeholder: t("about.reach.placeholder.name"), type: "text", maxLength: 100 },
+                { k: "phone", placeholder: t("about.reach.placeholder.phone"), type: "tel", maxLength: 15 },
+                { k: "email", placeholder: t("about.reach.placeholder.email"), type: "email", maxLength: 255 },
               ] as const).map(({ k, placeholder, type, maxLength }) => (
                 <div key={k}>
                   <input
@@ -419,7 +417,7 @@ function AboutPage() {
                   value={form.message}
                   maxLength={1000}
                   onChange={(e) => update("message", e.target.value)}
-                  placeholder="How can we help you?"
+                  placeholder={t("about.reach.placeholder.message")}
                   aria-invalid={!!errors.message}
                   className={`w-full rounded-md border px-4 py-3 text-sm bg-background ${
                     errors.message ? "border-red-500" : "border-input"
@@ -436,7 +434,7 @@ function AboutPage() {
                 type="submit"
                 className="w-full bg-[var(--brand-yellow)] text-[var(--brand-black)] font-semibold py-3 rounded-md hover:brightness-110"
               >
-                Send Message
+                {t("about.reach.submit")}
               </button>
             </form>
           )}
@@ -446,31 +444,27 @@ function AboutPage() {
       <section id="careers" className="bg-secondary/50">
         <div className="container-x py-16">
           <div className="text-center max-w-2xl mx-auto mb-10">
-            <span className="inline-block text-xs font-bold tracking-widest text-[var(--brand-black)] bg-[var(--brand-yellow)] px-3 py-1 rounded-full">CAREERS</span>
-            <h2 className="text-3xl font-bold text-foreground mt-3">Build Your Career at X Capital</h2>
-            <p className="text-muted-foreground mt-3">
-              We're always on the lookout for passionate, driven individuals who want to make a real impact in the world of finance. At X Capital, you'll work alongside experienced professionals, learn from industry experts and help shape financial solutions that matter.
-            </p>
+            <span className="inline-block text-xs font-bold tracking-widest text-[var(--brand-black)] bg-[var(--brand-yellow)] px-3 py-1 rounded-full">{t("about.careers.badge")}</span>
+            <h2 className="text-3xl font-bold text-foreground mt-3">{t("about.careers.title")}</h2>
+            <p className="text-muted-foreground mt-3">{t("about.careers.intro")}</p>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             {careerPerks.map((p) => (
-              <div key={p.title} className="bg-card rounded-xl p-6 border border-border shadow-card">
+              <div key={p.key} className="bg-card rounded-xl p-6 border border-border shadow-card">
                 <div className="h-11 w-11 rounded-lg bg-[var(--brand-yellow-soft)] text-[var(--brand-black)] grid place-items-center mb-3">
                   <p.icon className="h-5 w-5" />
                 </div>
-                <h3 className="font-semibold text-[var(--brand-black)]">{p.title}</h3>
-                <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">{p.desc}</p>
+                <h3 className="font-semibold text-[var(--brand-black)]">{t(`about.perks.${p.key}.title`)}</h3>
+                <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">{t(`about.perks.${p.key}.desc`)}</p>
               </div>
             ))}
           </div>
 
           <div className="max-w-2xl mx-auto">
             <div className="text-center mb-6">
-              <h3 className="text-2xl font-bold text-foreground">Apply Now</h3>
-              <p className="text-sm text-muted-foreground mt-2">
-                Share your details and resume — we'll reach out when the right opportunity opens up.
-              </p>
+              <h3 className="text-2xl font-bold text-foreground">{t("about.apply.title")}</h3>
+              <p className="text-sm text-muted-foreground mt-2">{t("about.apply.intro")}</p>
             </div>
 
             {appSubmitted ? (
