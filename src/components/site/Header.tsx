@@ -39,7 +39,7 @@ function Dropdown({ label, items, to, active }: { label: string; items: string[]
         id={panelId}
         role="menu"
         aria-label={label}
-        className="invisible opacity-0 group-hover:visible group-hover:opacity-100 absolute left-0 top-full w-64 bg-white shadow-lg rounded-b-md py-2 transition-all duration-150 z-50 border-t-2 border-[var(--brand-yellow)]"
+        className="invisible opacity-0 group-hover:visible group-hover:opacity-100 absolute left-0 top-full w-64 max-h-[70vh] overflow-y-auto overscroll-contain bg-white shadow-lg rounded-b-md py-2 transition-all duration-150 z-50 border-t-2 border-[var(--brand-yellow)]"
       >
         {items.map((item) => (
           <a
