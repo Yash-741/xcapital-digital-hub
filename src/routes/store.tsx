@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { Search } from "lucide-react";
 import { SiteLayout, PageHeader } from "@/components/site/Layout";
 import { categories } from "@/lib/store-products";
+import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/store")({
   head: () => ({
@@ -18,6 +19,7 @@ export const Route = createFileRoute("/store")({
 
 function StorePage() {
   const [query, setQuery] = useState("");
+  const { tEn } = useI18n();
   const q = query.trim().toLowerCase();
 
   const filtered = useMemo(() => {
@@ -40,9 +42,9 @@ function StorePage() {
   return (
     <SiteLayout>
       <PageHeader
-        eyebrow="X Capital Store"
-        title="Smart Commerce & Financial Technology Solutions"
-        subtitle="Empowering businesses with POS, payment, billing, biometric, banking, security, office and consumable solutions — all in one place."
+        eyebrow={tEn("X Capital Store")}
+        title={tEn("Smart Commerce & Financial Technology Solutions")}
+        subtitle={tEn("Empowering businesses with POS, payment, billing, biometric, banking, security, office and consumable solutions — all in one place.")}
       />
 
       <section className="container-x py-8">
@@ -52,7 +54,7 @@ function StorePage() {
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search products (e.g. POS, soundbox, CCTV)…"
+            placeholder={tEn("Search products (e.g. POS, soundbox, CCTV)…")}
             className="w-full rounded-md border border-border bg-white pl-9 pr-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--brand-yellow)]"
           />
         </div>
@@ -65,7 +67,7 @@ function StorePage() {
               href={`#${c.id}`}
               className="text-xs font-semibold px-3 py-1.5 rounded-full bg-white border border-border hover:bg-[var(--brand-yellow-soft)] hover:border-[var(--brand-yellow)] transition"
             >
-              {c.title}
+              {tEn(c.title)}
             </a>
           ))}
         </div>
@@ -73,19 +75,19 @@ function StorePage() {
         {/* Categories */}
         <div className="space-y-12">
           {filtered.length === 0 && (
-            <p className="text-sm text-muted-foreground">No products match your search.</p>
+            <p className="text-sm text-muted-foreground">{tEn("No products match your search.")}</p>
           )}
           {filtered.map((cat) => (
             <div key={cat.id} id={cat.id} className="scroll-mt-24">
               <div className="mb-5">
-                <h2 className="text-2xl font-bold text-[var(--brand-black)]">{cat.title}</h2>
-                <p className="text-sm text-muted-foreground mt-1">{cat.tagline}</p>
+                <h2 className="text-2xl font-bold text-[var(--brand-black)]">{tEn(cat.title)}</h2>
+                <p className="text-sm text-muted-foreground mt-1">{tEn(cat.tagline)}</p>
               </div>
 
               <div className="space-y-6">
                 {cat.subs.map((sub) => (
                   <div key={sub.name} className="bg-white rounded-lg shadow-card border-b-[3px] border-[var(--brand-yellow)] p-5">
-                    <h3 className="text-sm font-bold text-[var(--brand-black)] uppercase tracking-wide mb-4">{sub.name}</h3>
+                    <h3 className="text-sm font-bold text-[var(--brand-black)] uppercase tracking-wide mb-4">{tEn(sub.name)}</h3>
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
                       {(sub.items ?? []).map((it) => {
                         const Icon = it.icon;
@@ -100,7 +102,7 @@ function StorePage() {
                               <Icon className="h-6 w-6" strokeWidth={1.5} />
                             </div>
                             <span className="mt-2 text-xs font-medium text-[var(--brand-black)] leading-tight">
-                              {it.name}
+                              {tEn(it.name)}
                             </span>
                           </Link>
                         );
@@ -115,14 +117,14 @@ function StorePage() {
 
         <div className="mt-12 rounded-lg bg-[var(--brand-black)] text-white p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
-            <h3 className="text-lg md:text-xl font-bold">Need help choosing the right device?</h3>
-            <p className="text-sm text-white/80 mt-1">Talk to our specialists for bulk orders, custom bundles and onboarding.</p>
+            <h3 className="text-lg md:text-xl font-bold">{tEn("Need help choosing the right device?")}</h3>
+            <p className="text-sm text-white/80 mt-1">{tEn("Talk to our specialists for bulk orders, custom bundles and onboarding.")}</p>
           </div>
           <Link
             to="/about"
             className="inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold text-[var(--brand-black)] bg-[var(--brand-yellow)] hover:brightness-105 transition"
           >
-            Contact Sales
+            {tEn("Contact Sales")}
           </Link>
         </div>
       </section>

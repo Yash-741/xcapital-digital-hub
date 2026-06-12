@@ -9,6 +9,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { z } from "zod";
+import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
@@ -20,15 +21,11 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
 });
 
-const emailSchema = z.string().trim().email("Enter a valid email").max(255);
-const passwordSchema = z.string().min(8, "Password must be at least 8 characters").max(72);
-const nameSchema = z.string().trim().min(2, "Enter your full name").max(100);
-const phoneSchema = z.string().trim().regex(/^[0-9+\-\s()]{7,20}$/, "Enter a valid phone number");
-
 function AuthPage() {
   const navigate = useNavigate();
   const router = useRouter();
   const [tab, setTab] = useState<"login" | "register">("login");
+  const { tEn } = useI18n();
 
   // Redirect if already signed in
   useEffect(() => {
@@ -46,25 +43,25 @@ function AuthPage() {
 
   return (
     <SiteLayout>
-      <PageHeader eyebrow="Account" title="Login or Register" subtitle="Access your XCapital account to apply, track and manage." />
+      <PageHeader eyebrow={tEn("Account")} title={tEn("Login or Register")} subtitle={tEn("Access your XCapital account to apply, track and manage.")} />
       <section className="container-x py-10 md:py-14">
         <div className="max-w-md mx-auto bg-white rounded-lg shadow-card border-b-[3px] border-[var(--brand-yellow)] p-6 md:p-8">
           <Tabs value={tab} onValueChange={(v) => setTab(v as "login" | "register")}>
             <TabsList className="grid grid-cols-2 w-full mb-6">
-              <TabsTrigger value="login">Login</TabsTrigger>
-              <TabsTrigger value="register">Register</TabsTrigger>
+              <TabsTrigger value="login">{tEn("Login")}</TabsTrigger>
+              <TabsTrigger value="register">{tEn("Register")}</TabsTrigger>
             </TabsList>
             <TabsContent value="login"><LoginForm /></TabsContent>
             <TabsContent value="register"><RegisterForm onDone={() => setTab("login")} /></TabsContent>
           </Tabs>
 
           <div className="my-6 flex items-center gap-3 text-xs text-muted-foreground">
-            <div className="h-px bg-border flex-1" /> OR <div className="h-px bg-border flex-1" />
+            <div className="h-px bg-border flex-1" /> {tEn("OR")} <div className="h-px bg-border flex-1" />
           </div>
           <GoogleButton />
 
           <p className="text-xs text-muted-foreground text-center mt-6">
-            By continuing you agree to our terms and privacy policy.
+            {tEn("By continuing you agree to our terms and privacy policy.")}
           </p>
         </div>
       </section>
@@ -73,46 +70,53 @@ function AuthPage() {
 }
 
 function LoginForm() {
+  const { tEn } = useI18n();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const emailSchema = z.string().trim().email(tEn("Enter a valid email")).max(255);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     const ev = emailSchema.safeParse(email);
-    const pv = z.string().min(1, "Password is required").safeParse(password);
+    const pv = z.string().min(1, tEn("Password is required")).safeParse(password);
     if (!ev.success) return toast.error(ev.error.issues[0].message);
     if (!pv.success) return toast.error(pv.error.issues[0].message);
     setLoading(true);
     const { error } = await supabase.auth.signInWithPassword({ email: ev.data, password });
     setLoading(false);
     if (error) return toast.error(error.message);
-    toast.success("Signed in");
+    toast.success(tEn("Signed in"));
   }
 
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       <div className="space-y-1.5">
-        <Label htmlFor="li-email">Email</Label>
+        <Label htmlFor="li-email">{tEn("Email")}</Label>
         <Input id="li-email" type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
       </div>
       <div className="space-y-1.5">
-        <Label htmlFor="li-pass">Password</Label>
+        <Label htmlFor="li-pass">{tEn("Password")}</Label>
         <Input id="li-pass" type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} required />
       </div>
       <Button type="submit" disabled={loading} className="w-full bg-[var(--brand-yellow)] text-[var(--brand-black)] hover:brightness-105">
-        {loading ? "Signing in..." : "Login"}
+        {loading ? tEn("Signing in...") : tEn("Login")}
       </Button>
     </form>
   );
 }
 
 function RegisterForm({ onDone }: { onDone: () => void }) {
+  const { tEn } = useI18n();
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const emailSchema = z.string().trim().email(tEn("Enter a valid email")).max(255);
+  const passwordSchema = z.string().min(8, tEn("Password must be at least 8 characters")).max(72);
+  const nameSchema = z.string().trim().min(2, tEn("Enter your full name")).max(100);
+  const phoneSchema = z.string().trim().regex(/^[0-9+\-\s()]{7,20}$/, tEn("Enter a valid phone number"));
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -134,44 +138,45 @@ function RegisterForm({ onDone }: { onDone: () => void }) {
     });
     setLoading(false);
     if (error) return toast.error(error.message);
-    toast.success("Check your email to confirm your account.");
+    toast.success(tEn("Check your email to confirm your account."));
     onDone();
   }
 
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       <div className="space-y-1.5">
-        <Label htmlFor="r-name">Full name</Label>
+        <Label htmlFor="r-name">{tEn("Full name")}</Label>
         <Input id="r-name" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
       </div>
       <div className="space-y-1.5">
-        <Label htmlFor="r-phone">Phone</Label>
+        <Label htmlFor="r-phone">{tEn("Phone")}</Label>
         <Input id="r-phone" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} required />
       </div>
       <div className="space-y-1.5">
-        <Label htmlFor="r-email">Email</Label>
+        <Label htmlFor="r-email">{tEn("Email")}</Label>
         <Input id="r-email" type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
       </div>
       <div className="space-y-1.5">
-        <Label htmlFor="r-pass">Password</Label>
+        <Label htmlFor="r-pass">{tEn("Password")}</Label>
         <Input id="r-pass" type="password" autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-        <p className="text-xs text-muted-foreground">At least 8 characters.</p>
+        <p className="text-xs text-muted-foreground">{tEn("At least 8 characters.")}</p>
       </div>
       <Button type="submit" disabled={loading} className="w-full bg-[var(--brand-yellow)] text-[var(--brand-black)] hover:brightness-105">
-        {loading ? "Creating account..." : "Create account"}
+        {loading ? tEn("Creating account...") : tEn("Create account")}
       </Button>
     </form>
   );
 }
 
 function GoogleButton() {
+  const { tEn } = useI18n();
   const [loading, setLoading] = useState(false);
   async function onClick() {
     setLoading(true);
     const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin });
     if (result.error) {
       setLoading(false);
-      toast.error(result.error.message || "Google sign-in failed");
+      toast.error(result.error.message || tEn("Google sign-in failed"));
     }
   }
   return (
@@ -182,7 +187,7 @@ function GoogleButton() {
         <path fill="#FBBC05" d="M5.84 14.11A6.6 6.6 0 0 1 5.5 12c0-.73.13-1.44.34-2.11V7.05H2.18A11 11 0 0 0 1 12c0 1.77.42 3.45 1.18 4.95l3.66-2.84z"/>
         <path fill="#EA4335" d="M12 5.38c1.62 0 3.07.56 4.21 1.64l3.15-3.15C17.45 2.1 14.96 1 12 1 7.7 1 3.99 3.47 2.18 7.05l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38z"/>
       </svg>
-      Continue with Google
+      {tEn("Continue with Google")}
     </Button>
   );
 }

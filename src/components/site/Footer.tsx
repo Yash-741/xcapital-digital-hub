@@ -4,7 +4,7 @@ import logo from "@/assets/xcapital-logo.asset.json";
 import { useI18n } from "@/lib/i18n";
 
 export function Footer() {
-  const { t } = useI18n();
+  const { t, tEn } = useI18n();
   return (
     <footer className="bg-[var(--brand-black)] text-white/75 mt-16">
       <div className="container-x py-14 grid gap-10 md:grid-cols-5">
@@ -70,7 +70,7 @@ export function Footer() {
         <div>
           <h4 className="text-white font-semibold mb-4">{t("footer.reachUs")}</h4>
           <ul className="space-y-2 text-sm text-white/70">
-            <li>Sakinaka, Andheri East,<br />Mumbai 400072</li>
+            <li>{tEn("Sakinaka, Andheri East,")}<br />{tEn("Mumbai 400072")}</li>
             <li>+91 88791 09148</li>
             <li>info@xcapital.co.in</li>
           </ul>

@@ -19,6 +19,7 @@ const insuranceLinks = ["Health Insurance", "Life Insurance", "Medical Claim"];
 const aboutLinks = ["About Us", "Our Vision", "Reach Us", "Careers"];
 
 function Dropdown({ label, items, to, active }: { label: string; items: string[]; to: string; active?: boolean }) {
+  const { tEn } = useI18n();
   const panelId = `menu-${label.toLowerCase()}`;
   return (
     <div className="relative group focus-within:[&>div]:visible focus-within:[&>div]:opacity-100">
@@ -47,7 +48,7 @@ function Dropdown({ label, items, to, active }: { label: string; items: string[]
             role="menuitem"
             className="block px-4 py-2.5 text-sm text-foreground hover:bg-[var(--brand-yellow-soft)] hover:text-[var(--brand-black)] focus-visible:outline-none focus-visible:bg-[var(--brand-yellow-soft)] focus-visible:text-[var(--brand-black)]"
           >
-            {item}
+            {tEn(item)}
           </a>
         ))}
       </div>
@@ -62,7 +63,7 @@ export function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const { t } = useI18n();
+  const { t, tEn } = useI18n();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setSignedIn(!!data.session));
@@ -145,7 +146,7 @@ export function Header() {
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-[var(--brand-yellow)] focus:text-[var(--brand-black)] focus:px-3 focus:py-2 focus:text-sm focus:font-semibold"
       >
-        Skip to main content
+        {tEn("Skip to main content")}
       </a>
       {/* Top bar: logo + actions */}
       <div className="bg-white">
@@ -155,13 +156,13 @@ export function Header() {
               type="button"
               onClick={() => setOpen((v) => !v)}
               className="lg:hidden text-[var(--brand-black)] p-2 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-yellow)]"
-              aria-label={open ? "Close menu" : "Open menu"}
+              aria-label={open ? tEn("Close menu") : tEn("Open menu")}
               aria-expanded={open}
               aria-controls="mobile-nav"
             >
               {open ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
             </button>
-            <Link to="/" className="flex items-center" aria-label="X Capital — Home">
+            <Link to="/" className="flex items-center" aria-label={tEn("X Capital — Home")}>
               <img src={logo.url} alt="X Capital" className="h-10 md:h-12 w-auto" />
             </Link>
           </div>
@@ -197,7 +198,7 @@ export function Header() {
             </div>
             <button
               type="button"
-              aria-label="Search"
+              aria-label={tEn("Search")}
               onClick={() => setSearchOpen(true)}
               className="hidden md:grid h-10 w-10 place-items-center rounded-full border border-[var(--brand-black)]/10 text-[var(--brand-black)] hover:bg-[var(--brand-yellow-soft)] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-yellow)]"
             >
@@ -209,7 +210,7 @@ export function Header() {
                 type="button"
                 onClick={() => supabase.auth.signOut()}
                 className="inline-flex items-center gap-2 rounded-full px-4 md:px-5 py-2.5 text-sm font-semibold text-[var(--brand-black)] bg-[var(--brand-yellow)] hover:brightness-105 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-black)] focus-visible:ring-offset-2"
-                aria-label="Sign out"
+                aria-label={tEn("Sign out")}
               >
                 <LogOut className="h-4 w-4" aria-hidden="true" /> <span className="hidden sm:inline">{t("actions.signOut")}</span><span className="sm:hidden" aria-hidden="true">{t("actions.signOut")}</span>
               </button>
@@ -217,7 +218,7 @@ export function Header() {
               <Link
                 to="/auth"
                 className="inline-flex items-center gap-2 rounded-full px-4 md:px-5 py-2.5 text-sm font-semibold text-[var(--brand-black)] bg-[var(--brand-yellow)] hover:brightness-105 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-black)] focus-visible:ring-offset-2"
-                aria-label="Register or Login"
+                aria-label={tEn("Register or Login")}
               >
                 <User className="h-4 w-4" aria-hidden="true" /> <span className="hidden sm:inline">{t("actions.login")}</span><span className="sm:hidden" aria-hidden="true">{t("actions.loginShort")}</span>
               </Link>
