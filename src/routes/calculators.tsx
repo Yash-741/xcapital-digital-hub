@@ -415,8 +415,8 @@ function EMICalculator({ onSave, initialPresetKey }: { onSave: SaveFn; initialPr
           <Calculator className="h-5 w-5" />
         </div>
         <div>
-          <h3 className="text-xl font-semibold text-[var(--brand-black)]">Loan EMI Calculator</h3>
-          <p className="text-xs text-muted-foreground">Estimate monthly EMI, interest and total payable</p>
+          <h3 className="text-xl font-semibold text-[var(--brand-black)]"><Tx s="Loan EMI Calculator" /></h3>
+          <p className="text-xs text-muted-foreground"><Tx s="Estimate monthly EMI, interest and total payable" /></p>
         </div>
       </div>
 
@@ -434,7 +434,7 @@ function EMICalculator({ onSave, initialPresetKey }: { onSave: SaveFn; initialPr
                   : "bg-background text-muted-foreground border-border hover:border-[var(--brand-yellow)]"
               }`}
             >
-              <Icon className="h-3.5 w-3.5" /> {p.label}
+              <Icon className="h-3.5 w-3.5" /> <Tx s={p.label} />
             </button>
           );
         })}
@@ -449,15 +449,15 @@ function EMICalculator({ onSave, initialPresetKey }: { onSave: SaveFn; initialPr
       <div className="mt-7 bg-[var(--brand-black)] text-white rounded-lg p-6">
         <div className="grid grid-cols-3 gap-4 text-center mb-6">
           <div>
-            <div className="text-xs text-white/60 uppercase tracking-wider">Monthly EMI</div>
+            <div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Monthly EMI" /></div>
             <div className="text-xl font-bold text-[var(--brand-yellow)] mt-1">{inr(emi)}</div>
           </div>
           <div>
-            <div className="text-xs text-white/60 uppercase tracking-wider">Interest</div>
+            <div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Interest" /></div>
             <div className="text-xl font-bold mt-1">{inr(interest)}</div>
           </div>
           <div>
-            <div className="text-xs text-white/60 uppercase tracking-wider">Total Payable</div>
+            <div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Total Payable" /></div>
             <div className="text-xl font-bold mt-1">{inr(total)}</div>
           </div>
         </div>
