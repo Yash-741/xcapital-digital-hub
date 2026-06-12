@@ -675,6 +675,23 @@ const mr: Dict = {
   "about.faq.8.a": "होय — बॅलन्स ट्रान्सफर, कर्ज पुनर्रचना चर्चा, सुविधा वाढ आणि अतिरिक्त निधी गरजा.",
   "about.faq.9.q": "X Capital मोठ्या निधीच्या गरजांमध्ये मदत करू शकते का?",
   "about.faq.9.a": "होय. आम्ही लहान व्यवसाय कर्जांपासून मोठ्या कॉर्पोरेट व संरचित वित्तपुरवठा संधींपर्यंतच्या निधीचे समर्थन करतो.",
+  "about.role.founder": "संस्थापक",
+  "about.role.cofounder": "सह-संस्थापक",
+  "about.benefit.item.smes": "SMEs",
+  "about.benefit.item.manufacturers": "उत्पादक",
+  "about.benefit.item.traders": "व्यापारी",
+  "about.benefit.item.retailers": "रिटेलर",
+  "about.benefit.item.service-providers": "सेवा पुरवठादार",
+  "about.benefit.item.doctors": "डॉक्टर",
+  "about.benefit.item.cas": "चार्टर्ड अकाउंटंट",
+  "about.benefit.item.architects": "वास्तुविशारद",
+  "about.benefit.item.consultants": "सल्लागार",
+  "about.benefit.item.salaried": "पगारदार व्यावसायिक",
+  "about.benefit.item.self-employed": "स्व-रोजगारी",
+  "about.benefit.item.property-owners": "मालमत्ता मालक",
+  "about.benefit.item.investors": "गुंतवणूकदार",
+  "about.benefit.item.business-owners": "व्यवसाय मालक",
+  "about.benefit.item.family-offices": "फॅमिली ऑफिस",
 };
 
 const DICTS: Record<Lang, Dict> = { en, hi, mr };
