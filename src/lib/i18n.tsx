@@ -1470,6 +1470,21 @@ const commonHi: Dict = {
   "Thermal Paper Roll": "थर्मल पेपर रोल",
   "Printer Toner": "प्रिंटर टोनर",
   "Packaging Material": "पैकेजिंग सामग्री",
+  "eKYC Device": "eKYC डिवाइस",
+  "Payment Acceptance Devices": "पेमेंट स्वीकृति डिवाइस",
+  "Android Billing Machines": "एंड्रॉइड बिलिंग मशीनें",
+  "Label Printers": "लेबल प्रिंटर",
+  "Inventory Management Devices": "इन्वेंटरी प्रबंधन डिवाइस",
+  "Biometric Attendance Machines": "बायोमेट्रिक अटेंडेंस मशीनें",
+  "Customer Verification Devices": "ग्राहक सत्यापन डिवाइस",
+  "CSP Devices": "CSP डिवाइस",
+  "Merchant Collection Devices": "मर्चेंट कलेक्शन डिवाइस",
+  "Financial Inclusion Devices": "वित्तीय समावेशन डिवाइस",
+  "CCTV Kits": "CCTV किट",
+  "Projectors": "प्रोजेक्टर",
+  "Wi-Fi Routers": "वाई-फाई राउटर",
+  "Barcode Labels": "बारकोड लेबल",
+  "Printer Toners": "प्रिंटर टोनर",
 };
 
 const commonMr: Dict = {
