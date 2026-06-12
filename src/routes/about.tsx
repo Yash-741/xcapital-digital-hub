@@ -216,20 +216,20 @@ function AboutPage() {
       {/* How It Works */}
       <section className="container-x py-16">
         <div className="text-center max-w-2xl mx-auto mb-10">
-          <h2 className="text-3xl font-bold text-foreground">How X Capital Works</h2>
-          <p className="text-muted-foreground mt-3">A structured six-step advisory process from requirement to long-term relationship support.</p>
+          <h2 className="text-3xl font-bold text-foreground">{t("about.how.title")}</h2>
+          <p className="text-muted-foreground mt-3">{t("about.how.intro")}</p>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {steps.map((s, i) => (
-            <div key={s.title} className="bg-card rounded-xl p-6 border border-border shadow-card hover:-translate-y-1 transition">
+            <div key={s.key} className="bg-card rounded-xl p-6 border border-border shadow-card hover:-translate-y-1 transition">
               <div className="flex items-center gap-3 mb-3">
                 <div className="h-10 w-10 rounded-lg bg-[var(--brand-yellow)] text-[var(--brand-black)] grid place-items-center">
                   <s.icon className="h-5 w-5" />
                 </div>
-                <span className="text-xs font-bold text-muted-foreground">STEP {i + 1}</span>
+                <span className="text-xs font-bold text-muted-foreground">{t("about.how.stepLabel")} {i + 1}</span>
               </div>
-              <h3 className="font-semibold text-[var(--brand-black)]">{s.title}</h3>
-              <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{s.desc}</p>
+              <h3 className="font-semibold text-[var(--brand-black)]">{t(`about.step.${s.key}.title`)}</h3>
+              <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{t(`about.step.${s.key}.desc`)}</p>
             </div>
           ))}
         </div>
@@ -239,18 +239,18 @@ function AboutPage() {
       <section className="bg-secondary/50">
         <div className="container-x py-16">
           <div className="text-center max-w-2xl mx-auto mb-10">
-            <h2 className="text-3xl font-bold text-foreground">Why Choose X Capital</h2>
-            <p className="text-muted-foreground mt-3">Built on access, expertise and trust.</p>
+            <h2 className="text-3xl font-bold text-foreground">{t("about.why.title")}</h2>
+            <p className="text-muted-foreground mt-3">{t("about.why.intro")}</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {whyChoose.map((w) => (
-              <div key={w.title} className="bg-card rounded-xl p-6 border border-border shadow-card flex gap-4">
+              <div key={w.key} className="bg-card rounded-xl p-6 border border-border shadow-card flex gap-4">
                 <div className="h-11 w-11 shrink-0 rounded-lg bg-[var(--brand-yellow-soft)] text-[var(--brand-black)] grid place-items-center">
                   <w.icon className="h-5 w-5" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-[var(--brand-black)]">{w.title}</h3>
-                  <p className="text-sm text-muted-foreground mt-1">{w.desc}</p>
+                  <h3 className="font-semibold text-[var(--brand-black)]">{t(`about.why.${w.key}.title`)}</h3>
+                  <p className="text-sm text-muted-foreground mt-1">{t(`about.why.${w.key}.desc`)}</p>
                 </div>
               </div>
             ))}
@@ -261,13 +261,13 @@ function AboutPage() {
       {/* Who Benefits */}
       <section className="container-x py-16">
         <div className="text-center max-w-2xl mx-auto mb-10">
-          <h2 className="text-3xl font-bold text-foreground">Who Can Benefit</h2>
-          <p className="text-muted-foreground mt-3">From SMEs and professionals to salaried individuals and HNIs.</p>
+          <h2 className="text-3xl font-bold text-foreground">{t("about.benefit.title")}</h2>
+          <p className="text-muted-foreground mt-3">{t("about.benefit.intro")}</p>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {beneficiaries.map((b) => (
-            <div key={b.title} className="bg-card rounded-xl p-6 border border-border shadow-card border-b-[3px] border-b-[var(--brand-yellow)]">
-              <h3 className="font-bold text-[var(--brand-black)]">{b.title}</h3>
+            <div key={b.key} className="bg-card rounded-xl p-6 border border-border shadow-card border-b-[3px] border-b-[var(--brand-yellow)]">
+              <h3 className="font-bold text-[var(--brand-black)]">{t(`about.benefit.${b.key}.title`)}</h3>
               <ul className="mt-3 space-y-1.5 text-sm text-muted-foreground">
                 {b.items.map((i) => (
                   <li key={i} className="flex gap-2"><span className="text-[var(--brand-yellow)]">•</span><span>{i}</span></li>
@@ -282,14 +282,14 @@ function AboutPage() {
       <section className="bg-[var(--brand-black)] text-white">
         <div className="container-x py-16">
           <div className="text-center max-w-2xl mx-auto mb-10">
-            <h2 className="text-3xl font-bold">Our Core Values</h2>
-            <p className="text-white/70 mt-3">The principles that guide every engagement.</p>
+            <h2 className="text-3xl font-bold">{t("about.values.title")}</h2>
+            <p className="text-white/70 mt-3">{t("about.values.intro")}</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
             {coreValues.map((v) => (
-              <div key={v.title} className="bg-white/5 border border-white/10 rounded-xl p-5 text-center">
-                <div className="text-[var(--brand-yellow)] font-bold">{v.title}</div>
-                <p className="text-sm text-white/70 mt-2">{v.desc}</p>
+              <div key={v} className="bg-white/5 border border-white/10 rounded-xl p-5 text-center">
+                <div className="text-[var(--brand-yellow)] font-bold">{t(`about.value.${v}.title`)}</div>
+                <p className="text-sm text-white/70 mt-2">{t(`about.value.${v}.desc`)}</p>
               </div>
             ))}
           </div>
@@ -299,24 +299,24 @@ function AboutPage() {
       {/* FAQ */}
       <section id="faq" className="container-x py-16">
         <div className="text-center max-w-2xl mx-auto mb-10">
-          <h2 className="text-3xl font-bold text-foreground">Frequently Asked Questions</h2>
-          <p className="text-muted-foreground mt-3">Everything you need to know about working with X Capital.</p>
+          <h2 className="text-3xl font-bold text-foreground">{t("about.faq.title")}</h2>
+          <p className="text-muted-foreground mt-3">{t("about.faq.intro")}</p>
         </div>
         <div className="max-w-3xl mx-auto space-y-3">
           {faqs.map((f, i) => {
             const open = openFaq === i;
             return (
-              <div key={f.q} className="bg-card border border-border rounded-lg shadow-card overflow-hidden">
+              <div key={f} className="bg-card border border-border rounded-lg shadow-card overflow-hidden">
                 <button
                   onClick={() => setOpenFaq(open ? null : i)}
                   className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left"
                 >
-                  <span className="font-semibold text-[var(--brand-black)]">{f.q}</span>
+                  <span className="font-semibold text-[var(--brand-black)]">{t(`about.faq.${f}.q`)}</span>
                   <ChevronDown className={`h-5 w-5 shrink-0 text-[var(--brand-black)] transition-transform ${open ? "rotate-180" : ""}`} />
                 </button>
                 {open && (
                   <div className="px-5 pb-4 text-sm text-muted-foreground leading-relaxed border-t border-border pt-3">
-                    {f.a}
+                    {t(`about.faq.${f}.a`)}
                   </div>
                 )}
               </div>
