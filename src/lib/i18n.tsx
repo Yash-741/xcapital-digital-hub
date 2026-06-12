@@ -219,6 +219,23 @@ const en: Dict = {
   "about.faq.8.a": "Yes — balance transfers, loan restructuring discussions, facility enhancement and additional funding requirements.",
   "about.faq.9.q": "Can X Capital help with large funding requirements?",
   "about.faq.9.a": "Yes. We support funding from small business loans to large corporate and structured financing opportunities.",
+  "about.role.founder": "Founder",
+  "about.role.cofounder": "Co-Founder",
+  "about.benefit.item.smes": "SMEs",
+  "about.benefit.item.manufacturers": "Manufacturers",
+  "about.benefit.item.traders": "Traders",
+  "about.benefit.item.retailers": "Retailers",
+  "about.benefit.item.service-providers": "Service Providers",
+  "about.benefit.item.doctors": "Doctors",
+  "about.benefit.item.cas": "Chartered Accountants",
+  "about.benefit.item.architects": "Architects",
+  "about.benefit.item.consultants": "Consultants",
+  "about.benefit.item.salaried": "Salaried Professionals",
+  "about.benefit.item.self-employed": "Self-Employed",
+  "about.benefit.item.property-owners": "Property Owners",
+  "about.benefit.item.investors": "Investors",
+  "about.benefit.item.business-owners": "Business Owners",
+  "about.benefit.item.family-offices": "Family Offices",
 };
 
 const hi: Dict = {
