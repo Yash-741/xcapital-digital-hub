@@ -690,8 +690,8 @@ function SimpleCalc({ def }: { def: SimpleDef }) {
           <Icon className="h-5 w-5" />
         </div>
         <div>
-          <h3 className="text-xl font-semibold text-[var(--brand-black)]">{def.title}</h3>
-          <p className="text-xs text-muted-foreground">{def.desc}</p>
+          <h3 className="text-xl font-semibold text-[var(--brand-black)]"><Tx s={def.title} /></h3>
+          <p className="text-xs text-muted-foreground"><Tx s={def.desc} /></p>
         </div>
       </div>
       <div className="space-y-5">
@@ -712,7 +712,7 @@ function SimpleCalc({ def }: { def: SimpleDef }) {
             const isPrimary = r.label === result.primaryLabel;
             return (
               <div key={r.label}>
-                <div className="text-xs text-white/60 uppercase tracking-wider">{r.label}</div>
+                <div className="text-xs text-white/60 uppercase tracking-wider"><Tx s={r.label} /></div>
                 <div className={`text-xl font-bold mt-1 ${isPrimary ? "text-[var(--brand-yellow)]" : ""}`}>{r.value}</div>
               </div>
             );
