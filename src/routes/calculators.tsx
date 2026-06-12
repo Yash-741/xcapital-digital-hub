@@ -46,7 +46,7 @@ function Field({
   return (
     <div>
       <div className="flex justify-between items-center mb-2">
-        <label className="text-sm font-medium text-foreground">{label}</label>
+        <label className="text-sm font-medium text-foreground"><Tx s={label}/></label>
         <div className={`flex items-center rounded-md border px-2 py-1 bg-background border-input focus-within:border-[var(--brand-yellow)] focus-within:ring-2 focus-within:ring-[var(--brand-yellow)]/30`}>
           {prefix && <span className="text-sm font-semibold text-[var(--brand-black)]">{prefix}</span>}
           <input
@@ -95,7 +95,7 @@ function Donut({ a, b, labelA, labelB, center }: {
         </svg>
         <div className="absolute inset-0 grid place-items-center text-center">
           <div>
-            <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Total</div>
+            <div className="text-[10px] uppercase tracking-wider text-muted-foreground"><DonutTotal/></div>
             <div className="text-sm font-bold text-[var(--brand-black)]">{center}</div>
           </div>
         </div>
@@ -103,17 +103,27 @@ function Donut({ a, b, labelA, labelB, center }: {
       <ul className="text-sm space-y-2">
         <li className="flex items-center gap-2">
           <span className="h-3 w-3 rounded-sm bg-[var(--brand-black)]" />
-          <span className="text-muted-foreground">{labelA}</span>
+          <span className="text-muted-foreground"><Tx s={labelA}/></span>
           <span className="ml-auto font-semibold text-[var(--brand-black)]">{inr(a)}</span>
         </li>
         <li className="flex items-center gap-2">
           <span className="h-3 w-3 rounded-sm bg-[var(--brand-yellow)]" />
-          <span className="text-muted-foreground">{labelB}</span>
+          <span className="text-muted-foreground"><Tx s={labelB}/></span>
           <span className="ml-auto font-semibold text-[var(--brand-black)]">{inr(b)}</span>
         </li>
       </ul>
     </div>
   );
+}
+
+/** Tiny helper components that translate-by-English at render time. */
+function Tx({ s }: { s: string }) {
+  const { tEn } = useI18n();
+  return <>{tEn(s)}</>;
+}
+function DonutTotal() {
+  const { tEn } = useI18n();
+  return <>{tEn("Total")}</>;
 }
 
 /* ---------------- Scenarios ---------------- */
@@ -142,7 +152,7 @@ function SaveScenarioButton({ onClick }: { onClick: () => void }) {
       onClick={onClick}
       className="mt-5 w-full inline-flex items-center justify-center gap-2 bg-[var(--brand-yellow)] text-[var(--brand-black)] font-semibold py-2.5 rounded-md hover:brightness-110 transition"
     >
-      <Plus className="h-4 w-4" /> Save scenario to compare
+      <Plus className="h-4 w-4" /> <Tx s="Save scenario to compare" />
     </button>
   );
 }
@@ -158,9 +168,9 @@ function ComparePanel({
   if (scenarios.length === 0) {
     return (
       <div className="mt-8 border border-dashed border-border rounded-xl p-8 text-center bg-secondary/30">
-        <h4 className="font-semibold text-[var(--brand-black)]">Compare scenarios side-by-side</h4>
+        <h4 className="font-semibold text-[var(--brand-black)]"><Tx s="Compare scenarios side-by-side" /></h4>
         <p className="text-sm text-muted-foreground mt-2 max-w-md mx-auto">
-          Tweak the inputs above and tap <span className="font-semibold text-[var(--brand-black)]">Save scenario</span> to add it here. You can save as many as you'd like, then pick the one that works best.
+          <Tx s="Tweak the inputs above and tap" /> <span className="font-semibold text-[var(--brand-black)]"><Tx s="Save scenario" /></span> <Tx s="to add it here. You can save as many as you'd like, then pick the one that works best." />
         </p>
       </div>
     );
@@ -185,17 +195,17 @@ function ComparePanel({
       <div className="flex items-center justify-between mb-4">
         <div>
           <h4 className="text-lg font-bold text-[var(--brand-black)]">
-            Comparison <span className="text-muted-foreground font-normal">({scenarios.length})</span>
+            <Tx s="Comparison" /> <span className="text-muted-foreground font-normal">({scenarios.length})</span>
           </h4>
           <p className="text-xs text-muted-foreground">
-            Best scenario for <span className="font-semibold text-[var(--brand-black)]">{template.primary}</span> is highlighted.
+            <Tx s="Best scenario for" /> <span className="font-semibold text-[var(--brand-black)]"><Tx s={template.primary} /></span> <Tx s="is highlighted." />
           </p>
         </div>
         <button
           onClick={onClear}
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-red-600"
         >
-          <Trash2 className="h-3.5 w-3.5" /> Clear all
+          <Trash2 className="h-3.5 w-3.5" /> <Tx s="Clear all" />
         </button>
       </div>
 
@@ -223,7 +233,7 @@ function ComparePanel({
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-border bg-secondary/40">
-              <th className="text-left px-4 py-3 font-semibold text-[var(--brand-black)] sticky left-0 bg-secondary/40">Metric</th>
+              <th className="text-left px-4 py-3 font-semibold text-[var(--brand-black)] sticky left-0 bg-secondary/40"><Tx s="Metric" /></th>
               {scenarios.map((s) => {
                 const isBest = s.id === bestId;
                 return (
@@ -237,7 +247,7 @@ function ComparePanel({
                         />
                         {isBest && (
                           <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[var(--brand-black)] mt-1">
-                            <Trophy className="h-3 w-3" /> BEST
+                            <Trophy className="h-3 w-3" /> <Tx s="BEST" />
                           </span>
                         )}
                       </div>
@@ -256,29 +266,29 @@ function ComparePanel({
           </thead>
           <tbody>
             <tr className="bg-secondary/20">
-              <td colSpan={scenarios.length + 1} className="px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Inputs</td>
+              <td colSpan={scenarios.length + 1} className="px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground"><Tx s="Inputs" /></td>
             </tr>
             {inputLabels.map((label) => (
               <tr key={label} className="border-t border-border">
-                <td className="px-4 py-2.5 text-muted-foreground sticky left-0 bg-card">{label}</td>
+                <td className="px-4 py-2.5 text-muted-foreground sticky left-0 bg-card"><Tx s={label} /></td>
                 {scenarios.map((s) => (
                   <td key={s.id} className={`px-4 py-2.5 text-[var(--brand-black)] ${s.id === bestId ? "bg-[var(--brand-yellow-soft)]/40" : ""}`}>
-                    {get(s, label, "inputs")}
+                    <Tx s={get(s, label, "inputs")} />
                   </td>
                 ))}
               </tr>
             ))}
             <tr className="bg-secondary/20">
-              <td colSpan={scenarios.length + 1} className="px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Outputs</td>
+              <td colSpan={scenarios.length + 1} className="px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground"><Tx s="Outputs" /></td>
             </tr>
             {outputLabels.map((label) => {
               const isPrimary = label === template.primary;
               return (
                 <tr key={label} className="border-t border-border">
-                  <td className={`px-4 py-2.5 sticky left-0 bg-card ${isPrimary ? "font-semibold text-[var(--brand-black)]" : "text-muted-foreground"}`}>{label}</td>
+                  <td className={`px-4 py-2.5 sticky left-0 bg-card ${isPrimary ? "font-semibold text-[var(--brand-black)]" : "text-muted-foreground"}`}><Tx s={label} /></td>
                   {scenarios.map((s) => (
                     <td key={s.id} className={`px-4 py-2.5 ${s.id === bestId ? "bg-[var(--brand-yellow-soft)]/40" : ""} ${isPrimary ? "font-bold text-[var(--brand-black)]" : "text-[var(--brand-black)]"}`}>
-                      {get(s, label, "outputs")}
+                      <Tx s={get(s, label, "outputs")} />
                     </td>
                   ))}
                 </tr>
@@ -313,7 +323,7 @@ function ScenarioCard({
           />
           {isBest && (
             <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[var(--brand-black)] mt-1">
-              <Trophy className="h-3 w-3" /> BEST
+              <Trophy className="h-3 w-3" /> <Tx s="BEST" />
             </span>
           )}
         </div>
@@ -321,23 +331,23 @@ function ScenarioCard({
           <X className="h-4 w-4" />
         </button>
       </div>
-      <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Inputs</div>
+      <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1"><Tx s="Inputs" /></div>
       <dl className="text-xs space-y-1 mb-3">
         {inputLabels.map((l) => (
           <div key={l} className="flex justify-between gap-3">
-            <dt className="text-muted-foreground">{l}</dt>
-            <dd className="text-[var(--brand-black)] font-medium">{get(s, l, "inputs")}</dd>
+            <dt className="text-muted-foreground"><Tx s={l} /></dt>
+            <dd className="text-[var(--brand-black)] font-medium"><Tx s={get(s, l, "inputs")} /></dd>
           </div>
         ))}
       </dl>
-      <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Outputs</div>
+      <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1"><Tx s="Outputs" /></div>
       <dl className="text-xs space-y-1">
         {outputLabels.map((l) => {
           const isPrimary = l === s.primary;
           return (
             <div key={l} className="flex justify-between gap-3">
-              <dt className={isPrimary ? "font-semibold text-[var(--brand-black)]" : "text-muted-foreground"}>{l}</dt>
-              <dd className={`${isPrimary ? "font-bold" : "font-medium"} text-[var(--brand-black)]`}>{get(s, l, "outputs")}</dd>
+              <dt className={isPrimary ? "font-semibold text-[var(--brand-black)]" : "text-muted-foreground"}><Tx s={l} /></dt>
+              <dd className={`${isPrimary ? "font-bold" : "font-medium"} text-[var(--brand-black)]`}><Tx s={get(s, l, "outputs")} /></dd>
             </div>
           );
         })}
@@ -405,8 +415,8 @@ function EMICalculator({ onSave, initialPresetKey }: { onSave: SaveFn; initialPr
           <Calculator className="h-5 w-5" />
         </div>
         <div>
-          <h3 className="text-xl font-semibold text-[var(--brand-black)]">Loan EMI Calculator</h3>
-          <p className="text-xs text-muted-foreground">Estimate monthly EMI, interest and total payable</p>
+          <h3 className="text-xl font-semibold text-[var(--brand-black)]"><Tx s="Loan EMI Calculator" /></h3>
+          <p className="text-xs text-muted-foreground"><Tx s="Estimate monthly EMI, interest and total payable" /></p>
         </div>
       </div>
 
@@ -424,7 +434,7 @@ function EMICalculator({ onSave, initialPresetKey }: { onSave: SaveFn; initialPr
                   : "bg-background text-muted-foreground border-border hover:border-[var(--brand-yellow)]"
               }`}
             >
-              <Icon className="h-3.5 w-3.5" /> {p.label}
+              <Icon className="h-3.5 w-3.5" /> <Tx s={p.label} />
             </button>
           );
         })}
@@ -439,15 +449,15 @@ function EMICalculator({ onSave, initialPresetKey }: { onSave: SaveFn; initialPr
       <div className="mt-7 bg-[var(--brand-black)] text-white rounded-lg p-6">
         <div className="grid grid-cols-3 gap-4 text-center mb-6">
           <div>
-            <div className="text-xs text-white/60 uppercase tracking-wider">Monthly EMI</div>
+            <div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Monthly EMI" /></div>
             <div className="text-xl font-bold text-[var(--brand-yellow)] mt-1">{inr(emi)}</div>
           </div>
           <div>
-            <div className="text-xs text-white/60 uppercase tracking-wider">Interest</div>
+            <div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Interest" /></div>
             <div className="text-xl font-bold mt-1">{inr(interest)}</div>
           </div>
           <div>
-            <div className="text-xs text-white/60 uppercase tracking-wider">Total Payable</div>
+            <div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Total Payable" /></div>
             <div className="text-xl font-bold mt-1">{inr(total)}</div>
           </div>
         </div>
@@ -499,8 +509,8 @@ function SIPCalculator({ onSave }: { onSave: SaveFn }) {
           <TrendingUp className="h-5 w-5" />
         </div>
         <div>
-          <h3 className="text-xl font-semibold text-[var(--brand-black)]">SIP Calculator</h3>
-          <p className="text-xs text-muted-foreground">Project your mutual-fund SIP returns</p>
+          <h3 className="text-xl font-semibold text-[var(--brand-black)]"><Tx s="SIP Calculator" /></h3>
+          <p className="text-xs text-muted-foreground"><Tx s="Project your mutual-fund SIP returns" /></p>
         </div>
       </div>
       <div className="space-y-5">
@@ -510,9 +520,9 @@ function SIPCalculator({ onSave }: { onSave: SaveFn }) {
       </div>
       <div className="mt-7 bg-[var(--brand-black)] text-white rounded-lg p-6">
         <div className="grid grid-cols-3 gap-4 text-center mb-6">
-          <div><div className="text-xs text-white/60 uppercase tracking-wider">Invested</div><div className="text-xl font-bold mt-1">{inr(invested)}</div></div>
-          <div><div className="text-xs text-white/60 uppercase tracking-wider">Est. Returns</div><div className="text-xl font-bold mt-1">{inr(gains)}</div></div>
-          <div><div className="text-xs text-white/60 uppercase tracking-wider">Maturity</div><div className="text-xl font-bold text-[var(--brand-yellow)] mt-1">{inr(maturity)}</div></div>
+          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Invested" /></div><div className="text-xl font-bold mt-1">{inr(invested)}</div></div>
+          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Est. Returns" /></div><div className="text-xl font-bold mt-1">{inr(gains)}</div></div>
+          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Maturity" /></div><div className="text-xl font-bold text-[var(--brand-yellow)] mt-1">{inr(maturity)}</div></div>
         </div>
         <div className="bg-white/5 rounded-md p-4">
           <Donut a={invested} b={gains} labelA="Invested" labelB="Est. Returns" center={inr(maturity)} />
@@ -559,8 +569,8 @@ function LumpsumCalculator({ onSave }: { onSave: SaveFn }) {
           <Wallet className="h-5 w-5" />
         </div>
         <div>
-          <h3 className="text-xl font-semibold text-[var(--brand-black)]">Lumpsum Calculator</h3>
-          <p className="text-xs text-muted-foreground">One-time investment growth</p>
+          <h3 className="text-xl font-semibold text-[var(--brand-black)]"><Tx s="Lumpsum Calculator" /></h3>
+          <p className="text-xs text-muted-foreground"><Tx s="One-time investment growth" /></p>
         </div>
       </div>
       <div className="space-y-5">
@@ -570,9 +580,9 @@ function LumpsumCalculator({ onSave }: { onSave: SaveFn }) {
       </div>
       <div className="mt-7 bg-[var(--brand-black)] text-white rounded-lg p-6">
         <div className="grid grid-cols-3 gap-4 text-center mb-6">
-          <div><div className="text-xs text-white/60 uppercase tracking-wider">Invested</div><div className="text-xl font-bold mt-1">{inr(principal)}</div></div>
-          <div><div className="text-xs text-white/60 uppercase tracking-wider">Est. Returns</div><div className="text-xl font-bold mt-1">{inr(gains)}</div></div>
-          <div><div className="text-xs text-white/60 uppercase tracking-wider">Maturity</div><div className="text-xl font-bold text-[var(--brand-yellow)] mt-1">{inr(maturity)}</div></div>
+          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Invested" /></div><div className="text-xl font-bold mt-1">{inr(principal)}</div></div>
+          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Est. Returns" /></div><div className="text-xl font-bold mt-1">{inr(gains)}</div></div>
+          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Maturity" /></div><div className="text-xl font-bold text-[var(--brand-yellow)] mt-1">{inr(maturity)}</div></div>
         </div>
         <div className="bg-white/5 rounded-md p-4">
           <Donut a={principal} b={gains} labelA="Invested" labelB="Est. Returns" center={inr(maturity)} />
@@ -620,8 +630,8 @@ function FDCalculator({ onSave }: { onSave: SaveFn }) {
           <PiggyBank className="h-5 w-5" />
         </div>
         <div>
-          <h3 className="text-xl font-semibold text-[var(--brand-black)]">Fixed Deposit Calculator</h3>
-          <p className="text-xs text-muted-foreground">Quarterly compounding maturity value</p>
+          <h3 className="text-xl font-semibold text-[var(--brand-black)]"><Tx s="Fixed Deposit Calculator" /></h3>
+          <p className="text-xs text-muted-foreground"><Tx s="Quarterly compounding maturity value" /></p>
         </div>
       </div>
       <div className="space-y-5">
@@ -631,9 +641,9 @@ function FDCalculator({ onSave }: { onSave: SaveFn }) {
       </div>
       <div className="mt-7 bg-[var(--brand-black)] text-white rounded-lg p-6">
         <div className="grid grid-cols-3 gap-4 text-center mb-6">
-          <div><div className="text-xs text-white/60 uppercase tracking-wider">Invested</div><div className="text-xl font-bold mt-1">{inr(principal)}</div></div>
-          <div><div className="text-xs text-white/60 uppercase tracking-wider">Interest</div><div className="text-xl font-bold mt-1">{inr(interest)}</div></div>
-          <div><div className="text-xs text-white/60 uppercase tracking-wider">Maturity</div><div className="text-xl font-bold text-[var(--brand-yellow)] mt-1">{inr(maturity)}</div></div>
+          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Invested" /></div><div className="text-xl font-bold mt-1">{inr(principal)}</div></div>
+          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Interest" /></div><div className="text-xl font-bold mt-1">{inr(interest)}</div></div>
+          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Maturity" /></div><div className="text-xl font-bold text-[var(--brand-yellow)] mt-1">{inr(maturity)}</div></div>
         </div>
         <div className="bg-white/5 rounded-md p-4">
           <Donut a={principal} b={interest} labelA="Principal" labelB="Interest" center={inr(maturity)} />
@@ -680,8 +690,8 @@ function SimpleCalc({ def }: { def: SimpleDef }) {
           <Icon className="h-5 w-5" />
         </div>
         <div>
-          <h3 className="text-xl font-semibold text-[var(--brand-black)]">{def.title}</h3>
-          <p className="text-xs text-muted-foreground">{def.desc}</p>
+          <h3 className="text-xl font-semibold text-[var(--brand-black)]"><Tx s={def.title} /></h3>
+          <p className="text-xs text-muted-foreground"><Tx s={def.desc} /></p>
         </div>
       </div>
       <div className="space-y-5">
@@ -702,7 +712,7 @@ function SimpleCalc({ def }: { def: SimpleDef }) {
             const isPrimary = r.label === result.primaryLabel;
             return (
               <div key={r.label}>
-                <div className="text-xs text-white/60 uppercase tracking-wider">{r.label}</div>
+                <div className="text-xs text-white/60 uppercase tracking-wider"><Tx s={r.label} /></div>
                 <div className={`text-xl font-bold mt-1 ${isPrimary ? "text-[var(--brand-yellow)]" : ""}`}>{r.value}</div>
               </div>
             );
@@ -1348,7 +1358,7 @@ function getSimple(id: string) {
 }
 
 function CalculatorsPage() {
-  const { t } = useI18n();
+  const { t, tEn } = useI18n();
   const [catId, setCatId] = useState(categories[0].id);
   const [calcKey, setCalcKey] = useState("emi"); // entry id from above lists
   const [scenarios, setScenarios] = useState<Scenario[]>([]);
@@ -1438,8 +1448,8 @@ function CalculatorsPage() {
                     onClick={() => selectResult(r)}
                     className="w-full text-left px-3 py-2 hover:bg-secondary flex justify-between items-center gap-3"
                   >
-                    <span className="text-sm text-foreground">{r.item.label}</span>
-                    <span className="text-xs text-muted-foreground">{r.catLabel}</span>
+                    <span className="text-sm text-foreground"><Tx s={r.item.label} /></span>
+                    <span className="text-xs text-muted-foreground"><Tx s={r.catLabel} /></span>
                   </button>
                 ))
               )}
@@ -1450,10 +1460,10 @@ function CalculatorsPage() {
         {/* Mobile category + calc dropdowns */}
         <div className="md:hidden mb-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
           <select value={catId} onChange={(e) => setCatId(e.target.value)} className="w-full border border-input rounded-md px-3 py-2 text-sm bg-background">
-            {categories.map((c) => <option key={c.id} value={c.id}>{c.label}</option>)}
+            {categories.map((c) => <option key={c.id} value={c.id}>{tEn(c.label)}</option>)}
           </select>
           <select value={calcKey} onChange={(e) => setCalcKey(e.target.value)} className="w-full border border-input rounded-md px-3 py-2 text-sm bg-background">
-            {cat.items.map((i) => <option key={i.id} value={i.id}>{i.label}</option>)}
+            {cat.items.map((i) => <option key={i.id} value={i.id}>{tEn(i.label)}</option>)}
           </select>
         </div>
 
@@ -1473,7 +1483,7 @@ function CalculatorsPage() {
                         : "border-transparent text-muted-foreground hover:bg-secondary/50"
                     }`}
                   >
-                    {c.label}
+                    {tEn(c.label)}
                   </button>
                 );
               })}
@@ -1495,7 +1505,7 @@ function CalculatorsPage() {
                         : "text-foreground hover:bg-secondary"
                     }`}
                   >
-                    {i.label}
+                    {tEn(i.label)}
                   </button>
                 );
               })}
