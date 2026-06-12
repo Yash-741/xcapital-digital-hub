@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { HeartPulse, ShieldCheck, FileText } from "lucide-react";
 import { SiteLayout, PageHeader, ProductCard } from "@/components/site/Layout";
+import { useI18n } from "@/lib/i18n";
 
 const slug = (s: string) => s.toLowerCase().replace(/\s+/g, "-");
 
@@ -19,18 +20,29 @@ export const Route = createFileRoute("/insurance")({
 });
 
 const items = [
-  { icon: HeartPulse, name: "Health Insurance", description: "Family floater plans with cashless treatment at 10,000+ hospitals." },
-  { icon: ShieldCheck, name: "Life Insurance", description: "Term and savings plans to secure your family's future." },
-  { icon: FileText, name: "Medical Claim", description: "Hassle-free claim assistance with 100% transparency." },
+  { icon: HeartPulse, slug: "health-insurance" },
+  { icon: ShieldCheck, slug: "life-insurance" },
+  { icon: FileText, slug: "medical-claim" },
 ];
 
 function InsurancePage() {
+  const { t } = useI18n();
   return (
     <SiteLayout>
-      <PageHeader eyebrow="Insurance" title="Protection for life's uncertainties" subtitle="Comprehensive cover backed by India's top insurers." />
+      <PageHeader eyebrow={t("insurance.header.eyebrow")} title={t("insurance.header.title")} subtitle={t("insurance.header.subtitle")} />
       <section className="container-x py-16">
         <div className="grid md:grid-cols-3 gap-6">
-          {items.map((i) => <ProductCard key={i.name} id={slug(i.name)} category="insurance" {...i} cta="Get Quote" />)}
+          {items.map((i) => (
+            <ProductCard
+              key={i.slug}
+              id={i.slug}
+              category="insurance"
+              icon={i.icon}
+              name={t(`insurance.product.${i.slug}.name`)}
+              description={t(`insurance.product.${i.slug}.desc`)}
+              cta={t("cta.getQuote")}
+            />
+          ))}
         </div>
       </section>
     </SiteLayout>
