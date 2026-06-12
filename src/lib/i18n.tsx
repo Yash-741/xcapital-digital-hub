@@ -236,6 +236,18 @@ const en: Dict = {
   "about.benefit.item.investors": "Investors",
   "about.benefit.item.business-owners": "Business Owners",
   "about.benefit.item.family-offices": "Family Offices",
+  // Footer extras
+  "footer.store.payment-merchant": "Payment & Merchant",
+  "footer.store.retail-billing": "Retail & Billing",
+  "footer.store.biometric-kyc": "Biometric & KYC",
+  "footer.store.banking-fintech": "Banking & Fintech",
+  "footer.store.security-surveillance": "Security & Surveillance",
+  "footer.store.office-infrastructure": "Office Infrastructure",
+  "footer.store.business-consumables": "Business Consumables",
+  "footer.company.about": "About Us",
+  "footer.company.vision": "Vision",
+  "footer.company.contact": "Contact",
+  "footer.company.careers": "Careers",
 };
 
 const hi: Dict = {
