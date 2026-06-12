@@ -5,6 +5,7 @@ import { Menu, X, ChevronDown, User, LogOut, Phone, Mail, Search } from "lucide-
 import logo from "@/assets/xcapital-logo.asset.json";
 import { supabase } from "@/integrations/supabase/client";
 import { SearchDialog } from "./SearchDialog";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 const loanLinks = [
   "Personal Loan", "Home Loan", "Business Loan", "Loans for Doctors",
@@ -200,6 +201,7 @@ export function Header() {
             >
               <Search className="h-4 w-4" aria-hidden="true" />
             </button>
+            <LanguageSwitcher />
             {signedIn ? (
               <button
                 type="button"
