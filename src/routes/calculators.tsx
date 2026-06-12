@@ -233,7 +233,7 @@ function ComparePanel({
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-border bg-secondary/40">
-              <th className="text-left px-4 py-3 font-semibold text-[var(--brand-black)] sticky left-0 bg-secondary/40">Metric</th>
+              <th className="text-left px-4 py-3 font-semibold text-[var(--brand-black)] sticky left-0 bg-secondary/40"><Tx s="Metric" /></th>
               {scenarios.map((s) => {
                 const isBest = s.id === bestId;
                 return (
@@ -247,7 +247,7 @@ function ComparePanel({
                         />
                         {isBest && (
                           <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[var(--brand-black)] mt-1">
-                            <Trophy className="h-3 w-3" /> BEST
+                            <Trophy className="h-3 w-3" /> <Tx s="BEST" />
                           </span>
                         )}
                       </div>
@@ -266,29 +266,29 @@ function ComparePanel({
           </thead>
           <tbody>
             <tr className="bg-secondary/20">
-              <td colSpan={scenarios.length + 1} className="px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Inputs</td>
+              <td colSpan={scenarios.length + 1} className="px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground"><Tx s="Inputs" /></td>
             </tr>
             {inputLabels.map((label) => (
               <tr key={label} className="border-t border-border">
-                <td className="px-4 py-2.5 text-muted-foreground sticky left-0 bg-card">{label}</td>
+                <td className="px-4 py-2.5 text-muted-foreground sticky left-0 bg-card"><Tx s={label} /></td>
                 {scenarios.map((s) => (
                   <td key={s.id} className={`px-4 py-2.5 text-[var(--brand-black)] ${s.id === bestId ? "bg-[var(--brand-yellow-soft)]/40" : ""}`}>
-                    {get(s, label, "inputs")}
+                    <Tx s={get(s, label, "inputs")} />
                   </td>
                 ))}
               </tr>
             ))}
             <tr className="bg-secondary/20">
-              <td colSpan={scenarios.length + 1} className="px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Outputs</td>
+              <td colSpan={scenarios.length + 1} className="px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground"><Tx s="Outputs" /></td>
             </tr>
             {outputLabels.map((label) => {
               const isPrimary = label === template.primary;
               return (
                 <tr key={label} className="border-t border-border">
-                  <td className={`px-4 py-2.5 sticky left-0 bg-card ${isPrimary ? "font-semibold text-[var(--brand-black)]" : "text-muted-foreground"}`}>{label}</td>
+                  <td className={`px-4 py-2.5 sticky left-0 bg-card ${isPrimary ? "font-semibold text-[var(--brand-black)]" : "text-muted-foreground"}`}><Tx s={label} /></td>
                   {scenarios.map((s) => (
                     <td key={s.id} className={`px-4 py-2.5 ${s.id === bestId ? "bg-[var(--brand-yellow-soft)]/40" : ""} ${isPrimary ? "font-bold text-[var(--brand-black)]" : "text-[var(--brand-black)]"}`}>
-                      {get(s, label, "outputs")}
+                      <Tx s={get(s, label, "outputs")} />
                     </td>
                   ))}
                 </tr>
