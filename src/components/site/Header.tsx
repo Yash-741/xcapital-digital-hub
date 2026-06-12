@@ -6,6 +6,7 @@ import logo from "@/assets/xcapital-logo.asset.json";
 import { supabase } from "@/integrations/supabase/client";
 import { SearchDialog } from "./SearchDialog";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { useI18n } from "@/lib/i18n";
 
 const loanLinks = [
   "Personal Loan", "Home Loan", "Business Loan", "Loans for Doctors",
@@ -61,6 +62,7 @@ export function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const { t } = useI18n();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setSignedIn(!!data.session));
@@ -175,7 +177,7 @@ export function Header() {
                   <Phone className="h-4 w-4" />
                 </span>
                 <span aria-hidden="true" className="leading-tight">
-                  <span className="block text-[10px] uppercase tracking-wider text-muted-foreground">Call us</span>
+                  <span className="block text-[10px] uppercase tracking-wider text-muted-foreground">{t("actions.callUs")}</span>
                   <span className="block font-semibold">+91 88791 09148</span>
                 </span>
               </a>
@@ -188,7 +190,7 @@ export function Header() {
                   <Mail className="h-4 w-4" />
                 </span>
                 <span aria-hidden="true" className="leading-tight">
-                  <span className="block text-[10px] uppercase tracking-wider text-muted-foreground">Email</span>
+                  <span className="block text-[10px] uppercase tracking-wider text-muted-foreground">{t("actions.email")}</span>
                   <span className="block font-semibold">info@xcapital.co.in</span>
                 </span>
               </a>
@@ -209,7 +211,7 @@ export function Header() {
                 className="inline-flex items-center gap-2 rounded-full px-4 md:px-5 py-2.5 text-sm font-semibold text-[var(--brand-black)] bg-[var(--brand-yellow)] hover:brightness-105 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-black)] focus-visible:ring-offset-2"
                 aria-label="Sign out"
               >
-                <LogOut className="h-4 w-4" aria-hidden="true" /> <span className="hidden sm:inline">Sign out</span><span className="sm:hidden" aria-hidden="true">Out</span>
+                <LogOut className="h-4 w-4" aria-hidden="true" /> <span className="hidden sm:inline">{t("actions.signOut")}</span><span className="sm:hidden" aria-hidden="true">{t("actions.signOut")}</span>
               </button>
             ) : (
               <Link
@@ -217,7 +219,7 @@ export function Header() {
                 className="inline-flex items-center gap-2 rounded-full px-4 md:px-5 py-2.5 text-sm font-semibold text-[var(--brand-black)] bg-[var(--brand-yellow)] hover:brightness-105 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-black)] focus-visible:ring-offset-2"
                 aria-label="Register or Login"
               >
-                <User className="h-4 w-4" aria-hidden="true" /> <span className="hidden sm:inline">Register / Login</span><span className="sm:hidden" aria-hidden="true">Login</span>
+                <User className="h-4 w-4" aria-hidden="true" /> <span className="hidden sm:inline">{t("actions.login")}</span><span className="sm:hidden" aria-hidden="true">{t("actions.loginShort")}</span>
               </Link>
             )}
           </div>
@@ -228,22 +230,22 @@ export function Header() {
       <nav aria-label="Primary" className="hidden lg:block bg-[var(--brand-black)]">
         <div className="container-x flex items-center justify-center">
           <Link to="/" className={`relative px-4 py-3 text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-yellow)] rounded-sm ${pathname === "/" && !activeSection ? "text-[var(--brand-yellow)]" : "text-white hover:text-[var(--brand-yellow)]"}`}>
-            Home
+            {t("nav.home")}
             {pathname === "/" && !activeSection && (
               <span aria-hidden="true" className="absolute left-3 right-3 -bottom-px h-[3px] rounded-t bg-[var(--brand-yellow)]" />
             )}
           </Link>
-          <Dropdown label="Investments" items={investmentLinks} to="/investments" active={isActive("investments", "/investments")} />
-          <Dropdown label="Loans" items={loanLinks} to="/loans" active={isActive("loans", "/loans")} />
-          <Dropdown label="Insurance" items={insuranceLinks} to="/insurance" active={isActive("insurance", "/insurance")} />
+          <Dropdown label={t("nav.investments")} items={investmentLinks} to="/investments" active={isActive("investments", "/investments")} />
+          <Dropdown label={t("nav.loans")} items={loanLinks} to="/loans" active={isActive("loans", "/loans")} />
+          <Dropdown label={t("nav.insurance")} items={insuranceLinks} to="/insurance" active={isActive("insurance", "/insurance")} />
           <Link to="/calculators" className={`relative px-4 py-3 text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-yellow)] rounded-sm ${isActive("calculators", "/calculators") ? "text-[var(--brand-yellow)]" : "text-white hover:text-[var(--brand-yellow)]"}`}>
-            Calculators
+            {t("nav.calculators")}
             {isActive("calculators", "/calculators") && (
               <span aria-hidden="true" className="absolute left-3 right-3 -bottom-px h-[3px] rounded-t bg-[var(--brand-yellow)]" />
             )}
           </Link>
-          <Link to="/store" className="px-4 py-3 text-sm font-medium text-white hover:text-[var(--brand-yellow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-yellow)] rounded-sm">Store</Link>
-          <Dropdown label="About" items={aboutLinks} to="/about" active={isActive("about", "/about")} />
+          <Link to="/store" className="px-4 py-3 text-sm font-medium text-white hover:text-[var(--brand-yellow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-yellow)] rounded-sm">{t("nav.store")}</Link>
+          <Dropdown label={t("nav.about")} items={aboutLinks} to="/about" active={isActive("about", "/about")} />
         </div>
       </nav>
 
@@ -251,13 +253,13 @@ export function Header() {
         <nav id="mobile-nav" aria-label="Mobile" className="lg:hidden bg-[var(--brand-black)] border-t border-white/10">
           <div className="container-x py-3 flex flex-col gap-1">
             {[
-              ["Home", "/"],
-              ["Investments", "/investments"],
-              ["Loans", "/loans"],
-              ["Insurance", "/insurance"],
-              ["Calculators", "/calculators"],
-              ["Store", "/store"],
-              ["About", "/about"],
+              [t("nav.home"), "/"],
+              [t("nav.investments"), "/investments"],
+              [t("nav.loans"), "/loans"],
+              [t("nav.insurance"), "/insurance"],
+              [t("nav.calculators"), "/calculators"],
+              [t("nav.store"), "/store"],
+              [t("nav.about"), "/about"],
             ].map(([label, to]) => (
               <Link
                 key={to}
