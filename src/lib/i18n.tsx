@@ -1485,6 +1485,9 @@ const commonHi: Dict = {
   "Wi-Fi Routers": "वाई-फाई राउटर",
   "Barcode Labels": "बारकोड लेबल",
   "Printer Toners": "प्रिंटर टोनर",
+  "I'd like a quote for": "मुझे इसके लिए कोटेशन चाहिए",
+  "Share a few details and our team will reach out within one business day.": "कुछ विवरण साझा करें, हमारी टीम एक कार्यदिवस के भीतर संपर्क करेगी.",
+  "Sending…": "भेजा जा रहा है…",
 };
 
 const commonMr: Dict = {
