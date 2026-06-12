@@ -509,8 +509,8 @@ function SIPCalculator({ onSave }: { onSave: SaveFn }) {
           <TrendingUp className="h-5 w-5" />
         </div>
         <div>
-          <h3 className="text-xl font-semibold text-[var(--brand-black)]">SIP Calculator</h3>
-          <p className="text-xs text-muted-foreground">Project your mutual-fund SIP returns</p>
+          <h3 className="text-xl font-semibold text-[var(--brand-black)]"><Tx s="SIP Calculator" /></h3>
+          <p className="text-xs text-muted-foreground"><Tx s="Project your mutual-fund SIP returns" /></p>
         </div>
       </div>
       <div className="space-y-5">
@@ -520,9 +520,9 @@ function SIPCalculator({ onSave }: { onSave: SaveFn }) {
       </div>
       <div className="mt-7 bg-[var(--brand-black)] text-white rounded-lg p-6">
         <div className="grid grid-cols-3 gap-4 text-center mb-6">
-          <div><div className="text-xs text-white/60 uppercase tracking-wider">Invested</div><div className="text-xl font-bold mt-1">{inr(invested)}</div></div>
-          <div><div className="text-xs text-white/60 uppercase tracking-wider">Est. Returns</div><div className="text-xl font-bold mt-1">{inr(gains)}</div></div>
-          <div><div className="text-xs text-white/60 uppercase tracking-wider">Maturity</div><div className="text-xl font-bold text-[var(--brand-yellow)] mt-1">{inr(maturity)}</div></div>
+          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Invested" /></div><div className="text-xl font-bold mt-1">{inr(invested)}</div></div>
+          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Est. Returns" /></div><div className="text-xl font-bold mt-1">{inr(gains)}</div></div>
+          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Maturity" /></div><div className="text-xl font-bold text-[var(--brand-yellow)] mt-1">{inr(maturity)}</div></div>
         </div>
         <div className="bg-white/5 rounded-md p-4">
           <Donut a={invested} b={gains} labelA="Invested" labelB="Est. Returns" center={inr(maturity)} />
@@ -569,8 +569,8 @@ function LumpsumCalculator({ onSave }: { onSave: SaveFn }) {
           <Wallet className="h-5 w-5" />
         </div>
         <div>
-          <h3 className="text-xl font-semibold text-[var(--brand-black)]">Lumpsum Calculator</h3>
-          <p className="text-xs text-muted-foreground">One-time investment growth</p>
+          <h3 className="text-xl font-semibold text-[var(--brand-black)]"><Tx s="Lumpsum Calculator" /></h3>
+          <p className="text-xs text-muted-foreground"><Tx s="One-time investment growth" /></p>
         </div>
       </div>
       <div className="space-y-5">
@@ -580,9 +580,9 @@ function LumpsumCalculator({ onSave }: { onSave: SaveFn }) {
       </div>
       <div className="mt-7 bg-[var(--brand-black)] text-white rounded-lg p-6">
         <div className="grid grid-cols-3 gap-4 text-center mb-6">
-          <div><div className="text-xs text-white/60 uppercase tracking-wider">Invested</div><div className="text-xl font-bold mt-1">{inr(principal)}</div></div>
-          <div><div className="text-xs text-white/60 uppercase tracking-wider">Est. Returns</div><div className="text-xl font-bold mt-1">{inr(gains)}</div></div>
-          <div><div className="text-xs text-white/60 uppercase tracking-wider">Maturity</div><div className="text-xl font-bold text-[var(--brand-yellow)] mt-1">{inr(maturity)}</div></div>
+          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Invested" /></div><div className="text-xl font-bold mt-1">{inr(principal)}</div></div>
+          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Est. Returns" /></div><div className="text-xl font-bold mt-1">{inr(gains)}</div></div>
+          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Maturity" /></div><div className="text-xl font-bold text-[var(--brand-yellow)] mt-1">{inr(maturity)}</div></div>
         </div>
         <div className="bg-white/5 rounded-md p-4">
           <Donut a={principal} b={gains} labelA="Invested" labelB="Est. Returns" center={inr(maturity)} />
@@ -630,8 +630,8 @@ function FDCalculator({ onSave }: { onSave: SaveFn }) {
           <PiggyBank className="h-5 w-5" />
         </div>
         <div>
-          <h3 className="text-xl font-semibold text-[var(--brand-black)]">Fixed Deposit Calculator</h3>
-          <p className="text-xs text-muted-foreground">Quarterly compounding maturity value</p>
+          <h3 className="text-xl font-semibold text-[var(--brand-black)]"><Tx s="Fixed Deposit Calculator" /></h3>
+          <p className="text-xs text-muted-foreground"><Tx s="Quarterly compounding maturity value" /></p>
         </div>
       </div>
       <div className="space-y-5">
@@ -641,9 +641,9 @@ function FDCalculator({ onSave }: { onSave: SaveFn }) {
       </div>
       <div className="mt-7 bg-[var(--brand-black)] text-white rounded-lg p-6">
         <div className="grid grid-cols-3 gap-4 text-center mb-6">
-          <div><div className="text-xs text-white/60 uppercase tracking-wider">Invested</div><div className="text-xl font-bold mt-1">{inr(principal)}</div></div>
-          <div><div className="text-xs text-white/60 uppercase tracking-wider">Interest</div><div className="text-xl font-bold mt-1">{inr(interest)}</div></div>
-          <div><div className="text-xs text-white/60 uppercase tracking-wider">Maturity</div><div className="text-xl font-bold text-[var(--brand-yellow)] mt-1">{inr(maturity)}</div></div>
+          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Invested" /></div><div className="text-xl font-bold mt-1">{inr(principal)}</div></div>
+          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Interest" /></div><div className="text-xl font-bold mt-1">{inr(interest)}</div></div>
+          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Maturity" /></div><div className="text-xl font-bold text-[var(--brand-yellow)] mt-1">{inr(maturity)}</div></div>
         </div>
         <div className="bg-white/5 rounded-md p-4">
           <Donut a={principal} b={interest} labelA="Principal" labelB="Interest" center={inr(maturity)} />
