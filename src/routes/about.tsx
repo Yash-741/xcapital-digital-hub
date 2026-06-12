@@ -472,24 +472,22 @@ function AboutPage() {
                 <div className="h-14 w-14 rounded-full bg-green-100 text-green-700 grid place-items-center mb-4">
                   <CheckCircle className="h-7 w-7" />
                 </div>
-                <h3 className="text-xl font-bold text-[var(--brand-black)]">Application Received</h3>
-                <p className="text-sm text-muted-foreground mt-2 max-w-sm">
-                  Thank you for applying to X Capital. Our team will review your profile and get back to you soon.
-                </p>
+                <h3 className="text-xl font-bold text-[var(--brand-black)]">{t("about.apply.success.title")}</h3>
+                <p className="text-sm text-muted-foreground mt-2 max-w-sm">{t("about.apply.success.body")}</p>
                 <button
                   onClick={() => setAppSubmitted(false)}
                   className="mt-6 text-sm font-semibold text-[var(--brand-black)] hover:text-amber-700"
                 >
-                  Submit another application →
+                  {t("about.apply.success.again")}
                 </button>
               </div>
             ) : (
               <form onSubmit={onApplicationSubmit} noValidate className="bg-card border border-border rounded-xl p-7 shadow-card space-y-4">
                 {([
-                  { k: "candidateName", placeholder: "Candidate Name", type: "text", icon: UserIcon, maxLength: 100 },
-                  { k: "email", placeholder: "Email", type: "email", icon: Mail, maxLength: 255 },
-                  { k: "contactNumber", placeholder: "Contact Number (10-digit mobile)", type: "tel", icon: Phone, maxLength: 15 },
-                  { k: "education", placeholder: "Highest Education (e.g. MBA Finance, B.Com)", type: "text", icon: GraduationCap, maxLength: 150 },
+                  { k: "candidateName", placeholder: t("about.apply.placeholder.name"), type: "text", icon: UserIcon, maxLength: 100 },
+                  { k: "email", placeholder: t("about.apply.placeholder.email"), type: "email", icon: Mail, maxLength: 255 },
+                  { k: "contactNumber", placeholder: t("about.apply.placeholder.phone"), type: "tel", icon: Phone, maxLength: 15 },
+                  { k: "education", placeholder: t("about.apply.placeholder.edu"), type: "text", icon: GraduationCap, maxLength: 150 },
                 ] as const).map(({ k, placeholder, type, icon: Icon, maxLength }) => (
                   <div key={k}>
                     <div className={`flex items-center gap-2 rounded-md border bg-background px-3 ${appErrors[k] ? "border-red-500" : "border-input"}`}>
@@ -515,11 +513,9 @@ function AboutPage() {
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="text-sm font-semibold text-[var(--brand-black)]">
-                        {resume ? resume.name : "Attach your resume"}
+                        {resume ? resume.name : t("about.apply.resume.attach")}
                       </div>
-                      <div className="text-xs text-muted-foreground mt-0.5">
-                        PDF, DOC or DOCX · Max 5MB
-                      </div>
+                      <div className="text-xs text-muted-foreground mt-0.5">{t("about.apply.resume.hint")}</div>
                     </div>
                     <input
                       type="file"
@@ -538,7 +534,7 @@ function AboutPage() {
                   type="submit"
                   className="w-full bg-[var(--brand-yellow)] text-[var(--brand-black)] font-semibold py-3 rounded-md hover:brightness-110"
                 >
-                  Submit Application
+                  {t("about.apply.submit")}
                 </button>
               </form>
             )}
