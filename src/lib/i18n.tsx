@@ -1607,6 +1607,24 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     if (typeof window !== "undefined") {
       localStorage.setItem(STORAGE_KEY, l);
       document.documentElement.lang = l;
+      applyGoogleTranslate(l);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const saved = (localStorage.getItem(STORAGE_KEY) as Lang) || "en";
+    if (saved !== "en") {
+      // Wait until the Google widget injects .goog-te-combo, then apply.
+      let tries = 0;
+      const id = window.setInterval(() => {
+        tries += 1;
+        if (document.querySelector(".goog-te-combo") || tries > 40) {
+          window.clearInterval(id);
+          applyGoogleTranslate(saved);
+        }
+      }, 250);
+      return () => window.clearInterval(id);
     }
   }, []);
 
