@@ -1,8 +1,10 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { useState } from "react";
 import { ArrowLeft, Check, Phone, Mail } from "lucide-react";
 import { SiteLayout } from "@/components/site/Layout";
 import { findProduct, type Product } from "@/lib/store-products";
 import { useI18n } from "@/lib/i18n";
+import { StoreEnquiryDialog } from "@/components/site/StoreEnquiryDialog";
 
 export const Route = createFileRoute("/store/$productId")({
   loader: ({ params }) => {
@@ -58,6 +60,7 @@ function ErrorView({ error, reset }: { error: Error; reset: () => void }) {
 function ProductPage() {
   const { product, category, sub } = Route.useLoaderData();
   const { tEn } = useI18n();
+  const [enquiryOpen, setEnquiryOpen] = useState(false);
   const Icon = product.icon;
   const related = sub.items.filter((i: Product) => i.slug !== product.slug).slice(0, 6);
 
@@ -84,9 +87,13 @@ function ProductPage() {
             <h1 className="text-3xl md:text-4xl font-bold text-[var(--brand-black)] mt-1">{tEn(product.name)}</h1>
             <p className="mt-3 text-muted-foreground max-w-2xl leading-relaxed">{tEn(product.description)}</p>
             <div className="mt-5 flex flex-wrap gap-3">
-              <Link to="/about" hash="reach-us" className="inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold text-[var(--brand-black)] bg-[var(--brand-yellow)] hover:brightness-105 transition">
+              <button
+                type="button"
+                onClick={() => setEnquiryOpen(true)}
+                className="inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold text-[var(--brand-black)] bg-[var(--brand-yellow)] hover:brightness-105 transition"
+              >
                 {tEn("Request a Quote")}
-              </Link>
+              </button>
               <a href="tel:+918879109148" className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold border border-border bg-white hover:border-[var(--brand-yellow)] transition">
                 <Phone className="h-4 w-4" /> +91 88791 09148
               </a>
@@ -159,6 +166,13 @@ function ProductPage() {
           <ArrowLeft className="h-4 w-4" /> {tEn("Back to Store")}
         </Link>
       </section>
+
+      <StoreEnquiryDialog
+        open={enquiryOpen}
+        onOpenChange={setEnquiryOpen}
+        productName={product.name}
+        categoryName={category.title}
+      />
     </SiteLayout>
   );
 }
