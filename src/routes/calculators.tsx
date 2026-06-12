@@ -152,7 +152,7 @@ function SaveScenarioButton({ onClick }: { onClick: () => void }) {
       onClick={onClick}
       className="mt-5 w-full inline-flex items-center justify-center gap-2 bg-[var(--brand-yellow)] text-[var(--brand-black)] font-semibold py-2.5 rounded-md hover:brightness-110 transition"
     >
-      <Plus className="h-4 w-4" /> Save scenario to compare
+      <Plus className="h-4 w-4" /> <Tx s="Save scenario to compare" />
     </button>
   );
 }
@@ -168,9 +168,9 @@ function ComparePanel({
   if (scenarios.length === 0) {
     return (
       <div className="mt-8 border border-dashed border-border rounded-xl p-8 text-center bg-secondary/30">
-        <h4 className="font-semibold text-[var(--brand-black)]">Compare scenarios side-by-side</h4>
+        <h4 className="font-semibold text-[var(--brand-black)]"><Tx s="Compare scenarios side-by-side" /></h4>
         <p className="text-sm text-muted-foreground mt-2 max-w-md mx-auto">
-          Tweak the inputs above and tap <span className="font-semibold text-[var(--brand-black)]">Save scenario</span> to add it here. You can save as many as you'd like, then pick the one that works best.
+          <Tx s="Tweak the inputs above and tap" /> <span className="font-semibold text-[var(--brand-black)]"><Tx s="Save scenario" /></span> <Tx s="to add it here. You can save as many as you'd like, then pick the one that works best." />
         </p>
       </div>
     );
@@ -195,17 +195,17 @@ function ComparePanel({
       <div className="flex items-center justify-between mb-4">
         <div>
           <h4 className="text-lg font-bold text-[var(--brand-black)]">
-            Comparison <span className="text-muted-foreground font-normal">({scenarios.length})</span>
+            <Tx s="Comparison" /> <span className="text-muted-foreground font-normal">({scenarios.length})</span>
           </h4>
           <p className="text-xs text-muted-foreground">
-            Best scenario for <span className="font-semibold text-[var(--brand-black)]">{template.primary}</span> is highlighted.
+            <Tx s="Best scenario for" /> <span className="font-semibold text-[var(--brand-black)]"><Tx s={template.primary} /></span> <Tx s="is highlighted." />
           </p>
         </div>
         <button
           onClick={onClear}
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-red-600"
         >
-          <Trash2 className="h-3.5 w-3.5" /> Clear all
+          <Trash2 className="h-3.5 w-3.5" /> <Tx s="Clear all" />
         </button>
       </div>
 
