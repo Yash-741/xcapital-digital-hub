@@ -1425,8 +1425,6 @@ const commonHi: Dict = {
   "Sakinaka, Andheri East,": "साकीनाका, अंधेरी ईस्ट,",
   "Mumbai 400072": "मुंबई 400072",
   // Store individual product names
-  "Android POS": "एंड्रॉइड POS",
-  "Wireless POS": "वायरलेस POS",
   "Countertop POS": "काउंटरटॉप POS",
   "Smart POS": "स्मार्ट POS",
   "Wi-Fi Soundbox": "वाई-फाई साउंडबॉक्स",
@@ -1438,7 +1436,6 @@ const commonHi: Dict = {
   "Card Readers": "कार्ड रीडर",
   "Tap-to-Pay Devices": "टैप-टू-पे डिवाइस",
   "NFC Payment Devices": "NFC पेमेंट डिवाइस",
-  "Billing Software": "बिलिंग सॉफ्टवेयर",
   "Android Billing Machine": "एंड्रॉइड बिलिंग मशीन",
   "Barcode Scanner": "बारकोड स्कैनर",
   "Receipt Printer": "रसीद प्रिंटर",
@@ -1449,7 +1446,6 @@ const commonHi: Dict = {
   "Fingerprint Scanner": "फिंगरप्रिंट स्कैनर",
   "Face Recognition": "फेस रिकग्निशन",
   "Aadhaar Auth Device": "आधार ऑथ डिवाइस",
-  "eKYC Device": "eKYC डिवाइस",
   "Attendance Machine": "अटेंडेंस मशीन",
   "Customer Verification": "ग्राहक सत्यापन",
   "Micro ATM": "माइक्रो ATM",
@@ -1472,10 +1468,8 @@ const commonHi: Dict = {
   "Networking Equipment": "नेटवर्किंग उपकरण",
   "UPS System": "UPS सिस्टम",
   "Thermal Paper Roll": "थर्मल पेपर रोल",
-  "Printer Ink": "प्रिंटर इंक",
   "Printer Toner": "प्रिंटर टोनर",
   "Packaging Material": "पैकेजिंग सामग्री",
-  "Office Stationery": "ऑफिस स्टेशनरी",
 };
 
 const commonMr: Dict = {
