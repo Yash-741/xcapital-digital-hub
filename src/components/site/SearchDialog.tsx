@@ -4,6 +4,7 @@ import { Search } from "lucide-react";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
 } from "@/components/ui/dialog";
+import { useI18n } from "@/lib/i18n";
 
 type Entry = { label: string; category: string; to: string; hash?: string };
 
@@ -81,6 +82,7 @@ export function SearchDialog({ open, onOpenChange }: { open: boolean; onOpenChan
   const [q, setQ] = useState("");
   const [active, setActive] = useState(0);
   const navigate = useNavigate();
+  const { tEn } = useI18n();
 
   useEffect(() => { if (!open) { setQ(""); setActive(0); } }, [open]);
 
@@ -108,8 +110,8 @@ export function SearchDialog({ open, onOpenChange }: { open: boolean; onOpenChan
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="p-0 gap-0 max-w-xl overflow-hidden">
         <DialogHeader className="sr-only">
-          <DialogTitle>Search XCapital</DialogTitle>
-          <DialogDescription>Search loans, investments, insurance, calculators and store products.</DialogDescription>
+          <DialogTitle>{tEn("Search XCapital")}</DialogTitle>
+          <DialogDescription>{tEn("Search loans, investments, insurance, calculators and store products.")}</DialogDescription>
         </DialogHeader>
         <div className="flex items-center gap-3 px-4 py-3 border-b">
           <Search className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
@@ -122,8 +124,8 @@ export function SearchDialog({ open, onOpenChange }: { open: boolean; onOpenChan
               else if (e.key === "ArrowUp") { e.preventDefault(); setActive((a) => Math.max(a - 1, 0)); }
               else if (e.key === "Enter" && results[active]) { e.preventDefault(); go(results[active]); }
             }}
-            placeholder="Search loans, FDs, insurance, calculators, store…"
-            aria-label="Search query"
+            placeholder={tEn("Search loans, FDs, insurance, calculators, store…")}
+            aria-label={tEn("Search query")}
             className="flex-1 bg-transparent outline-none text-sm placeholder:text-muted-foreground"
           />
           <kbd className="hidden sm:inline-flex items-center rounded border px-1.5 py-0.5 text-[10px] font-mono text-muted-foreground">Esc</kbd>
@@ -131,10 +133,10 @@ export function SearchDialog({ open, onOpenChange }: { open: boolean; onOpenChan
         <div className="max-h-80 overflow-y-auto py-2" role="listbox">
           {q.trim() === "" ? (
             <p className="px-4 py-6 text-sm text-muted-foreground text-center">
-              Try "personal loan", "EMI", "POS", "health insurance"…
+              {tEn("Try \"personal loan\", \"EMI\", \"POS\", \"health insurance\"…")}
             </p>
           ) : results.length === 0 ? (
-            <p className="px-4 py-6 text-sm text-muted-foreground text-center">No results for "{q}".</p>
+            <p className="px-4 py-6 text-sm text-muted-foreground text-center">{tEn("No results for")} "{q}".</p>
           ) : (
             results.map((r, i) => (
               <button
@@ -147,8 +149,8 @@ export function SearchDialog({ open, onOpenChange }: { open: boolean; onOpenChan
                   i === active ? "bg-[var(--brand-yellow-soft)] text-[var(--brand-black)]" : "hover:bg-muted"
                 }`}
               >
-                <span className="font-medium">{r.label}</span>
-                <span className="text-[11px] uppercase tracking-wider text-muted-foreground">{r.category}</span>
+                <span className="font-medium">{tEn(r.label)}</span>
+                <span className="text-[11px] uppercase tracking-wider text-muted-foreground">{tEn(r.category)}</span>
               </button>
             ))
           )}
