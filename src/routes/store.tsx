@@ -90,7 +90,19 @@ function StorePage() {
               <div className="space-y-6">
                 {cat.subs.map((sub) => (
                   <div key={sub.name} className="bg-white rounded-lg shadow-card border-b-[3px] border-[var(--brand-yellow)] p-5">
-                    <h3 className="text-sm font-bold text-[var(--brand-black)] uppercase tracking-wide mb-4">{tEn(sub.name)}</h3>
+                    <div className="flex items-center justify-between gap-3 mb-4">
+                      <h3 className="text-sm font-bold text-[var(--brand-black)] uppercase tracking-wide">{tEn(sub.name)}</h3>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setEnquiryCtx({ productName: sub.name, categoryName: cat.title });
+                          setEnquiryOpen(true);
+                        }}
+                        className="shrink-0 inline-flex items-center justify-center rounded-full px-3 py-1 text-[11px] font-semibold text-[var(--brand-black)] bg-[var(--brand-yellow)] hover:brightness-105 transition"
+                      >
+                        {tEn("Enquire")}
+                      </button>
+                    </div>
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
                       {(sub.items ?? []).map((it) => {
                         const Icon = it.icon;
