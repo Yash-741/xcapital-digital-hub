@@ -1358,7 +1358,7 @@ function getSimple(id: string) {
 }
 
 function CalculatorsPage() {
-  const { t } = useI18n();
+  const { t, tEn } = useI18n();
   const [catId, setCatId] = useState(categories[0].id);
   const [calcKey, setCalcKey] = useState("emi"); // entry id from above lists
   const [scenarios, setScenarios] = useState<Scenario[]>([]);
