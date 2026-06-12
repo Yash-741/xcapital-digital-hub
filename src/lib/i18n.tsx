@@ -476,6 +476,17 @@ const hi: Dict = {
   "about.benefit.item.investors": "निवेशक",
   "about.benefit.item.business-owners": "व्यवसाय मालिक",
   "about.benefit.item.family-offices": "फ़ैमिली ऑफ़िस",
+  "footer.store.payment-merchant": "पेमेंट और मर्चेंट",
+  "footer.store.retail-billing": "रिटेल और बिलिंग",
+  "footer.store.biometric-kyc": "बायोमेट्रिक और KYC",
+  "footer.store.banking-fintech": "बैंकिंग और फिनटेक",
+  "footer.store.security-surveillance": "सुरक्षा और निगरानी",
+  "footer.store.office-infrastructure": "ऑफ़िस इन्फ्रास्ट्रक्चर",
+  "footer.store.business-consumables": "व्यवसाय उपभोग्य वस्तुएँ",
+  "footer.company.about": "हमारे बारे में",
+  "footer.company.vision": "विज़न",
+  "footer.company.contact": "संपर्क",
+  "footer.company.careers": "करियर",
 };
 
 const mr: Dict = {
