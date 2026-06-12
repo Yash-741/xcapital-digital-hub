@@ -95,7 +95,7 @@ function Donut({ a, b, labelA, labelB, center }: {
         </svg>
         <div className="absolute inset-0 grid place-items-center text-center">
           <div>
-            <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Total</div>
+            <div className="text-[10px] uppercase tracking-wider text-muted-foreground"><DonutTotal/></div>
             <div className="text-sm font-bold text-[var(--brand-black)]">{center}</div>
           </div>
         </div>
@@ -103,17 +103,27 @@ function Donut({ a, b, labelA, labelB, center }: {
       <ul className="text-sm space-y-2">
         <li className="flex items-center gap-2">
           <span className="h-3 w-3 rounded-sm bg-[var(--brand-black)]" />
-          <span className="text-muted-foreground">{labelA}</span>
+          <span className="text-muted-foreground"><Tx s={labelA}/></span>
           <span className="ml-auto font-semibold text-[var(--brand-black)]">{inr(a)}</span>
         </li>
         <li className="flex items-center gap-2">
           <span className="h-3 w-3 rounded-sm bg-[var(--brand-yellow)]" />
-          <span className="text-muted-foreground">{labelB}</span>
+          <span className="text-muted-foreground"><Tx s={labelB}/></span>
           <span className="ml-auto font-semibold text-[var(--brand-black)]">{inr(b)}</span>
         </li>
       </ul>
     </div>
   );
+}
+
+/** Tiny helper components that translate-by-English at render time. */
+function Tx({ s }: { s: string }) {
+  const { tEn } = useI18n();
+  return <>{tEn(s)}</>;
+}
+function DonutTotal() {
+  const { tEn } = useI18n();
+  return <>{tEn("Total")}</>;
 }
 
 /* ---------------- Scenarios ---------------- */
