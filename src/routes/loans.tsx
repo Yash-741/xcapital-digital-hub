@@ -6,8 +6,6 @@ import {
 import { SiteLayout, PageHeader, ProductCard } from "@/components/site/Layout";
 import { useI18n } from "@/lib/i18n";
 
-const slug = (s: string) => s.toLowerCase().replace(/\s+/g, "-");
-
 export const Route = createFileRoute("/loans")({
   head: () => ({
     meta: [
