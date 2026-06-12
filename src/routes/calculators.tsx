@@ -7,6 +7,7 @@ import {
   PieChart, BadgeIndianRupee, Banknote, HandCoins, Sigma, ShieldCheck, Search,
 } from "lucide-react";
 import { SiteLayout, PageHeader } from "@/components/site/Layout";
+import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/calculators")({
   head: () => ({
