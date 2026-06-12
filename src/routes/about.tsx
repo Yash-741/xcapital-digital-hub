@@ -9,6 +9,7 @@ import {
   GraduationCap, Upload, User as UserIcon,
 } from "lucide-react";
 import { SiteLayout, PageHeader } from "@/components/site/Layout";
+import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -25,10 +26,10 @@ export const Route = createFileRoute("/about")({
 });
 
 const careerPerks = [
-  { icon: Sparkles, title: "Growth & Learning", desc: "Continuous learning, mentorship and clear career progression across functions." },
-  { icon: Users, title: "Collaborative Culture", desc: "A respectful, transparent and team-first environment where ideas matter." },
-  { icon: Handshake, title: "Meaningful Work", desc: "Help businesses, professionals and families access smarter financial solutions." },
-  { icon: ShieldCheck, title: "Stability & Trust", desc: "Work with an established advisory firm backed by leading institutional partners." },
+  { icon: Sparkles, key: "1" },
+  { icon: Users, key: "2" },
+  { icon: Handshake, key: "3" },
+  { icon: ShieldCheck, key: "4" },
 ];
 
 const applicationSchema = z.object({
@@ -45,49 +46,33 @@ type ApplicationForm = z.infer<typeof applicationSchema>;
 type ApplicationErrors = Partial<Record<keyof ApplicationForm | "resume", string>>;
 
 const steps = [
-  { icon: Search, title: "Understand Your Requirement", desc: "We start by understanding your financial requirement, business profile, banking profile and existing liabilities." },
-  { icon: FileCheck, title: "Analyze Eligibility", desc: "Our team reviews your financial documents, credit profile, banking history and loan requirement." },
-  { icon: Building2, title: "Identify Suitable Institutions", desc: "We compare banks, NBFCs and financial institutions to identify the most suitable option." },
-  { icon: FileText, title: "Application & Documentation", desc: "We assist with documentation, application submission, follow-up and coordination." },
-  { icon: CheckCircle2, title: "Approval & Disbursement", desc: "We coordinate with lenders until successful approval and disbursement." },
-  { icon: RefreshCw, title: "Ongoing Relationship Support", desc: "Continued support for renewals, enhancements, additional facilities and treasury solutions." },
+  { icon: Search, key: "1" },
+  { icon: FileCheck, key: "2" },
+  { icon: Building2, key: "3" },
+  { icon: FileText, key: "4" },
+  { icon: CheckCircle2, key: "5" },
+  { icon: RefreshCw, key: "6" },
 ];
 
 const whyChoose = [
-  { icon: Building2, title: "Access to Multiple Institutions", desc: "Evaluate options across leading banks and NBFCs instead of approaching a single lender." },
-  { icon: Clock, title: "Time Saving", desc: "No need to visit multiple branches or institutions — we handle the legwork." },
-  { icon: Sparkles, title: "Expert Guidance", desc: "We help you understand available options and navigate the process with clarity." },
-  { icon: Handshake, title: "Faster Coordination", desc: "We coordinate documentation and communication efficiently end-to-end." },
-  { icon: Users, title: "Relationship Driven", desc: "We focus on long-term partnerships rather than one-time transactions." },
-  { icon: ShieldCheck, title: "Transparency", desc: "Ethical, transparent business practices at every stage of engagement." },
+  { icon: Building2, key: "1" },
+  { icon: Clock, key: "2" },
+  { icon: Sparkles, key: "3" },
+  { icon: Handshake, key: "4" },
+  { icon: Users, key: "5" },
+  { icon: ShieldCheck, key: "6" },
 ];
 
 const beneficiaries = [
-  { title: "Businesses", items: ["SMEs", "Manufacturers", "Traders", "Retailers", "Service Providers"] },
-  { title: "Professionals", items: ["Doctors", "Chartered Accountants", "Architects", "Consultants"] },
-  { title: "Individuals", items: ["Salaried Professionals", "Self-Employed", "Property Owners"] },
-  { title: "HNIs", items: ["Investors", "Business Owners", "Family Offices"] },
+  { key: "1", items: ["SMEs", "Manufacturers", "Traders", "Retailers", "Service Providers"] },
+  { key: "2", items: ["Doctors", "Chartered Accountants", "Architects", "Consultants"] },
+  { key: "3", items: ["Salaried Professionals", "Self-Employed", "Property Owners"] },
+  { key: "4", items: ["Investors", "Business Owners", "Family Offices"] },
 ];
 
-const faqs = [
-  { q: "Is X Capital a bank?", a: "No. X Capital is an independent financial solutions and banking advisory firm." },
-  { q: "Does X Capital provide loans directly?", a: "No. We assist clients in identifying and accessing suitable financial institutions." },
-  { q: "Why use X Capital instead of approaching a bank directly?", a: "Every institution has different policies, products and eligibility criteria. X Capital helps you evaluate available options and navigate the process more efficiently." },
-  { q: "Will my information remain confidential?", a: "Yes. Client information is handled with strict confidentiality and professionalism." },
-  { q: "Does X Capital charge fees?", a: "Fees, if applicable, are communicated transparently before engagement. Certain services may also be compensated through institutional partnerships." },
-  { q: "What documents are required?", a: "Requirements vary depending on the product and institution. Our team provides a customized document checklist for every case." },
-  { q: "How long does the process take?", a: "Timelines depend on product type, documentation readiness and institution policies. Our team works to facilitate the process as efficiently as possible." },
-  { q: "Can X Capital help with existing loans?", a: "Yes — balance transfers, loan restructuring discussions, facility enhancement and additional funding requirements." },
-  { q: "Can X Capital help with large funding requirements?", a: "Yes. We support funding from small business loans to large corporate and structured financing opportunities." },
-];
+const faqs = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
-const coreValues = [
-  { title: "Integrity", desc: "Doing business ethically." },
-  { title: "Transparency", desc: "Clear communication at every stage." },
-  { title: "Professionalism", desc: "Maintaining the highest standards." },
-  { title: "Client First", desc: "Client success comes first." },
-  { title: "Long-Term Relationships", desc: "Building partnerships, not transactions." },
-];
+const coreValues = ["1", "2", "3", "4", "5"];
 
 const leaders = [
   {
@@ -118,6 +103,7 @@ type ContactForm = z.infer<typeof contactSchema>;
 type FieldErrors = Partial<Record<keyof ContactForm, string>>;
 
 function AboutPage() {
+  const { t } = useI18n();
   const [form, setForm] = useState<ContactForm>({ name: "", phone: "", email: "", message: "" });
   const [errors, setErrors] = useState<FieldErrors>({});
   const [submitted, setSubmitted] = useState(false);
@@ -191,24 +177,20 @@ function AboutPage() {
 
   return (
     <SiteLayout>
-      <PageHeader eyebrow="About" title="About X Capital" subtitle="Strategic Banking, Lending & Treasury Solutions — helping businesses, professionals and individuals access smarter financial solutions." />
+      <PageHeader eyebrow={t("about.header.eyebrow")} title={t("about.header.title")} subtitle={t("about.header.subtitle")} />
 
       <section id="about-us" className="container-x py-16 grid md:grid-cols-2 gap-10 items-center">
         <div>
-          <h2 className="text-3xl font-bold text-foreground">Who We Are</h2>
-          <p className="text-muted-foreground mt-4 leading-relaxed">
-            X Capital is a financial solutions and banking advisory firm that helps businesses, professionals and individuals access the right banking, lending and treasury solutions through a network of leading banks, NBFCs and financial institutions.
-          </p>
-          <p className="text-muted-foreground mt-3 leading-relaxed">
-            Our objective is simple — help our clients save time, secure better financial opportunities, and build stronger banking relationships.
-          </p>
+          <h2 className="text-3xl font-bold text-foreground">{t("about.who.title")}</h2>
+          <p className="text-muted-foreground mt-4 leading-relaxed">{t("about.who.p1")}</p>
+          <p className="text-muted-foreground mt-3 leading-relaxed">{t("about.who.p2")}</p>
         </div>
         <div className="grid grid-cols-2 gap-4">
           {[
-            ["50+", "Partner Institutions"],
-            ["6-Step", "Advisory Process"],
-            ["100%", "Transparent Fees"],
-            ["End-to-End", "Relationship Support"],
+            ["50+", t("about.stat.partners")],
+            ["6-Step", t("about.stat.process")],
+            ["100%", t("about.stat.fees")],
+            ["End-to-End", t("about.stat.support")],
           ].map(([v, l]) => (
             <div key={l} className="bg-secondary/50 rounded-xl p-6 text-center border border-border">
               <div className="text-2xl font-bold text-[var(--brand-black)]">{v}</div>
@@ -234,20 +216,20 @@ function AboutPage() {
       {/* How It Works */}
       <section className="container-x py-16">
         <div className="text-center max-w-2xl mx-auto mb-10">
-          <h2 className="text-3xl font-bold text-foreground">How X Capital Works</h2>
-          <p className="text-muted-foreground mt-3">A structured six-step advisory process from requirement to long-term relationship support.</p>
+          <h2 className="text-3xl font-bold text-foreground">{t("about.how.title")}</h2>
+          <p className="text-muted-foreground mt-3">{t("about.how.intro")}</p>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {steps.map((s, i) => (
-            <div key={s.title} className="bg-card rounded-xl p-6 border border-border shadow-card hover:-translate-y-1 transition">
+            <div key={s.key} className="bg-card rounded-xl p-6 border border-border shadow-card hover:-translate-y-1 transition">
               <div className="flex items-center gap-3 mb-3">
                 <div className="h-10 w-10 rounded-lg bg-[var(--brand-yellow)] text-[var(--brand-black)] grid place-items-center">
                   <s.icon className="h-5 w-5" />
                 </div>
-                <span className="text-xs font-bold text-muted-foreground">STEP {i + 1}</span>
+                <span className="text-xs font-bold text-muted-foreground">{t("about.how.stepLabel")} {i + 1}</span>
               </div>
-              <h3 className="font-semibold text-[var(--brand-black)]">{s.title}</h3>
-              <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{s.desc}</p>
+              <h3 className="font-semibold text-[var(--brand-black)]">{t(`about.step.${s.key}.title`)}</h3>
+              <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{t(`about.step.${s.key}.desc`)}</p>
             </div>
           ))}
         </div>
@@ -257,18 +239,18 @@ function AboutPage() {
       <section className="bg-secondary/50">
         <div className="container-x py-16">
           <div className="text-center max-w-2xl mx-auto mb-10">
-            <h2 className="text-3xl font-bold text-foreground">Why Choose X Capital</h2>
-            <p className="text-muted-foreground mt-3">Built on access, expertise and trust.</p>
+            <h2 className="text-3xl font-bold text-foreground">{t("about.why.title")}</h2>
+            <p className="text-muted-foreground mt-3">{t("about.why.intro")}</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {whyChoose.map((w) => (
-              <div key={w.title} className="bg-card rounded-xl p-6 border border-border shadow-card flex gap-4">
+              <div key={w.key} className="bg-card rounded-xl p-6 border border-border shadow-card flex gap-4">
                 <div className="h-11 w-11 shrink-0 rounded-lg bg-[var(--brand-yellow-soft)] text-[var(--brand-black)] grid place-items-center">
                   <w.icon className="h-5 w-5" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-[var(--brand-black)]">{w.title}</h3>
-                  <p className="text-sm text-muted-foreground mt-1">{w.desc}</p>
+                  <h3 className="font-semibold text-[var(--brand-black)]">{t(`about.why.${w.key}.title`)}</h3>
+                  <p className="text-sm text-muted-foreground mt-1">{t(`about.why.${w.key}.desc`)}</p>
                 </div>
               </div>
             ))}
@@ -279,13 +261,13 @@ function AboutPage() {
       {/* Who Benefits */}
       <section className="container-x py-16">
         <div className="text-center max-w-2xl mx-auto mb-10">
-          <h2 className="text-3xl font-bold text-foreground">Who Can Benefit</h2>
-          <p className="text-muted-foreground mt-3">From SMEs and professionals to salaried individuals and HNIs.</p>
+          <h2 className="text-3xl font-bold text-foreground">{t("about.benefit.title")}</h2>
+          <p className="text-muted-foreground mt-3">{t("about.benefit.intro")}</p>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {beneficiaries.map((b) => (
-            <div key={b.title} className="bg-card rounded-xl p-6 border border-border shadow-card border-b-[3px] border-b-[var(--brand-yellow)]">
-              <h3 className="font-bold text-[var(--brand-black)]">{b.title}</h3>
+            <div key={b.key} className="bg-card rounded-xl p-6 border border-border shadow-card border-b-[3px] border-b-[var(--brand-yellow)]">
+              <h3 className="font-bold text-[var(--brand-black)]">{t(`about.benefit.${b.key}.title`)}</h3>
               <ul className="mt-3 space-y-1.5 text-sm text-muted-foreground">
                 {b.items.map((i) => (
                   <li key={i} className="flex gap-2"><span className="text-[var(--brand-yellow)]">•</span><span>{i}</span></li>
@@ -300,14 +282,14 @@ function AboutPage() {
       <section className="bg-[var(--brand-black)] text-white">
         <div className="container-x py-16">
           <div className="text-center max-w-2xl mx-auto mb-10">
-            <h2 className="text-3xl font-bold">Our Core Values</h2>
-            <p className="text-white/70 mt-3">The principles that guide every engagement.</p>
+            <h2 className="text-3xl font-bold">{t("about.values.title")}</h2>
+            <p className="text-white/70 mt-3">{t("about.values.intro")}</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
             {coreValues.map((v) => (
-              <div key={v.title} className="bg-white/5 border border-white/10 rounded-xl p-5 text-center">
-                <div className="text-[var(--brand-yellow)] font-bold">{v.title}</div>
-                <p className="text-sm text-white/70 mt-2">{v.desc}</p>
+              <div key={v} className="bg-white/5 border border-white/10 rounded-xl p-5 text-center">
+                <div className="text-[var(--brand-yellow)] font-bold">{t(`about.value.${v}.title`)}</div>
+                <p className="text-sm text-white/70 mt-2">{t(`about.value.${v}.desc`)}</p>
               </div>
             ))}
           </div>
@@ -317,24 +299,24 @@ function AboutPage() {
       {/* FAQ */}
       <section id="faq" className="container-x py-16">
         <div className="text-center max-w-2xl mx-auto mb-10">
-          <h2 className="text-3xl font-bold text-foreground">Frequently Asked Questions</h2>
-          <p className="text-muted-foreground mt-3">Everything you need to know about working with X Capital.</p>
+          <h2 className="text-3xl font-bold text-foreground">{t("about.faq.title")}</h2>
+          <p className="text-muted-foreground mt-3">{t("about.faq.intro")}</p>
         </div>
         <div className="max-w-3xl mx-auto space-y-3">
           {faqs.map((f, i) => {
             const open = openFaq === i;
             return (
-              <div key={f.q} className="bg-card border border-border rounded-lg shadow-card overflow-hidden">
+              <div key={f} className="bg-card border border-border rounded-lg shadow-card overflow-hidden">
                 <button
                   onClick={() => setOpenFaq(open ? null : i)}
                   className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left"
                 >
-                  <span className="font-semibold text-[var(--brand-black)]">{f.q}</span>
+                  <span className="font-semibold text-[var(--brand-black)]">{t(`about.faq.${f}.q`)}</span>
                   <ChevronDown className={`h-5 w-5 shrink-0 text-[var(--brand-black)] transition-transform ${open ? "rotate-180" : ""}`} />
                 </button>
                 {open && (
                   <div className="px-5 pb-4 text-sm text-muted-foreground leading-relaxed border-t border-border pt-3">
-                    {f.a}
+                    {t(`about.faq.${f}.a`)}
                   </div>
                 )}
               </div>
@@ -347,8 +329,8 @@ function AboutPage() {
       <section id="leadership" className="bg-secondary/50">
         <div className="container-x py-16">
           <div className="text-center max-w-2xl mx-auto mb-10">
-            <h2 className="text-3xl font-bold text-foreground">Leadership</h2>
-            <p className="text-muted-foreground mt-3">Meet the people behind X Capital.</p>
+            <h2 className="text-3xl font-bold text-foreground">{t("about.leadership.title")}</h2>
+            <p className="text-muted-foreground mt-3">{t("about.leadership.intro")}</p>
           </div>
           <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {leaders.map((l) => (
@@ -362,7 +344,7 @@ function AboutPage() {
                   </div>
                   <div className="min-w-0">
                     <h3 className="text-xl font-bold text-[var(--brand-black)] tracking-wide">{l.name}</h3>
-                    <p className="text-sm text-muted-foreground mt-0.5">{l.role}, X Capital</p>
+                    <p className="text-sm text-muted-foreground mt-0.5">{l.role}{t("about.leadership.roleSuffix")}</p>
                     <ul className="mt-4 space-y-2 text-sm">
                       <li className="flex items-center gap-2">
                         <Phone className="h-4 w-4 text-[var(--brand-yellow)] shrink-0" />
@@ -384,8 +366,8 @@ function AboutPage() {
       <section id="reach-us" className="container-x py-16">
         <div className="grid md:grid-cols-2 gap-10">
           <div>
-            <h2 className="text-3xl font-bold text-foreground">Reach Us</h2>
-            <p className="text-muted-foreground mt-3">We'd love to hear from you. Fill the form or reach us directly.</p>
+            <h2 className="text-3xl font-bold text-foreground">{t("about.reach.title")}</h2>
+            <p className="text-muted-foreground mt-3">{t("about.reach.intro")}</p>
             <ul className="mt-6 space-y-4 text-sm">
               <li className="flex gap-3"><MapPin className="h-5 w-5 text-[var(--brand-yellow)] shrink-0" /><span>Sakinaka, Andheri East, Mumbai 400072</span></li>
               <li className="flex gap-3"><Phone className="h-5 w-5 text-[var(--brand-yellow)] shrink-0" /><a href="tel:+918879109148" className="hover:text-[var(--brand-yellow)]">+91 88791 09148</a></li>
@@ -398,23 +380,21 @@ function AboutPage() {
               <div className="h-14 w-14 rounded-full bg-green-100 text-green-700 grid place-items-center mb-4">
                 <CheckCircle className="h-7 w-7" />
               </div>
-              <h3 className="text-xl font-bold text-[var(--brand-black)]">Message Received</h3>
-              <p className="text-sm text-muted-foreground mt-2 max-w-sm">
-                Thank you for reaching out to X Capital. Our advisory team will get back to you within one business day.
-              </p>
+              <h3 className="text-xl font-bold text-[var(--brand-black)]">{t("about.reach.success.title")}</h3>
+              <p className="text-sm text-muted-foreground mt-2 max-w-sm">{t("about.reach.success.body")}</p>
               <button
                 onClick={() => setSubmitted(false)}
                 className="mt-6 text-sm font-semibold text-[var(--brand-black)] hover:text-amber-700"
               >
-                Send another message →
+                {t("about.reach.success.again")}
               </button>
             </div>
           ) : (
             <form onSubmit={onSubmit} noValidate className="bg-card border border-border rounded-xl p-7 shadow-card space-y-4">
               {([
-                { k: "name", placeholder: "Full Name", type: "text", maxLength: 100 },
-                { k: "phone", placeholder: "Phone (10-digit mobile)", type: "tel", maxLength: 15 },
-                { k: "email", placeholder: "Email", type: "email", maxLength: 255 },
+                { k: "name", placeholder: t("about.reach.placeholder.name"), type: "text", maxLength: 100 },
+                { k: "phone", placeholder: t("about.reach.placeholder.phone"), type: "tel", maxLength: 15 },
+                { k: "email", placeholder: t("about.reach.placeholder.email"), type: "email", maxLength: 255 },
               ] as const).map(({ k, placeholder, type, maxLength }) => (
                 <div key={k}>
                   <input
@@ -437,7 +417,7 @@ function AboutPage() {
                   value={form.message}
                   maxLength={1000}
                   onChange={(e) => update("message", e.target.value)}
-                  placeholder="How can we help you?"
+                  placeholder={t("about.reach.placeholder.message")}
                   aria-invalid={!!errors.message}
                   className={`w-full rounded-md border px-4 py-3 text-sm bg-background ${
                     errors.message ? "border-red-500" : "border-input"
@@ -454,7 +434,7 @@ function AboutPage() {
                 type="submit"
                 className="w-full bg-[var(--brand-yellow)] text-[var(--brand-black)] font-semibold py-3 rounded-md hover:brightness-110"
               >
-                Send Message
+                {t("about.reach.submit")}
               </button>
             </form>
           )}
@@ -464,31 +444,27 @@ function AboutPage() {
       <section id="careers" className="bg-secondary/50">
         <div className="container-x py-16">
           <div className="text-center max-w-2xl mx-auto mb-10">
-            <span className="inline-block text-xs font-bold tracking-widest text-[var(--brand-black)] bg-[var(--brand-yellow)] px-3 py-1 rounded-full">CAREERS</span>
-            <h2 className="text-3xl font-bold text-foreground mt-3">Build Your Career at X Capital</h2>
-            <p className="text-muted-foreground mt-3">
-              We're always on the lookout for passionate, driven individuals who want to make a real impact in the world of finance. At X Capital, you'll work alongside experienced professionals, learn from industry experts and help shape financial solutions that matter.
-            </p>
+            <span className="inline-block text-xs font-bold tracking-widest text-[var(--brand-black)] bg-[var(--brand-yellow)] px-3 py-1 rounded-full">{t("about.careers.badge")}</span>
+            <h2 className="text-3xl font-bold text-foreground mt-3">{t("about.careers.title")}</h2>
+            <p className="text-muted-foreground mt-3">{t("about.careers.intro")}</p>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             {careerPerks.map((p) => (
-              <div key={p.title} className="bg-card rounded-xl p-6 border border-border shadow-card">
+              <div key={p.key} className="bg-card rounded-xl p-6 border border-border shadow-card">
                 <div className="h-11 w-11 rounded-lg bg-[var(--brand-yellow-soft)] text-[var(--brand-black)] grid place-items-center mb-3">
                   <p.icon className="h-5 w-5" />
                 </div>
-                <h3 className="font-semibold text-[var(--brand-black)]">{p.title}</h3>
-                <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">{p.desc}</p>
+                <h3 className="font-semibold text-[var(--brand-black)]">{t(`about.perks.${p.key}.title`)}</h3>
+                <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">{t(`about.perks.${p.key}.desc`)}</p>
               </div>
             ))}
           </div>
 
           <div className="max-w-2xl mx-auto">
             <div className="text-center mb-6">
-              <h3 className="text-2xl font-bold text-foreground">Apply Now</h3>
-              <p className="text-sm text-muted-foreground mt-2">
-                Share your details and resume — we'll reach out when the right opportunity opens up.
-              </p>
+              <h3 className="text-2xl font-bold text-foreground">{t("about.apply.title")}</h3>
+              <p className="text-sm text-muted-foreground mt-2">{t("about.apply.intro")}</p>
             </div>
 
             {appSubmitted ? (
@@ -496,24 +472,22 @@ function AboutPage() {
                 <div className="h-14 w-14 rounded-full bg-green-100 text-green-700 grid place-items-center mb-4">
                   <CheckCircle className="h-7 w-7" />
                 </div>
-                <h3 className="text-xl font-bold text-[var(--brand-black)]">Application Received</h3>
-                <p className="text-sm text-muted-foreground mt-2 max-w-sm">
-                  Thank you for applying to X Capital. Our team will review your profile and get back to you soon.
-                </p>
+                <h3 className="text-xl font-bold text-[var(--brand-black)]">{t("about.apply.success.title")}</h3>
+                <p className="text-sm text-muted-foreground mt-2 max-w-sm">{t("about.apply.success.body")}</p>
                 <button
                   onClick={() => setAppSubmitted(false)}
                   className="mt-6 text-sm font-semibold text-[var(--brand-black)] hover:text-amber-700"
                 >
-                  Submit another application →
+                  {t("about.apply.success.again")}
                 </button>
               </div>
             ) : (
               <form onSubmit={onApplicationSubmit} noValidate className="bg-card border border-border rounded-xl p-7 shadow-card space-y-4">
                 {([
-                  { k: "candidateName", placeholder: "Candidate Name", type: "text", icon: UserIcon, maxLength: 100 },
-                  { k: "email", placeholder: "Email", type: "email", icon: Mail, maxLength: 255 },
-                  { k: "contactNumber", placeholder: "Contact Number (10-digit mobile)", type: "tel", icon: Phone, maxLength: 15 },
-                  { k: "education", placeholder: "Highest Education (e.g. MBA Finance, B.Com)", type: "text", icon: GraduationCap, maxLength: 150 },
+                  { k: "candidateName", placeholder: t("about.apply.placeholder.name"), type: "text", icon: UserIcon, maxLength: 100 },
+                  { k: "email", placeholder: t("about.apply.placeholder.email"), type: "email", icon: Mail, maxLength: 255 },
+                  { k: "contactNumber", placeholder: t("about.apply.placeholder.phone"), type: "tel", icon: Phone, maxLength: 15 },
+                  { k: "education", placeholder: t("about.apply.placeholder.edu"), type: "text", icon: GraduationCap, maxLength: 150 },
                 ] as const).map(({ k, placeholder, type, icon: Icon, maxLength }) => (
                   <div key={k}>
                     <div className={`flex items-center gap-2 rounded-md border bg-background px-3 ${appErrors[k] ? "border-red-500" : "border-input"}`}>
@@ -539,11 +513,9 @@ function AboutPage() {
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="text-sm font-semibold text-[var(--brand-black)]">
-                        {resume ? resume.name : "Attach your resume"}
+                        {resume ? resume.name : t("about.apply.resume.attach")}
                       </div>
-                      <div className="text-xs text-muted-foreground mt-0.5">
-                        PDF, DOC or DOCX · Max 5MB
-                      </div>
+                      <div className="text-xs text-muted-foreground mt-0.5">{t("about.apply.resume.hint")}</div>
                     </div>
                     <input
                       type="file"
@@ -562,7 +534,7 @@ function AboutPage() {
                   type="submit"
                   className="w-full bg-[var(--brand-yellow)] text-[var(--brand-black)] font-semibold py-3 rounded-md hover:brightness-110"
                 >
-                  Submit Application
+                  {t("about.apply.submit")}
                 </button>
               </form>
             )}

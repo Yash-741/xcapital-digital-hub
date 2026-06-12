@@ -4,8 +4,7 @@ import {
   Factory, Activity, Building, LineChart, Car, GraduationCap,
 } from "lucide-react";
 import { SiteLayout, PageHeader, ProductCard } from "@/components/site/Layout";
-
-const slug = (s: string) => s.toLowerCase().replace(/\s+/g, "-");
+import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/loans")({
   head: () => ({
@@ -22,27 +21,38 @@ export const Route = createFileRoute("/loans")({
 });
 
 const loans = [
-  { icon: Wallet, name: "Personal Loan", description: "Up to ₹40L for any life goal — weddings, travel, emergencies." },
-  { icon: Home, name: "Home Loan", description: "Own your dream home with rates starting at 8.4% p.a." },
-  { icon: Briefcase, name: "Business Loan", description: "Working capital and expansion finance for SMEs and MSMEs." },
-  { icon: Stethoscope, name: "Loans for Doctors", description: "Tailored finance for clinics, equipment and practice growth." },
-  { icon: Building2, name: "Loan Against Property", description: "Unlock value of your residential or commercial property." },
-  { icon: CalcIcon, name: "Loan for CAs", description: "Special rates and quick disbursal for Chartered Accountants." },
-  { icon: Factory, name: "Commercial Lending", description: "Term loans and credit lines for large enterprises." },
-  { icon: Activity, name: "Medical Equipment Finance", description: "Fund advanced diagnostic and surgical equipment." },
-  { icon: Building, name: "Lease Rental Discounting", description: "Monetise future rentals from leased commercial assets." },
-  { icon: LineChart, name: "Loan Against Securities", description: "Borrow against mutual funds, shares and bonds." },
-  { icon: Car, name: "Used Car Loan", description: "Finance pre-owned cars with minimal paperwork." },
-  { icon: GraduationCap, name: "Education Loan", description: "Fund higher studies in India and abroad." },
+  { icon: Wallet, slug: "personal-loan" },
+  { icon: Home, slug: "home-loan" },
+  { icon: Briefcase, slug: "business-loan" },
+  { icon: Stethoscope, slug: "loans-for-doctors" },
+  { icon: Building2, slug: "loan-against-property" },
+  { icon: CalcIcon, slug: "loan-for-cas" },
+  { icon: Factory, slug: "commercial-lending" },
+  { icon: Activity, slug: "medical-equipment-finance" },
+  { icon: Building, slug: "lease-rental-discounting" },
+  { icon: LineChart, slug: "loan-against-securities" },
+  { icon: Car, slug: "used-car-loan" },
+  { icon: GraduationCap, slug: "education-loan" },
 ];
 
 function LoansPage() {
+  const { t } = useI18n();
   return (
     <SiteLayout>
-      <PageHeader eyebrow="Loans" title="Borrow with confidence" subtitle="From personal goals to business growth — choose from our wide range of loan products." />
+      <PageHeader eyebrow={t("loans.header.eyebrow")} title={t("loans.header.title")} subtitle={t("loans.header.subtitle")} />
       <section className="container-x py-16">
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {loans.map((l) => <ProductCard key={l.name} id={slug(l.name)} category="loan" {...l} />)}
+          {loans.map((l) => (
+            <ProductCard
+              key={l.slug}
+              id={l.slug}
+              category="loan"
+              icon={l.icon}
+              name={t(`loans.product.${l.slug}.name`)}
+              description={t(`loans.product.${l.slug}.desc`)}
+              cta={t("cta.applyNow")}
+            />
+          ))}
         </div>
       </section>
     </SiteLayout>

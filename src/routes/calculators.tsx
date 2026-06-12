@@ -7,6 +7,7 @@ import {
   PieChart, BadgeIndianRupee, Banknote, HandCoins, Sigma, ShieldCheck, Search,
 } from "lucide-react";
 import { SiteLayout, PageHeader } from "@/components/site/Layout";
+import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/calculators")({
   head: () => ({
@@ -1347,6 +1348,7 @@ function getSimple(id: string) {
 }
 
 function CalculatorsPage() {
+  const { t } = useI18n();
   const [catId, setCatId] = useState(categories[0].id);
   const [calcKey, setCalcKey] = useState("emi"); // entry id from above lists
   const [scenarios, setScenarios] = useState<Scenario[]>([]);
@@ -1404,7 +1406,7 @@ function CalculatorsPage() {
 
   return (
     <SiteLayout>
-      <PageHeader eyebrow="Tools" title="Calculators" subtitle="A complete suite for loans, investments, taxes and retirement planning." />
+      <PageHeader eyebrow={t("calc.header.eyebrow")} title={t("calc.header.title")} subtitle={t("calc.header.subtitle")} />
       <section className="container-x py-12">
         {/* Search bar */}
         <div className="mb-6 relative max-w-xl">
@@ -1413,7 +1415,7 @@ function CalculatorsPage() {
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search calculators by name…"
+            placeholder={t("calc.search")}
             className="w-full border border-input rounded-md pl-9 pr-9 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-[var(--brand-yellow)]"
           />
           {query && (
@@ -1428,7 +1430,7 @@ function CalculatorsPage() {
           {q && (
             <div className="absolute z-20 mt-1 w-full bg-card border border-border rounded-md shadow-lg max-h-80 overflow-y-auto">
               {searchResults.length === 0 ? (
-                <div className="px-3 py-3 text-sm text-muted-foreground">No calculators found.</div>
+                <div className="px-3 py-3 text-sm text-muted-foreground">{t("calc.noResults")}</div>
               ) : (
                 searchResults.map((r, idx) => (
                   <button
@@ -1521,9 +1523,7 @@ function CalculatorsPage() {
               />
             )}
 
-            <p className="text-xs text-muted-foreground mt-6">
-              Calculations are indicative based on the inputs provided. Actual figures may vary by lender, taxes and market performance.
-            </p>
+            <p className="text-xs text-muted-foreground mt-6">{t("calc.disclaimer")}</p>
           </div>
         </div>
       </section>
