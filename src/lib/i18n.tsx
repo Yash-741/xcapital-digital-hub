@@ -1746,6 +1746,17 @@ function applyGoogleTranslate(lang: Lang) {
   }
 }
 
+const _missingWarned = new Set<string>();
+function reportMissing(lang: Lang, key: string) {
+  if (lang === "en") return;
+  const tag = `${lang}::${key}`;
+  if (_missingWarned.has(tag)) return;
+  _missingWarned.add(tag);
+  if (typeof console !== "undefined") {
+    console.warn(`[i18n] Missing ${lang} translation for: ${key}`);
+  }
+}
+
 export function I18nProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>("en");
 
