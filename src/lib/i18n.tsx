@@ -1781,8 +1781,26 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const t = useCallback((key: string) => DICTS[lang][key] ?? DICTS.en[key] ?? key, [lang]);
-  const tEn = useCallback((s: string) => EN_DICTS[lang][s] ?? s, [lang]);
+  const t = useCallback(
+    (key: string) => {
+      const hit = DICTS[lang][key];
+      if (hit !== undefined) return hit;
+      reportMissing(lang, key);
+      const fallback = DICTS.en[key] ?? key;
+      return lang === "en" ? fallback : `${fallback} ⚠`;
+    },
+    [lang],
+  );
+  const tEn = useCallback(
+    (s: string) => {
+      if (lang === "en") return s;
+      const hit = EN_DICTS[lang][s];
+      if (hit !== undefined) return hit;
+      reportMissing(lang, s);
+      return `${s} ⚠`;
+    },
+    [lang],
+  );
 
   const value = useMemo(() => ({ lang, setLang, t, tEn }), [lang, setLang, t, tEn]);
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
