@@ -1747,6 +1747,7 @@ function applyGoogleTranslate(lang: Lang) {
 }
 
 export function I18nProvider({ children }: { children: ReactNode }) {
+  // no-op anchor
   const [lang, setLangState] = useState<Lang>("en");
 
   useEffect(() => {
