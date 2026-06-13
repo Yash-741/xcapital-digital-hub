@@ -73,14 +73,6 @@ function Index() {
     <SiteLayout>
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-br from-[#1a1a1a] via-[#0a0a0a] to-[#2b2b2b] text-white">
-        <div
-          aria-hidden
-          className="absolute inset-0 opacity-30"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 20% 20%, var(--brand-yellow) 0%, transparent 40%), radial-gradient(circle at 80% 60%, #b45309 0%, transparent 45%)",
-          }}
-        />
         <div className="container-x relative py-12 md:py-20 grid md:grid-cols-2 gap-10 items-center">
           <div>
             <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--brand-yellow)]/15 text-[var(--brand-yellow)] px-3 py-1 text-xs font-semibold uppercase tracking-wider">
