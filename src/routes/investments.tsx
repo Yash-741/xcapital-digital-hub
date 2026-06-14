@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PiggyBank, Landmark } from "lucide-react";
-import { SiteLayout, PageHeader, ProductCard } from "@/components/site/Layout";
+import { SiteLayout, PageHeader } from "@/components/site/Layout";
 import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/investments")({
@@ -32,7 +32,14 @@ function Investments() {
           <p className="text-sm text-muted-foreground mt-2">{t("investments.fd.desc")}</p>
           <Link to="/apply/$category/$slug" params={{ category: "investment", slug: "fixed-deposits" }} className="mt-5 inline-block px-5 py-2.5 text-sm font-semibold rounded-md bg-[var(--brand-navy)] text-white hover:brightness-110">{t("cta.investNow")}</Link>
         </div>
-        <ProductCard id="bonds" category="investment" icon={Landmark} name={t("investments.bonds.name")} description={t("investments.bonds.desc")} cta={t("cta.exploreBonds")} />
+        <div id="bonds" className="relative scroll-mt-32 bg-card rounded-xl border border-border p-7 shadow-card overflow-hidden">
+          <div className="h-12 w-12 rounded-lg grid place-items-center bg-[var(--brand-gold)]/15 text-[var(--brand-navy)] mb-4">
+            <Landmark className="h-6 w-6" />
+          </div>
+          <h3 className="text-xl font-semibold">{t("investments.bonds.name")}</h3>
+          <p className="text-sm text-muted-foreground mt-2">{t("investments.bonds.desc")}</p>
+          <Link to="/apply/$category/$slug" params={{ category: "investment", slug: "bonds" }} className="mt-5 inline-block px-5 py-2.5 text-sm font-semibold rounded-md bg-[var(--brand-navy)] text-white hover:brightness-110">{t("cta.applyNow") || "Apply Now"}</Link>
+        </div>
       </section>
     </SiteLayout>
   );
