@@ -129,10 +129,20 @@ export const listMyApplications = createServerFn({ method: "GET" })
       created_at: r.created_at,
     }));
 
-    const seen = new Set<string>();
+    // Dedupe across the two source tables: same submission often lands in
+    // both `service_leads` and `leads` within a few seconds.
+    const sigOf = (a: App) => {
+      const t = Math.floor(new Date(a.created_at).getTime() / 60000); // minute bucket
+      return `${(a.email || "").toLowerCase()}|${(a.product_name || "").toLowerCase()}|${t}`;
+    };
+    const seenId = new Set<string>();
+    const seenSig = new Set<string>();
     const merged = [...fromService, ...fromLeads].filter((a) => {
-      if (seen.has(a.id)) return false;
-      seen.add(a.id);
+      if (seenId.has(a.id)) return false;
+      const sig = sigOf(a);
+      if (seenSig.has(sig)) return false;
+      seenId.add(a.id);
+      seenSig.add(sig);
       return true;
     });
     merged.sort((a, b) => (a.created_at < b.created_at ? 1 : -1));
