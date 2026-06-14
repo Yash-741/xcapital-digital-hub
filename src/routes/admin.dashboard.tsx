@@ -199,7 +199,7 @@ function AdminDashboard() {
           <StatCard label="Closed" value={stats.closed} accent="bg-green-600" />
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 grid gap-3 md:grid-cols-[1fr_180px_220px]">
+        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 grid gap-3 md:grid-cols-[1fr_160px_180px_200px]">
           <Input
             placeholder="Search name, phone, or email…"
             value={search}
@@ -210,6 +210,13 @@ function AdminDashboard() {
             <SelectContent>
               <SelectItem value="all">All statuses</SelectItem>
               {STATUSES.map((s) => <SelectItem key={s} value={s}>{s}</SelectItem>)}
+            </SelectContent>
+          </Select>
+          <Select value={catFilter} onValueChange={setCatFilter}>
+            <SelectTrigger><SelectValue placeholder="Category" /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All categories</SelectItem>
+              {categories.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
             </SelectContent>
           </Select>
           <Select value={reqFilter} onValueChange={setReqFilter}>
