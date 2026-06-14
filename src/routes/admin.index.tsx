@@ -1,10 +1,11 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { ArrowLeft } from "lucide-react";
 
 export const Route = createFileRoute("/admin/")({
   head: () => ({ meta: [{ title: "XCapital Admin" }, { name: "robots", content: "noindex" }] }),
@@ -58,9 +59,13 @@ function AdminLogin() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#0a1438] px-4">
-      <form
+      <div className="w-full max-w-sm space-y-4">
+        <Link to="/" className="inline-flex items-center gap-2 text-sm text-white/80 hover:text-white">
+          <ArrowLeft className="w-4 h-4" /> Back to website
+        </Link>
+        <form
         onSubmit={onSubmit}
-        className="w-full max-w-sm bg-white rounded-xl shadow-xl border-b-4 border-[var(--brand-yellow)] p-8 space-y-5"
+        className="w-full bg-white rounded-xl shadow-xl border-b-4 border-[var(--brand-yellow)] p-8 space-y-5"
       >
         <div className="text-center">
           <h1 className="text-2xl font-bold text-[#0a1438]">XCapital Admin</h1>
@@ -81,7 +86,8 @@ function AdminLogin() {
         >
           {loading ? "Signing in…" : "Sign in"}
         </Button>
-      </form>
+        </form>
+      </div>
     </div>
   );
 }
