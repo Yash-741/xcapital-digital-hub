@@ -16,6 +16,7 @@ import { ProfileDialog } from "@/components/site/ProfileDialog";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { listAdminUsers, type AdminUser } from "@/lib/admin-users.functions";
 import { useServerFn } from "@tanstack/react-start";
+import xcapitalLogo from "@/assets/xcapital-logo.asset.json";
 
 export const Route = createFileRoute("/admin/dashboard")({
   head: () => ({ meta: [{ title: "XCapital Admin Portal" }, { name: "robots", content: "noindex" }] }),
@@ -233,7 +234,11 @@ function AdminDashboard() {
       <header className="sticky top-0 z-40 bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3 min-w-0">
-            <div className="h-9 w-9 grid place-items-center rounded-lg bg-[var(--brand-yellow)] text-[var(--brand-black)] font-bold shrink-0">X</div>
+            <img
+              src={xcapitalLogo.url}
+              alt="XCapital"
+              className="h-9 w-auto shrink-0"
+            />
             <div className="min-w-0">
               <h1 className="text-base sm:text-lg font-bold text-[var(--brand-black)] truncate">
                 XCapital <span className="text-amber-600">Admin Portal</span>
