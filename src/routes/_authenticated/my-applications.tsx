@@ -167,7 +167,7 @@ function MyApplicationsPage() {
                           {a.status}
                         </Badge>
                         <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-muted text-muted-foreground">
-                          ID #{shortLeadId(a.id)}
+                          {a.leadId}
                         </span>
                       </div>
                       <h3 className="text-base font-semibold mt-1 text-[var(--brand-black)]">
