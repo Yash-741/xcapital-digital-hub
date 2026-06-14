@@ -30,7 +30,7 @@ function Investments() {
           </div>
           <h3 className="text-xl font-semibold">{t("investments.fd.name")}</h3>
           <p className="text-sm text-muted-foreground mt-2">{t("investments.fd.desc")}</p>
-          <Link to="/apply/$category/$slug" params={{ category: "investment", slug: "fixed-deposits" }} className="mt-5 inline-block px-5 py-2.5 text-sm font-semibold rounded-md bg-[var(--brand-navy)] text-white hover:brightness-110">{t("cta.investNow")}</Link>
+          <Link to="/apply/$category/$slug" params={{ category: "investment", slug: "fixed-deposits" }} className="mt-5 inline-block px-5 py-2.5 text-sm font-semibold rounded-md bg-[var(--brand-navy)] text-white hover:brightness-110">{t("cta.applyNow") || "Apply Now"}</Link>
         </div>
         <div id="bonds" className="relative scroll-mt-32 bg-card rounded-xl border border-border p-7 shadow-card overflow-hidden">
           <div className="h-12 w-12 rounded-lg grid place-items-center bg-[var(--brand-gold)]/15 text-[var(--brand-navy)] mb-4">
