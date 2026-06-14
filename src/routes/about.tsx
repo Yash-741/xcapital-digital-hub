@@ -158,7 +158,7 @@ function AboutPage() {
     if (errors[k]) setErrors((e) => ({ ...e, [k]: undefined }));
   };
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const result = contactSchema.safeParse(form);
     if (!result.success) {
@@ -172,9 +172,22 @@ function AboutPage() {
       return;
     }
     setErrors({});
-    setSubmitted(true);
-    setForm({ name: "", phone: "", email: "", message: "" });
-    toast.success(t("toast.contactSuccess"));
+    try {
+      const { insertLead } = await import("@/lib/leads-insert");
+      await insertLead({
+        name: form.name,
+        phone: form.phone,
+        email: form.email,
+        message: form.message,
+        requirement: "General enquiry",
+        source: "about",
+      });
+      setSubmitted(true);
+      setForm({ name: "", phone: "", email: "", message: "" });
+      toast.success("Thank you! Our team will contact you shortly.");
+    } catch {
+      toast.error("Something went wrong, please try again");
+    }
   };
 
   return (
