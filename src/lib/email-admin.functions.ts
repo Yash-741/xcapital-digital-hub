@@ -73,8 +73,8 @@ export const getEmailDashboard = createServerFn({ method: "GET" })
     }
 
     let queues: QueueMetric[] = [];
-    const { data: q, error: qErr } = await supabaseAdmin.schema("pgmq" as any).rpc("metrics_all");
-    if (!qErr && Array.isArray(q)) {
+    const { data: q } = await supabaseAdmin.rpc("admin_email_queue_metrics");
+    if (Array.isArray(q)) {
       queues = (q as any[]).map((m) => ({
         queue_name: m.queue_name,
         queue_length: Number(m.queue_length ?? 0),
