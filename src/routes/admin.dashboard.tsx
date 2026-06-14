@@ -181,30 +181,40 @@ function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="bg-[#0a1438] text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
-          <div>
-            <h1 className="text-lg sm:text-xl font-bold">
-              XCapital <span className="text-[var(--brand-yellow)]">Admin Portal</span>
-            </h1>
-            <p className="text-xs text-slate-300">Lead management</p>
+    <div className="min-h-screen bg-[var(--page-bg)]">
+      <header className="sticky top-0 z-40 bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="h-9 w-9 grid place-items-center rounded-lg bg-[var(--brand-yellow)] text-[var(--brand-black)] font-bold shrink-0">X</div>
+            <div className="min-w-0">
+              <h1 className="text-base sm:text-lg font-bold text-[var(--brand-black)] truncate">
+                XCapital <span className="text-amber-600">Admin Portal</span>
+              </h1>
+              <p className="text-[11px] text-muted-foreground -mt-0.5">Lead management</p>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 sm:gap-2">
             <Link
               to="/"
-              className="inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm text-white hover:bg-white/10"
+              className="inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium text-[var(--brand-black)] hover:bg-[var(--brand-yellow-soft)] transition"
             >
-              <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">View website</span>
+              <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Website</span>
             </Link>
-            <Button onClick={() => setProfileOpen(true)} variant="ghost" className="text-white hover:bg-white/10">
-              <UserCog className="w-4 h-4 mr-2" /> <span className="hidden sm:inline">Profile</span>
-            </Button>
-            <Button onClick={handleLogout} variant="ghost" className="text-white hover:bg-white/10">
-              <LogOut className="w-4 h-4 mr-2" /> <span className="hidden sm:inline">Logout</span>
-            </Button>
+            <button
+              onClick={() => setProfileOpen(true)}
+              className="inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium text-[var(--brand-black)] border border-[var(--brand-black)]/15 hover:bg-[var(--brand-yellow-soft)] transition"
+            >
+              <UserCog className="w-4 h-4" /> <span className="hidden sm:inline">Profile</span>
+            </button>
+            <button
+              onClick={handleLogout}
+              className="inline-flex items-center gap-2 rounded-full px-3 sm:px-4 py-2 text-sm font-semibold text-[var(--brand-black)] bg-[var(--brand-yellow)] hover:brightness-105 transition"
+            >
+              <LogOut className="w-4 h-4" /> <span className="hidden sm:inline">Logout</span>
+            </button>
           </div>
         </div>
+        <div className="h-1 bg-[var(--brand-black)]" />
       </header>
 
       <ProfileDialog open={profileOpen} onOpenChange={setProfileOpen} />
