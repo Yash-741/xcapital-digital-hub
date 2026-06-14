@@ -441,12 +441,18 @@ function AdminDashboard() {
         </div>
           </TabsContent>
           <TabsContent value="users" className="space-y-4">
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 grid gap-3 md:grid-cols-[1fr_auto]">
               <Input
                 placeholder="Search users by name, email, or phone…"
                 value={userSearch}
                 onChange={(e) => setUserSearch(e.target.value)}
               />
+              <Button
+                onClick={exportUsers}
+                className="bg-[var(--brand-yellow)] hover:brightness-105 text-[var(--brand-black)] font-semibold"
+              >
+                <Download className="w-4 h-4 mr-2" /> Export XLSX
+              </Button>
             </div>
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
               <div className="overflow-x-auto">
