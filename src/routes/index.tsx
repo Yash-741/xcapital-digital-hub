@@ -3,6 +3,7 @@ import {
   Wallet, Home as HomeIcon, Briefcase, Car, PiggyBank, Landmark, Coins,
   HeartPulse, ShieldCheck, FileText, Calculator,
   ArrowRight, Sparkles, Clock, CheckCircle2,
+  CreditCard, ScanLine, Fingerprint, Building2,
 } from "lucide-react";
 import { SiteLayout } from "@/components/site/Layout";
 import { useI18n } from "@/lib/i18n";
@@ -128,7 +129,7 @@ function Index() {
 
       {/* Hero card grid */}
       <section className="pt-6 md:pt-8">
-        <div className="container-x grid gap-4 md:grid-cols-3">
+        <div className="container-x grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <div id="investments" className="scroll-mt-32">
           <GridCard title={t("section.investments")} viewAllTo="/investments">
             <div className="grid grid-cols-2 gap-2">
@@ -165,6 +166,17 @@ function Index() {
               <IconTile icon={FileText} label={tEn("Claim")} to="/insurance" />
             </div>
           </GridCard>
+          </div>
+
+          <div id="store" className="scroll-mt-32">
+            <GridCard title={tEn("Store")} viewAllTo="/store">
+              <div className="grid grid-cols-4 gap-1">
+                <IconTile icon={CreditCard} label={tEn("Payment")} to="/store" />
+                <IconTile icon={ScanLine} label={tEn("Retail")} to="/store" />
+                <IconTile icon={Fingerprint} label={tEn("Biometric")} to="/store" />
+                <IconTile icon={Building2} label={tEn("Banking")} to="/store" />
+              </div>
+            </GridCard>
           </div>
         </div>
       </section>
