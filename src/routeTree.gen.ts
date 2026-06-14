@@ -15,6 +15,7 @@ import { Route as InvestmentsRouteImport } from './routes/investments'
 import { Route as InsuranceRouteImport } from './routes/insurance'
 import { Route as CalculatorsRouteImport } from './routes/calculators'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as StoreProductIdRouteImport } from './routes/store.$productId'
@@ -50,6 +51,11 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -74,6 +80,7 @@ const ApplyCategorySlugRoute = ApplyCategorySlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/calculators': typeof CalculatorsRoute
   '/insurance': typeof InsuranceRoute
@@ -86,6 +93,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/calculators': typeof CalculatorsRoute
   '/insurance': typeof InsuranceRoute
@@ -99,6 +107,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/calculators': typeof CalculatorsRoute
   '/insurance': typeof InsuranceRoute
@@ -113,6 +122,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/admin'
     | '/auth'
     | '/calculators'
     | '/insurance'
@@ -125,6 +135,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/admin'
     | '/auth'
     | '/calculators'
     | '/insurance'
@@ -137,6 +148,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/admin'
     | '/auth'
     | '/calculators'
     | '/insurance'
@@ -150,6 +162,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AdminRoute: typeof AdminRoute
   AuthRoute: typeof AuthRoute
   CalculatorsRoute: typeof CalculatorsRoute
   InsuranceRoute: typeof InsuranceRoute
@@ -203,6 +216,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -247,6 +267,7 @@ const StoreRouteWithChildren = StoreRoute._addFileChildren(StoreRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AdminRoute: AdminRoute,
   AuthRoute: AuthRoute,
   CalculatorsRoute: CalculatorsRoute,
   InsuranceRoute: InsuranceRoute,
@@ -258,3 +279,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
