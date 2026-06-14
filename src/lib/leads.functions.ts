@@ -43,15 +43,98 @@ export const submitLead = createServerFn({ method: "POST" })
 export const listMyApplications = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    const { data, error } = await context.supabase
-      .from("service_leads")
-      .select(
-        "id, category, product_slug, product_name, full_name, email, phone, amount, tenure, coverage, age, horizon, notes, status, created_at",
-      )
-      .order("created_at", { ascending: false });
-    if (error) {
-      console.error("[listMyApplications] DB error:", error.message);
+    const email = (context.claims as { email?: string } | null)?.email ?? null;
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+    const [serviceRes, leadsRes] = await Promise.all([
+      supabaseAdmin
+        .from("service_leads")
+        .select(
+          "id, category, product_slug, product_name, full_name, email, phone, amount, tenure, coverage, age, horizon, notes, status, created_at, user_id",
+        )
+        .or(
+          email
+            ? `user_id.eq.${context.userId},email.eq.${email}`
+            : `user_id.eq.${context.userId}`,
+        )
+        .order("created_at", { ascending: false }),
+      email
+        ? supabaseAdmin
+            .from("leads")
+            .select("id, name, email, phone, category, requirement, message, status, created_at")
+            .eq("email", email)
+            .order("created_at", { ascending: false })
+        : Promise.resolve({ data: [], error: null } as const),
+    ]);
+
+    if (serviceRes.error) {
+      console.error("[listMyApplications] service_leads error:", serviceRes.error.message);
       throw new Error("Failed to load your applications.");
     }
-    return data ?? [];
+    if (leadsRes.error) {
+      console.error("[listMyApplications] leads error:", leadsRes.error.message);
+    }
+
+    type App = {
+      id: string;
+      category: string;
+      product_slug: string | null;
+      product_name: string;
+      full_name: string;
+      email: string;
+      phone: string;
+      amount: number | null;
+      tenure: string | null;
+      coverage: number | null;
+      age: number | null;
+      horizon: string | null;
+      notes: string | null;
+      status: string;
+      created_at: string;
+    };
+
+    const fromService: App[] = (serviceRes.data ?? []).map((r: any) => ({
+      id: r.id,
+      category: r.category,
+      product_slug: r.product_slug,
+      product_name: r.product_name,
+      full_name: r.full_name,
+      email: r.email,
+      phone: r.phone,
+      amount: r.amount,
+      tenure: r.tenure,
+      coverage: r.coverage,
+      age: r.age,
+      horizon: r.horizon,
+      notes: r.notes,
+      status: r.status ?? "New",
+      created_at: r.created_at,
+    }));
+
+    const fromLeads: App[] = ((leadsRes.data as any[]) ?? []).map((r) => ({
+      id: r.id,
+      category: r.category ?? "enquiry",
+      product_slug: null,
+      product_name: r.requirement || r.category || "Enquiry",
+      full_name: r.name ?? "",
+      email: r.email ?? "",
+      phone: r.phone ?? "",
+      amount: null,
+      tenure: null,
+      coverage: null,
+      age: null,
+      horizon: null,
+      notes: r.message ?? null,
+      status: r.status ?? "New",
+      created_at: r.created_at,
+    }));
+
+    const seen = new Set<string>();
+    const merged = [...fromService, ...fromLeads].filter((a) => {
+      if (seen.has(a.id)) return false;
+      seen.add(a.id);
+      return true;
+    });
+    merged.sort((a, b) => (a.created_at < b.created_at ? 1 : -1));
+    return merged;
   });
