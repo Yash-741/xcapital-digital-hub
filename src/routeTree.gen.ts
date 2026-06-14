@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as StoreRouteImport } from './routes/store'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as LoansRouteImport } from './routes/loans'
 import { Route as InvestmentsRouteImport } from './routes/investments'
 import { Route as InsuranceRouteImport } from './routes/insurance'
@@ -31,6 +32,11 @@ import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/em
 const StoreRoute = StoreRouteImport.update({
   id: '/store',
   path: '/store',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoansRoute = LoansRouteImport.update({
@@ -129,6 +135,7 @@ export interface FileRoutesByFullPath {
   '/insurance': typeof InsuranceRoute
   '/investments': typeof InvestmentsRoute
   '/loans': typeof LoansRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/store': typeof StoreRouteWithChildren
   '/my-applications': typeof AuthenticatedMyApplicationsRoute
   '/admin/dashboard': typeof AdminDashboardRoute
@@ -147,6 +154,7 @@ export interface FileRoutesByTo {
   '/insurance': typeof InsuranceRoute
   '/investments': typeof InvestmentsRoute
   '/loans': typeof LoansRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/store': typeof StoreRouteWithChildren
   '/my-applications': typeof AuthenticatedMyApplicationsRoute
   '/admin/dashboard': typeof AdminDashboardRoute
@@ -168,6 +176,7 @@ export interface FileRoutesById {
   '/insurance': typeof InsuranceRoute
   '/investments': typeof InvestmentsRoute
   '/loans': typeof LoansRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/store': typeof StoreRouteWithChildren
   '/_authenticated/my-applications': typeof AuthenticatedMyApplicationsRoute
   '/admin/dashboard': typeof AdminDashboardRoute
@@ -189,6 +198,7 @@ export interface FileRouteTypes {
     | '/insurance'
     | '/investments'
     | '/loans'
+    | '/sitemap.xml'
     | '/store'
     | '/my-applications'
     | '/admin/dashboard'
@@ -207,6 +217,7 @@ export interface FileRouteTypes {
     | '/insurance'
     | '/investments'
     | '/loans'
+    | '/sitemap.xml'
     | '/store'
     | '/my-applications'
     | '/admin/dashboard'
@@ -227,6 +238,7 @@ export interface FileRouteTypes {
     | '/insurance'
     | '/investments'
     | '/loans'
+    | '/sitemap.xml'
     | '/store'
     | '/_authenticated/my-applications'
     | '/admin/dashboard'
@@ -248,6 +260,7 @@ export interface RootRouteChildren {
   InsuranceRoute: typeof InsuranceRoute
   InvestmentsRoute: typeof InvestmentsRoute
   LoansRoute: typeof LoansRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   StoreRoute: typeof StoreRouteWithChildren
   ApplyCategorySlugRoute: typeof ApplyCategorySlugRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
@@ -262,6 +275,13 @@ declare module '@tanstack/react-router' {
       path: '/store'
       fullPath: '/store'
       preLoaderRoute: typeof StoreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/loans': {
@@ -429,6 +449,7 @@ const rootRouteChildren: RootRouteChildren = {
   InsuranceRoute: InsuranceRoute,
   InvestmentsRoute: InvestmentsRoute,
   LoansRoute: LoansRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   StoreRoute: StoreRouteWithChildren,
   ApplyCategorySlugRoute: ApplyCategorySlugRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
