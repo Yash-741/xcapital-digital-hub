@@ -12,6 +12,9 @@ import { z } from "zod";
 import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/auth")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    redirect: typeof search.redirect === "string" ? search.redirect : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Login or Register — XCapital" },
@@ -21,25 +24,34 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
 });
 
+// Only allow same-origin relative paths to prevent open-redirect.
+function safeRedirect(target: string | undefined): string {
+  if (!target) return "/";
+  if (target.startsWith("/") && !target.startsWith("//")) return target;
+  return "/";
+}
+
 function AuthPage() {
   const navigate = useNavigate();
   const router = useRouter();
   const [tab, setTab] = useState<"login" | "register">("login");
   const { tEn } = useI18n();
+  const { redirect: redirectParam } = Route.useSearch();
+  const dest = safeRedirect(redirectParam);
 
   // Redirect if already signed in
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
-      if (data.user) navigate({ to: "/", replace: true });
+      if (data.user) navigate({ to: dest, replace: true });
     });
     const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
       if (session?.user) {
         router.invalidate();
-        navigate({ to: "/", replace: true });
+        navigate({ to: dest, replace: true });
       }
     });
     return () => sub.subscription.unsubscribe();
-  }, [navigate, router]);
+  }, [navigate, router, dest]);
 
   return (
     <SiteLayout>
@@ -58,7 +70,7 @@ function AuthPage() {
           <div className="my-6 flex items-center gap-3 text-xs text-muted-foreground">
             <div className="h-px bg-border flex-1" /> {tEn("OR")} <div className="h-px bg-border flex-1" />
           </div>
-          <GoogleButton />
+          <GoogleButton redirectPath={dest} />
 
           <p className="text-xs text-muted-foreground text-center mt-6">
             {tEn("By continuing you agree to our terms and privacy policy.")}
@@ -168,12 +180,14 @@ function RegisterForm({ onDone }: { onDone: () => void }) {
   );
 }
 
-function GoogleButton() {
+function GoogleButton({ redirectPath }: { redirectPath: string }) {
   const { tEn } = useI18n();
   const [loading, setLoading] = useState(false);
   async function onClick() {
     setLoading(true);
-    const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin });
+    const result = await lovable.auth.signInWithOAuth("google", {
+      redirect_uri: `${window.location.origin}${redirectPath}`,
+    });
     if (result.error) {
       setLoading(false);
       toast.error(result.error.message || tEn("Google sign-in failed"));
