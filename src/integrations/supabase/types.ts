@@ -179,7 +179,9 @@ export type Database = {
           phone: string
           product_name: string
           product_slug: string
+          status: string
           tenure: string | null
+          user_id: string | null
         }
         Insert: {
           age?: number | null
@@ -195,7 +197,9 @@ export type Database = {
           phone: string
           product_name: string
           product_slug: string
+          status?: string
           tenure?: string | null
+          user_id?: string | null
         }
         Update: {
           age?: number | null
@@ -211,7 +215,9 @@ export type Database = {
           phone?: string
           product_name?: string
           product_slug?: string
+          status?: string
           tenure?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
