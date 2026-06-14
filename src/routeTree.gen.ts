@@ -19,6 +19,7 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as StoreProductIdRouteImport } from './routes/store.$productId'
+import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
 import { Route as ApplyCategorySlugRouteImport } from './routes/apply.$category.$slug'
 
 const StoreRoute = StoreRouteImport.update({
@@ -71,6 +72,11 @@ const StoreProductIdRoute = StoreProductIdRouteImport.update({
   path: '/$productId',
   getParentRoute: () => StoreRoute,
 } as any)
+const AdminDashboardRoute = AdminDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AdminRoute,
+} as any)
 const ApplyCategorySlugRoute = ApplyCategorySlugRouteImport.update({
   id: '/apply/$category/$slug',
   path: '/apply/$category/$slug',
@@ -80,26 +86,28 @@ const ApplyCategorySlugRoute = ApplyCategorySlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/calculators': typeof CalculatorsRoute
   '/insurance': typeof InsuranceRoute
   '/investments': typeof InvestmentsRoute
   '/loans': typeof LoansRoute
   '/store': typeof StoreRouteWithChildren
+  '/admin/dashboard': typeof AdminDashboardRoute
   '/store/$productId': typeof StoreProductIdRoute
   '/apply/$category/$slug': typeof ApplyCategorySlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/calculators': typeof CalculatorsRoute
   '/insurance': typeof InsuranceRoute
   '/investments': typeof InvestmentsRoute
   '/loans': typeof LoansRoute
   '/store': typeof StoreRouteWithChildren
+  '/admin/dashboard': typeof AdminDashboardRoute
   '/store/$productId': typeof StoreProductIdRoute
   '/apply/$category/$slug': typeof ApplyCategorySlugRoute
 }
@@ -107,13 +115,14 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/calculators': typeof CalculatorsRoute
   '/insurance': typeof InsuranceRoute
   '/investments': typeof InvestmentsRoute
   '/loans': typeof LoansRoute
   '/store': typeof StoreRouteWithChildren
+  '/admin/dashboard': typeof AdminDashboardRoute
   '/store/$productId': typeof StoreProductIdRoute
   '/apply/$category/$slug': typeof ApplyCategorySlugRoute
 }
@@ -129,6 +138,7 @@ export interface FileRouteTypes {
     | '/investments'
     | '/loans'
     | '/store'
+    | '/admin/dashboard'
     | '/store/$productId'
     | '/apply/$category/$slug'
   fileRoutesByTo: FileRoutesByTo
@@ -142,6 +152,7 @@ export interface FileRouteTypes {
     | '/investments'
     | '/loans'
     | '/store'
+    | '/admin/dashboard'
     | '/store/$productId'
     | '/apply/$category/$slug'
   id:
@@ -155,6 +166,7 @@ export interface FileRouteTypes {
     | '/investments'
     | '/loans'
     | '/store'
+    | '/admin/dashboard'
     | '/store/$productId'
     | '/apply/$category/$slug'
   fileRoutesById: FileRoutesById
@@ -162,7 +174,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  AdminRoute: typeof AdminRoute
+  AdminRoute: typeof AdminRouteWithChildren
   AuthRoute: typeof AuthRoute
   CalculatorsRoute: typeof CalculatorsRoute
   InsuranceRoute: typeof InsuranceRoute
@@ -244,6 +256,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StoreProductIdRouteImport
       parentRoute: typeof StoreRoute
     }
+    '/admin/dashboard': {
+      id: '/admin/dashboard'
+      path: '/dashboard'
+      fullPath: '/admin/dashboard'
+      preLoaderRoute: typeof AdminDashboardRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/apply/$category/$slug': {
       id: '/apply/$category/$slug'
       path: '/apply/$category/$slug'
@@ -253,6 +272,16 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface AdminRouteChildren {
+  AdminDashboardRoute: typeof AdminDashboardRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminDashboardRoute: AdminDashboardRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface StoreRouteChildren {
   StoreProductIdRoute: typeof StoreProductIdRoute
@@ -267,7 +296,7 @@ const StoreRouteWithChildren = StoreRoute._addFileChildren(StoreRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  AdminRoute: AdminRoute,
+  AdminRoute: AdminRouteWithChildren,
   AuthRoute: AuthRoute,
   CalculatorsRoute: CalculatorsRoute,
   InsuranceRoute: InsuranceRoute,
