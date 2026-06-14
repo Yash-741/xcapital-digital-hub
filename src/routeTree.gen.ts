@@ -20,7 +20,6 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as StoreProductIdRouteImport } from './routes/store.$productId'
-import { Route as AdminEmailsRouteImport } from './routes/admin.emails'
 import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
 import { Route as ApplyCategorySlugRouteImport } from './routes/apply.$category.$slug'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
@@ -82,11 +81,6 @@ const StoreProductIdRoute = StoreProductIdRouteImport.update({
   path: '/$productId',
   getParentRoute: () => StoreRoute,
 } as any)
-const AdminEmailsRoute = AdminEmailsRouteImport.update({
-  id: '/emails',
-  path: '/emails',
-  getParentRoute: () => AdminRoute,
-} as any)
 const AdminDashboardRoute = AdminDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -125,7 +119,6 @@ export interface FileRoutesByFullPath {
   '/loans': typeof LoansRoute
   '/store': typeof StoreRouteWithChildren
   '/admin/dashboard': typeof AdminDashboardRoute
-  '/admin/emails': typeof AdminEmailsRoute
   '/store/$productId': typeof StoreProductIdRoute
   '/admin/': typeof AdminIndexRoute
   '/apply/$category/$slug': typeof ApplyCategorySlugRoute
@@ -143,7 +136,6 @@ export interface FileRoutesByTo {
   '/loans': typeof LoansRoute
   '/store': typeof StoreRouteWithChildren
   '/admin/dashboard': typeof AdminDashboardRoute
-  '/admin/emails': typeof AdminEmailsRoute
   '/store/$productId': typeof StoreProductIdRoute
   '/admin': typeof AdminIndexRoute
   '/apply/$category/$slug': typeof ApplyCategorySlugRoute
@@ -163,7 +155,6 @@ export interface FileRoutesById {
   '/loans': typeof LoansRoute
   '/store': typeof StoreRouteWithChildren
   '/admin/dashboard': typeof AdminDashboardRoute
-  '/admin/emails': typeof AdminEmailsRoute
   '/store/$productId': typeof StoreProductIdRoute
   '/admin/': typeof AdminIndexRoute
   '/apply/$category/$slug': typeof ApplyCategorySlugRoute
@@ -184,7 +175,6 @@ export interface FileRouteTypes {
     | '/loans'
     | '/store'
     | '/admin/dashboard'
-    | '/admin/emails'
     | '/store/$productId'
     | '/admin/'
     | '/apply/$category/$slug'
@@ -202,7 +192,6 @@ export interface FileRouteTypes {
     | '/loans'
     | '/store'
     | '/admin/dashboard'
-    | '/admin/emails'
     | '/store/$productId'
     | '/admin'
     | '/apply/$category/$slug'
@@ -221,7 +210,6 @@ export interface FileRouteTypes {
     | '/loans'
     | '/store'
     | '/admin/dashboard'
-    | '/admin/emails'
     | '/store/$productId'
     | '/admin/'
     | '/apply/$category/$slug'
@@ -325,13 +313,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StoreProductIdRouteImport
       parentRoute: typeof StoreRoute
     }
-    '/admin/emails': {
-      id: '/admin/emails'
-      path: '/emails'
-      fullPath: '/admin/emails'
-      preLoaderRoute: typeof AdminEmailsRouteImport
-      parentRoute: typeof AdminRoute
-    }
     '/admin/dashboard': {
       id: '/admin/dashboard'
       path: '/dashboard'
@@ -372,13 +353,11 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteChildren {
   AdminDashboardRoute: typeof AdminDashboardRoute
-  AdminEmailsRoute: typeof AdminEmailsRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminDashboardRoute: AdminDashboardRoute,
-  AdminEmailsRoute: AdminEmailsRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 
