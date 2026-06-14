@@ -21,6 +21,9 @@ export const submitLead = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await supabaseAdmin.from("service_leads").insert(data);
-    if (error) throw new Error(error.message);
+    if (error) {
+      console.error("[submitLead] DB error:", error.message);
+      throw new Error("Failed to submit your enquiry. Please try again.");
+    }
     return { ok: true as const };
   });
