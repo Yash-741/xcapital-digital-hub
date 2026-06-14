@@ -227,7 +227,7 @@ function AdminDashboard() {
           </TabsList>
           <TabsContent value="leads" className="space-y-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <StatCard label="Total Leads" value={stats.total} accent="bg-[#0a1438]" />
+          <StatCard label="Total Leads" value={stats.total} accent="bg-[var(--brand-black)]" />
           <StatCard label="New" value={stats.new} accent="bg-blue-600" />
           <StatCard label="Contacted" value={stats.contacted} accent="bg-amber-500" />
           <StatCard label="Closed" value={stats.closed} accent="bg-green-600" />
@@ -297,8 +297,8 @@ function AdminDashboard() {
                           {open ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
                         </td>
                         <td className="px-3 py-3 font-medium text-slate-900">{l.name}</td>
-                        <td className="px-3 py-3"><a href={`tel:${l.phone}`} className="text-[#0a1438] hover:underline" onClick={(e) => e.stopPropagation()}>{l.phone}</a></td>
-                        <td className="px-3 py-3"><a href={`mailto:${l.email}`} className="text-[#0a1438] hover:underline break-all" onClick={(e) => e.stopPropagation()}>{l.email}</a></td>
+                        <td className="px-3 py-3"><a href={`tel:${l.phone}`} className="text-[var(--brand-black)] hover:underline" onClick={(e) => e.stopPropagation()}>{l.phone}</a></td>
+                        <td className="px-3 py-3"><a href={`mailto:${l.email}`} className="text-[var(--brand-black)] hover:underline break-all" onClick={(e) => e.stopPropagation()}>{l.email}</a></td>
                         <td className="px-3 py-3">
                           {l.category ? (
                             <Badge variant="secondary" className="font-medium">{l.category}</Badge>
@@ -345,8 +345,8 @@ function AdminDashboard() {
                                 <h4 className="text-xs uppercase tracking-wide text-slate-500 font-semibold mb-3">User Details</h4>
                                 <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-sm">
                                   <div><dt className="text-slate-500">Full Name</dt><dd className="font-medium text-slate-900">{l.name}</dd></div>
-                                  <div><dt className="text-slate-500">Phone</dt><dd><a href={`tel:${l.phone}`} className="text-[#0a1438] hover:underline">{l.phone}</a></dd></div>
-                                  <div className="sm:col-span-2"><dt className="text-slate-500">Email</dt><dd><a href={`mailto:${l.email}`} className="text-[#0a1438] hover:underline break-all">{l.email}</a></dd></div>
+                                  <div><dt className="text-slate-500">Phone</dt><dd><a href={`tel:${l.phone}`} className="text-[var(--brand-black)] hover:underline">{l.phone}</a></dd></div>
+                                  <div className="sm:col-span-2"><dt className="text-slate-500">Email</dt><dd><a href={`mailto:${l.email}`} className="text-[var(--brand-black)] hover:underline break-all">{l.email}</a></dd></div>
                                 </dl>
                               </div>
                               <div className="rounded-lg bg-white border border-slate-200 p-4">
@@ -419,17 +419,17 @@ function AdminDashboard() {
                         <td className="px-3 py-3 font-medium text-slate-900">{u.full_name || "—"}</td>
                         <td className="px-3 py-3">
                           {u.email ? (
-                            <a href={`mailto:${u.email}`} className="text-[#0a1438] hover:underline break-all">{u.email}</a>
+                            <a href={`mailto:${u.email}`} className="text-[var(--brand-black)] hover:underline break-all">{u.email}</a>
                           ) : "—"}
                         </td>
                         <td className="px-3 py-3">
                           {u.phone ? (
-                            <a href={`tel:${u.phone}`} className="text-[#0a1438] hover:underline">{u.phone}</a>
+                            <a href={`tel:${u.phone}`} className="text-[var(--brand-black)] hover:underline">{u.phone}</a>
                           ) : "—"}
                         </td>
                         <td className="px-3 py-3 hidden sm:table-cell">
                           {u.is_admin ? (
-                            <Badge className="bg-[var(--brand-yellow)] text-[#0a1438] border-0">Admin</Badge>
+                            <Badge className="bg-[var(--brand-yellow)] text-[var(--brand-black)] border-0">Admin</Badge>
                           ) : (
                             <Badge variant="secondary">User</Badge>
                           )}
