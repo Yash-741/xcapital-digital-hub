@@ -104,6 +104,19 @@ function ApplyPage() {
       if (form.notes) payload.notes = form.notes;
 
       await send({ data: payload as never });
+      try {
+        const { insertLead } = await import("@/lib/leads-insert");
+        await insertLead({
+          name: form.full_name,
+          phone: form.phone,
+          email: form.email,
+          requirement: product!.name,
+          message: form.notes,
+          source: `apply:${cat}`,
+        });
+      } catch {
+        // non-fatal; primary submission already succeeded
+      }
       toast.success(t("toast.advisorSuccess"));
       navigate({ to: "/" });
     } catch (err) {
