@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import {
   Calculator, PiggyBank, TrendingUp, Wallet, Home, Briefcase,
   GraduationCap, Car, Building2, Plus, X, Trash2, Trophy,
@@ -12,9 +12,9 @@ import { useI18n } from "@/lib/i18n";
 export const Route = createFileRoute("/calculators")({
   head: () => ({
     meta: [
-      { title: "EMI, SIP, FD & Lumpsum Calculators | XCapital" },
+      { title: "Financial Calculators — XCapital | EMI, SIP, Lumpsum & FD Planning" },
       { name: "description", content: "Free online EMI, SIP, Lumpsum, FD and Home Loan calculators. Plan your loan EMIs and investment returns instantly with accurate, India-ready tools." },
-      { property: "og:title", content: "EMI, SIP, FD & Lumpsum Calculators | XCapital" },
+      { property: "og:title", content: "Financial Calculators — XCapital | EMI, SIP, Lumpsum & FD Planning" },
       { property: "og:description", content: "Live calculators for every loan and investment decision — built for Indian borrowers and investors." },
       { property: "og:url", content: "/calculators" },
     ],
@@ -42,14 +42,16 @@ function Field({
   const display = suffix === "₹" || prefix === "₹"
     ? Math.round(value).toLocaleString("en-IN")
     : String(value);
-
+  const inputId = useId();
+  const rangeId = useId();
   return (
     <div>
       <div className="flex justify-between items-center mb-2">
-        <label className="text-sm font-medium text-foreground"><Tx s={label}/></label>
+        <label htmlFor={inputId} className="text-sm font-medium text-foreground"><Tx s={label}/></label>
         <div className={`flex items-center rounded-md border px-2 py-1 bg-background border-input focus-within:border-[var(--brand-yellow)] focus-within:ring-2 focus-within:ring-[var(--brand-yellow)]/30`}>
           {prefix && <span className="text-sm font-semibold text-[var(--brand-black)]">{prefix}</span>}
           <input
+            id={inputId}
             type="text"
             inputMode="decimal"
             value={display}
@@ -65,6 +67,8 @@ function Field({
         </div>
       </div>
       <input
+        id={rangeId}
+        aria-label={label}
         type="range" min={min} max={max} step={step} value={value}
         onChange={(e) => onChange(Number(e.target.value))}
         className="w-full accent-[var(--brand-yellow)]"

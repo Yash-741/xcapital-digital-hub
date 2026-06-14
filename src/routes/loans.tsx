@@ -9,9 +9,9 @@ import { useI18n } from "@/lib/i18n";
 export const Route = createFileRoute("/loans")({
   head: () => ({
     meta: [
-      { title: "Loans Online — Personal, Home & Business Loans | XCapital" },
+      { title: "Loans — XCapital | Personal, Home & Business Loans in India" },
       { name: "description", content: "Apply for Personal Loan up to ₹40L, Home Loan from 8.35% p.a., Business, LAP, Education & Car loans. 50+ banks, 24-hour disbursal, lowest EMI." },
-      { property: "og:title", content: "Loans Online — Personal, Home & Business Loans | XCapital" },
+      { property: "og:title", content: "Loans — XCapital | Personal, Home & Business Loans in India" },
       { property: "og:description", content: "12+ loan products with the best rates from India's top banks. Quick approval, minimal paperwork, dedicated advisor." },
       { property: "og:url", content: "/loans" },
     ],

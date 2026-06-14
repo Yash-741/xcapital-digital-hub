@@ -6,9 +6,9 @@ import { useI18n } from "@/lib/i18n";
 export const Route = createFileRoute("/investments")({
   head: () => ({
     meta: [
-      { title: "Investments — Fixed Deposits & AAA Bonds | XCapital" },
+      { title: "Investments — XCapital | High-Yield FD & AAA Rated Bonds" },
       { name: "description", content: "Earn up to 8.5% p.a. with corporate Fixed Deposits and AAA-rated bonds. Senior-citizen bonus rates, flexible tenures, fully online booking." },
-      { property: "og:title", content: "Investments — Fixed Deposits & AAA Bonds | XCapital" },
+      { property: "og:title", content: "Investments — XCapital | High-Yield FD & AAA Rated Bonds" },
       { property: "og:description", content: "Safe, regulated investments with industry-best returns. Compare FD rates from leading NBFCs and banks on XCapital." },
       { property: "og:url", content: "/investments" },
     ],
