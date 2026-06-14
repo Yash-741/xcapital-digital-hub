@@ -10,6 +10,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { ChevronDown, ChevronRight, Trash2, LogOut, UserCog, ArrowLeft } from "lucide-react";
+import { Download } from "lucide-react";
+import * as XLSX from "xlsx";
 import { ProfileDialog } from "@/components/site/ProfileDialog";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { listAdminUsers, type AdminUser } from "@/lib/admin-users.functions";
@@ -176,6 +178,52 @@ function AdminDashboard() {
     navigate({ to: "/admin", replace: true });
   }
 
+  function downloadXlsx(rows: Record<string, unknown>[], sheetName: string, fileName: string) {
+    if (rows.length === 0) {
+      toast.error("Nothing to export");
+      return;
+    }
+    const ws = XLSX.utils.json_to_sheet(rows);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, sheetName);
+    const stamp = new Date().toISOString().slice(0, 10);
+    XLSX.writeFile(wb, `${fileName}-${stamp}.xlsx`);
+    toast.success("Exported");
+  }
+
+  function exportLeads() {
+    downloadXlsx(
+      filtered.map((l) => ({
+        Name: l.name,
+        Phone: l.phone,
+        Email: l.email,
+        Category: l.category ?? "",
+        Product: l.requirement ?? "",
+        Status: l.status,
+        Source: l.source ?? "",
+        Message: l.message ?? "",
+        Submitted: new Date(l.created_at).toLocaleString(),
+      })),
+      "Leads",
+      "xcapital-leads",
+    );
+  }
+
+  function exportUsers() {
+    downloadXlsx(
+      filteredUsers.map((u) => ({
+        Name: u.full_name ?? "",
+        Email: u.email ?? "",
+        Phone: u.phone ?? "",
+        Role: u.is_admin ? "Admin" : "User",
+        Joined: new Date(u.created_at).toLocaleString(),
+        "Last sign-in": u.last_sign_in_at ? new Date(u.last_sign_in_at).toLocaleString() : "Never",
+      })),
+      "Users",
+      "xcapital-users",
+    );
+  }
+
   if (authed !== true) {
     return <div className="min-h-screen flex items-center justify-center text-muted-foreground">Loading…</div>;
   }
@@ -233,7 +281,7 @@ function AdminDashboard() {
           <StatCard label="Closed" value={stats.closed} accent="bg-emerald-600" />
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 grid gap-3 md:grid-cols-[1fr_160px_180px_200px]">
+        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 grid gap-3 md:grid-cols-[1fr_140px_160px_170px_auto]">
           <Input
             placeholder="Search name, phone, or email…"
             value={search}
@@ -260,6 +308,12 @@ function AdminDashboard() {
               {requirements.map((r) => <SelectItem key={r} value={r}>{r}</SelectItem>)}
             </SelectContent>
           </Select>
+          <Button
+            onClick={exportLeads}
+            className="bg-[var(--brand-yellow)] hover:brightness-105 text-[var(--brand-black)] font-semibold"
+          >
+            <Download className="w-4 h-4 mr-2" /> Export XLSX
+          </Button>
         </div>
 
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
@@ -387,12 +441,18 @@ function AdminDashboard() {
         </div>
           </TabsContent>
           <TabsContent value="users" className="space-y-4">
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 grid gap-3 md:grid-cols-[1fr_auto]">
               <Input
                 placeholder="Search users by name, email, or phone…"
                 value={userSearch}
                 onChange={(e) => setUserSearch(e.target.value)}
               />
+              <Button
+                onClick={exportUsers}
+                className="bg-[var(--brand-yellow)] hover:brightness-105 text-[var(--brand-black)] font-semibold"
+              >
+                <Download className="w-4 h-4 mr-2" /> Export XLSX
+              </Button>
             </div>
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
               <div className="overflow-x-auto">
