@@ -180,6 +180,7 @@ function AboutPage() {
         email: form.email,
         message: form.message,
         requirement: "General enquiry",
+        category: "General",
         source: "about",
       });
       setSubmitted(true);

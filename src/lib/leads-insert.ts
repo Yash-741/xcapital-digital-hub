@@ -5,6 +5,7 @@ export type LeadInput = {
   phone: string;
   email: string;
   requirement?: string | null;
+  category?: string | null;
   message?: string | null;
   source?: string | null;
 };
@@ -16,6 +17,7 @@ export async function insertLead(lead: LeadInput) {
       phone: lead.phone.trim(),
       email: lead.email.trim(),
       requirement: lead.requirement?.trim() || null,
+      category: lead.category?.trim() || null,
       message: lead.message?.trim() || null,
       source: lead.source?.trim() || null,
     },

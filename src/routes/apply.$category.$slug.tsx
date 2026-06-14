@@ -111,6 +111,7 @@ function ApplyPage() {
           phone: form.phone,
           email: form.email,
           requirement: product!.name,
+          category: cat === "loan" ? "Loan" : cat === "insurance" ? "Insurance" : "Investment",
           message: form.notes,
           source: `apply:${cat}`,
         });

@@ -61,6 +61,7 @@ export function StoreEnquiryDialog({
         email: form.email,
         message: form.message,
         requirement: productName || categoryName || "Store enquiry",
+        category: categoryName || "Store",
         source: productName ? `store:${productName}` : "store",
       });
       toast.success("Thank you! Our team will contact you shortly.");
