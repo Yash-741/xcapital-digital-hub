@@ -73,7 +73,8 @@ export const getEmailDashboard = createServerFn({ method: "GET" })
     }
 
     let queues: QueueMetric[] = [];
-    const { data: q } = await supabaseAdmin.rpc("admin_email_queue_metrics");
+    // Call through the user-scoped client so auth.uid() is set inside the SECURITY DEFINER check.
+    const { data: q } = await context.supabase.rpc("admin_email_queue_metrics");
     if (Array.isArray(q)) {
       queues = (q as any[]).map((m) => ({
         queue_name: m.queue_name,
