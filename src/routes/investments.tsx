@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PiggyBank, Landmark } from "lucide-react";
-import { SiteLayout, PageHeader, ProductCard } from "@/components/site/Layout";
+import { SiteLayout, PageHeader } from "@/components/site/Layout";
 import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/investments")({
