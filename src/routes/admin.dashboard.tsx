@@ -178,6 +178,52 @@ function AdminDashboard() {
     navigate({ to: "/admin", replace: true });
   }
 
+  function downloadXlsx(rows: Record<string, unknown>[], sheetName: string, fileName: string) {
+    if (rows.length === 0) {
+      toast.error("Nothing to export");
+      return;
+    }
+    const ws = XLSX.utils.json_to_sheet(rows);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, sheetName);
+    const stamp = new Date().toISOString().slice(0, 10);
+    XLSX.writeFile(wb, `${fileName}-${stamp}.xlsx`);
+    toast.success("Exported");
+  }
+
+  function exportLeads() {
+    downloadXlsx(
+      filtered.map((l) => ({
+        Name: l.name,
+        Phone: l.phone,
+        Email: l.email,
+        Category: l.category ?? "",
+        Product: l.requirement ?? "",
+        Status: l.status,
+        Source: l.source ?? "",
+        Message: l.message ?? "",
+        Submitted: new Date(l.created_at).toLocaleString(),
+      })),
+      "Leads",
+      "xcapital-leads",
+    );
+  }
+
+  function exportUsers() {
+    downloadXlsx(
+      filteredUsers.map((u) => ({
+        Name: u.full_name ?? "",
+        Email: u.email ?? "",
+        Phone: u.phone ?? "",
+        Role: u.is_admin ? "Admin" : "User",
+        Joined: new Date(u.created_at).toLocaleString(),
+        "Last sign-in": u.last_sign_in_at ? new Date(u.last_sign_in_at).toLocaleString() : "Never",
+      })),
+      "Users",
+      "xcapital-users",
+    );
+  }
+
   if (authed !== true) {
     return <div className="min-h-screen flex items-center justify-center text-muted-foreground">Loading…</div>;
   }
