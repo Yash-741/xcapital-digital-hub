@@ -11,6 +11,9 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { ChevronDown, ChevronRight, Trash2, LogOut, UserCog, ArrowLeft } from "lucide-react";
 import { ProfileDialog } from "@/components/site/ProfileDialog";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { listAdminUsers, type AdminUser } from "@/lib/admin-users.functions";
+import { useServerFn } from "@tanstack/react-start";
 
 export const Route = createFileRoute("/admin/dashboard")({
   head: () => ({ meta: [{ title: "XCapital Admin Portal" }, { name: "robots", content: "noindex" }] }),
@@ -45,6 +48,7 @@ function AdminDashboard() {
   const qc = useQueryClient();
   const [authed, setAuthed] = useState<boolean | null>(null);
   const [profileOpen, setProfileOpen] = useState(false);
+  const fetchUsers = useServerFn(listAdminUsers);
 
   useEffect(() => {
     (async () => {
@@ -80,6 +84,20 @@ function AdminDashboard() {
       return data as Lead[];
     },
   });
+
+  const { data: users = [], isLoading: usersLoading } = useQuery({
+    queryKey: ["admin-users"],
+    enabled: authed === true,
+    queryFn: () => fetchUsers(),
+  });
+  const [userSearch, setUserSearch] = useState("");
+  const filteredUsers = useMemo(() => {
+    const q = userSearch.trim().toLowerCase();
+    if (!q) return users;
+    return users.filter((u) =>
+      [u.email, u.full_name, u.phone].some((v) => v && v.toLowerCase().includes(q)),
+    );
+  }, [users, userSearch]);
 
   const updateStatus = useMutation({
     mutationFn: async ({ id, status }: { id: string; status: string }) => {
@@ -192,6 +210,12 @@ function AdminDashboard() {
       <ProfileDialog open={profileOpen} onOpenChange={setProfileOpen} />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
+        <Tabs defaultValue="leads" className="space-y-6">
+          <TabsList>
+            <TabsTrigger value="leads">Leads</TabsTrigger>
+            <TabsTrigger value="users">Users ({users.length})</TabsTrigger>
+          </TabsList>
+          <TabsContent value="leads" className="space-y-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <StatCard label="Total Leads" value={stats.total} accent="bg-[#0a1438]" />
           <StatCard label="New" value={stats.new} accent="bg-blue-600" />
@@ -351,6 +375,69 @@ function AdminDashboard() {
             </div>
           )}
         </div>
+          </TabsContent>
+          <TabsContent value="users" className="space-y-4">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+              <Input
+                placeholder="Search users by name, email, or phone…"
+                value={userSearch}
+                onChange={(e) => setUserSearch(e.target.value)}
+              />
+            </div>
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead className="bg-slate-100 text-slate-700">
+                    <tr>
+                      <th className="text-left px-3 py-3">Name</th>
+                      <th className="text-left px-3 py-3">Email</th>
+                      <th className="text-left px-3 py-3">Phone</th>
+                      <th className="text-left px-3 py-3 hidden sm:table-cell">Role</th>
+                      <th className="text-left px-3 py-3 hidden md:table-cell">Joined</th>
+                      <th className="text-left px-3 py-3 hidden lg:table-cell">Last sign-in</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {usersLoading && (
+                      <tr><td colSpan={6} className="text-center py-8 text-muted-foreground">Loading users…</td></tr>
+                    )}
+                    {!usersLoading && filteredUsers.length === 0 && (
+                      <tr><td colSpan={6} className="text-center py-8 text-muted-foreground">No users found</td></tr>
+                    )}
+                    {filteredUsers.map((u: AdminUser) => (
+                      <tr key={u.id} className="border-t border-slate-100 hover:bg-slate-50">
+                        <td className="px-3 py-3 font-medium text-slate-900">{u.full_name || "—"}</td>
+                        <td className="px-3 py-3">
+                          {u.email ? (
+                            <a href={`mailto:${u.email}`} className="text-[#0a1438] hover:underline break-all">{u.email}</a>
+                          ) : "—"}
+                        </td>
+                        <td className="px-3 py-3">
+                          {u.phone ? (
+                            <a href={`tel:${u.phone}`} className="text-[#0a1438] hover:underline">{u.phone}</a>
+                          ) : "—"}
+                        </td>
+                        <td className="px-3 py-3 hidden sm:table-cell">
+                          {u.is_admin ? (
+                            <Badge className="bg-[var(--brand-yellow)] text-[#0a1438] border-0">Admin</Badge>
+                          ) : (
+                            <Badge variant="secondary">User</Badge>
+                          )}
+                        </td>
+                        <td className="px-3 py-3 hidden md:table-cell text-slate-600">
+                          {new Date(u.created_at).toLocaleDateString()}
+                        </td>
+                        <td className="px-3 py-3 hidden lg:table-cell text-slate-600">
+                          {u.last_sign_in_at ? new Date(u.last_sign_in_at).toLocaleString() : "Never"}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </TabsContent>
+        </Tabs>
       </main>
     </div>
   );
