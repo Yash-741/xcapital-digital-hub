@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useRouterState } from "@tanstack/react-router";
-import { Menu, X, ChevronDown, User, LogOut, Phone, Mail, Search } from "lucide-react";
+import { Menu, X, ChevronDown, User, LogOut, Phone, Mail, Search, FileText } from "lucide-react";
 import logo from "@/assets/xcapital-logo.asset.json";
 import { supabase } from "@/integrations/supabase/client";
 import { SearchDialog } from "./SearchDialog";
@@ -209,6 +209,13 @@ export function Header() {
             <LanguageSwitcher />
             {signedIn ? (
               <>
+                <Link
+                  to="/my-applications"
+                  className="hidden md:inline-flex items-center gap-2 rounded-full px-3 md:px-4 py-2.5 text-sm font-semibold text-[var(--brand-black)] border border-[var(--brand-black)]/15 hover:bg-[var(--brand-yellow-soft)] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-yellow)]"
+                  aria-label="My Applications"
+                >
+                  <FileText className="h-4 w-4" aria-hidden="true" /> <span className="hidden sm:inline">My Applications</span>
+                </Link>
                 <button
                   type="button"
                   onClick={() => setProfileOpen(true)}

@@ -17,10 +17,12 @@ import { Route as CalculatorsRouteImport } from './routes/calculators'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as StoreProductIdRouteImport } from './routes/store.$productId'
 import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
+import { Route as AuthenticatedMyApplicationsRouteImport } from './routes/_authenticated/my-applications'
 import { Route as ApplyCategorySlugRouteImport } from './routes/apply.$category.$slug'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
@@ -66,6 +68,10 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -86,6 +92,12 @@ const AdminDashboardRoute = AdminDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AdminRoute,
 } as any)
+const AuthenticatedMyApplicationsRoute =
+  AuthenticatedMyApplicationsRouteImport.update({
+    id: '/my-applications',
+    path: '/my-applications',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const ApplyCategorySlugRoute = ApplyCategorySlugRouteImport.update({
   id: '/apply/$category/$slug',
   path: '/apply/$category/$slug',
@@ -118,6 +130,7 @@ export interface FileRoutesByFullPath {
   '/investments': typeof InvestmentsRoute
   '/loans': typeof LoansRoute
   '/store': typeof StoreRouteWithChildren
+  '/my-applications': typeof AuthenticatedMyApplicationsRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/store/$productId': typeof StoreProductIdRoute
   '/admin/': typeof AdminIndexRoute
@@ -135,6 +148,7 @@ export interface FileRoutesByTo {
   '/investments': typeof InvestmentsRoute
   '/loans': typeof LoansRoute
   '/store': typeof StoreRouteWithChildren
+  '/my-applications': typeof AuthenticatedMyApplicationsRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/store/$productId': typeof StoreProductIdRoute
   '/admin': typeof AdminIndexRoute
@@ -146,6 +160,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
@@ -154,6 +169,7 @@ export interface FileRoutesById {
   '/investments': typeof InvestmentsRoute
   '/loans': typeof LoansRoute
   '/store': typeof StoreRouteWithChildren
+  '/_authenticated/my-applications': typeof AuthenticatedMyApplicationsRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/store/$productId': typeof StoreProductIdRoute
   '/admin/': typeof AdminIndexRoute
@@ -174,6 +190,7 @@ export interface FileRouteTypes {
     | '/investments'
     | '/loans'
     | '/store'
+    | '/my-applications'
     | '/admin/dashboard'
     | '/store/$productId'
     | '/admin/'
@@ -191,6 +208,7 @@ export interface FileRouteTypes {
     | '/investments'
     | '/loans'
     | '/store'
+    | '/my-applications'
     | '/admin/dashboard'
     | '/store/$productId'
     | '/admin'
@@ -201,6 +219,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/about'
     | '/admin'
     | '/auth'
@@ -209,6 +228,7 @@ export interface FileRouteTypes {
     | '/investments'
     | '/loans'
     | '/store'
+    | '/_authenticated/my-applications'
     | '/admin/dashboard'
     | '/store/$productId'
     | '/admin/'
@@ -220,6 +240,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   AdminRoute: typeof AdminRouteWithChildren
   AuthRoute: typeof AuthRoute
@@ -292,6 +313,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -319,6 +347,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/dashboard'
       preLoaderRoute: typeof AdminDashboardRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/_authenticated/my-applications': {
+      id: '/_authenticated/my-applications'
+      path: '/my-applications'
+      fullPath: '/my-applications'
+      preLoaderRoute: typeof AuthenticatedMyApplicationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/apply/$category/$slug': {
       id: '/apply/$category/$slug'
@@ -351,6 +386,17 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedMyApplicationsRoute: typeof AuthenticatedMyApplicationsRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedMyApplicationsRoute: AuthenticatedMyApplicationsRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 interface AdminRouteChildren {
   AdminDashboardRoute: typeof AdminDashboardRoute
   AdminIndexRoute: typeof AdminIndexRoute
@@ -375,6 +421,7 @@ const StoreRouteWithChildren = StoreRoute._addFileChildren(StoreRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   AdminRoute: AdminRouteWithChildren,
   AuthRoute: AuthRoute,
