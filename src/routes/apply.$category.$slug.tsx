@@ -262,7 +262,7 @@ function ApplyPage() {
           </Field>
 
           <div className="flex items-center gap-3 pt-2">
-            <Button type="submit" disabled={loading} className="bg-[var(--brand-navy)] text-white hover:brightness-110">
+            <Button type="submit" disabled={loading} className="bg-[var(--brand-yellow)] text-[var(--brand-black)] font-semibold hover:brightness-105">
               {loading ? t("apply.submitting") : t("apply.submit")}
             </Button>
             <Link to="/about" className="text-sm text-muted-foreground hover:underline">{t("apply.contactDirect")}</Link>
