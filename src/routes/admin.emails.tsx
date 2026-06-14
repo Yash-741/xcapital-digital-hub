@@ -39,7 +39,7 @@ function AdminEmails() {
     })();
   }, [navigate]);
 
-  const { data, isLoading, refetch, isFetching } = (useQuery as any)({
+  const { data, isLoading, refetch, isFetching } = useQuery({
     queryKey: ["admin-emails"],
     enabled: authed === true,
     refetchInterval: 15_000,
