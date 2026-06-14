@@ -132,7 +132,7 @@ function ApplyPage() {
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button
                 onClick={() => navigate({ to: "/auth", search: { redirect: redirectTo } as never })}
-                className="bg-[var(--brand-navy)] text-white hover:brightness-110"
+                className="bg-[var(--brand-yellow)] text-[var(--brand-black)] font-semibold hover:brightness-105"
               >
                 Sign in to continue
               </Button>
