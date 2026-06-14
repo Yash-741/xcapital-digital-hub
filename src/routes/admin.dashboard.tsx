@@ -9,7 +9,8 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { ChevronDown, ChevronRight, Trash2, LogOut } from "lucide-react";
+import { ChevronDown, ChevronRight, Trash2, LogOut, UserCog } from "lucide-react";
+import { ProfileDialog } from "@/components/site/ProfileDialog";
 
 export const Route = createFileRoute("/admin/dashboard")({
   head: () => ({ meta: [{ title: "XCapital Admin Portal" }, { name: "robots", content: "noindex" }] }),
@@ -42,6 +43,7 @@ function AdminDashboard() {
   const navigate = useNavigate();
   const qc = useQueryClient();
   const [authed, setAuthed] = useState<boolean | null>(null);
+  const [profileOpen, setProfileOpen] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -161,11 +163,18 @@ function AdminDashboard() {
             </h1>
             <p className="text-xs text-slate-300">Lead management</p>
           </div>
-          <Button onClick={handleLogout} variant="ghost" className="text-white hover:bg-white/10">
-            <LogOut className="w-4 h-4 mr-2" /> Logout
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button onClick={() => setProfileOpen(true)} variant="ghost" className="text-white hover:bg-white/10">
+              <UserCog className="w-4 h-4 mr-2" /> <span className="hidden sm:inline">Profile</span>
+            </Button>
+            <Button onClick={handleLogout} variant="ghost" className="text-white hover:bg-white/10">
+              <LogOut className="w-4 h-4 mr-2" /> <span className="hidden sm:inline">Logout</span>
+            </Button>
+          </div>
         </div>
       </header>
+
+      <ProfileDialog open={profileOpen} onOpenChange={setProfileOpen} />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
