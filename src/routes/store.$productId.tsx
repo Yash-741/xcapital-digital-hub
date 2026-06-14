@@ -44,13 +44,13 @@ function NotFoundView() {
   );
 }
 
-function ErrorView({ error, reset }: { error: Error; reset: () => void }) {
+function ErrorView({ reset }: { error: Error; reset: () => void }) {
   const { tEn } = useI18n();
   return (
     <SiteLayout>
       <div className="container-x py-20 text-center">
         <h1 className="text-2xl font-bold text-[var(--brand-black)]">{tEn("Something went wrong")}</h1>
-        <p className="text-muted-foreground mt-2">{error.message}</p>
+        <p className="text-muted-foreground mt-2">{tEn("An unexpected error occurred. Please try again or go back to the store.")}</p>
         <button onClick={reset} className="mt-6 text-sm font-semibold underline">{tEn("Try again")}</button>
       </div>
     </SiteLayout>
