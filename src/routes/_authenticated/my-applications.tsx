@@ -32,13 +32,10 @@ const CAT_LABEL: Record<string, string> = {
   investment: "Investment",
 };
 
-// Stable 6-digit display ID derived from the row UUID, prefixed with XC.
-function shortLeadId(id: string): string {
-  let h = 0;
-  for (let i = 0; i < id.length; i++) {
-    h = (h * 31 + id.charCodeAt(i)) >>> 0;
-  }
-  return "XC" + String(h % 1_000_000).padStart(6, "0");
+// Sequential 6-digit display ID starting at XC000000 for the user's
+// first application (oldest), incrementing by submission order.
+function formatLeadId(n: number): string {
+  return "XC" + String(n).padStart(6, "0");
 }
 
 function MyApplicationsPage() {
@@ -49,12 +46,24 @@ function MyApplicationsPage() {
   });
 
   const [search, setSearch] = useState("");
-  const filtered = useMemo(() => {
+
+  // Assign sequential lead IDs by submission order (oldest = XC000000).
+  const withIds = useMemo(() => {
     if (!data) return data;
+    const ordered = [...data].sort((a, b) =>
+      a.created_at < b.created_at ? -1 : 1,
+    );
+    const idMap = new Map<string, string>();
+    ordered.forEach((a, i) => idMap.set(a.id, formatLeadId(i)));
+    return data.map((a) => ({ ...a, leadId: idMap.get(a.id)! }));
+  }, [data]);
+
+  const filtered = useMemo(() => {
+    if (!withIds) return withIds;
     const q = search.trim().toUpperCase().replace(/\s|#/g, "");
-    if (!q) return data;
-    return data.filter((a) => shortLeadId(a.id).includes(q));
-  }, [data, search]);
+    if (!q) return withIds;
+    return withIds.filter((a) => a.leadId.includes(q));
+  }, [withIds, search]);
 
   return (
     <SiteLayout>
