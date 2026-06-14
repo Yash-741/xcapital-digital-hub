@@ -22,23 +22,23 @@ function Investments() {
   return (
     <SiteLayout>
       <PageHeader eyebrow={t("investments.header.eyebrow")} title={t("investments.header.title")} subtitle={t("investments.header.subtitle")} />
-      <section className="container-x py-16 grid md:grid-cols-2 gap-6">
-        <div id="fixed-deposits" className="relative scroll-mt-32 bg-card rounded-xl border border-border p-7 shadow-card overflow-hidden">
+      <section className="container-x py-16 grid md:grid-cols-2 gap-6 items-stretch">
+        <div id="fixed-deposits" className="relative scroll-mt-32 bg-card rounded-xl border border-border p-7 shadow-card overflow-hidden flex flex-col h-full">
           <span className="absolute top-4 right-4 text-xs font-bold bg-[var(--brand-yellow)] text-[var(--brand-black)] px-2.5 py-1 rounded-full">{t("investments.fd.badge")}</span>
           <div className="h-12 w-12 rounded-lg grid place-items-center bg-[var(--brand-yellow-soft)] text-[var(--brand-black)] mb-4">
             <PiggyBank className="h-6 w-6" />
           </div>
           <h3 className="text-xl font-semibold">{t("investments.fd.name")}</h3>
           <p className="text-sm text-muted-foreground mt-2">{t("investments.fd.desc")}</p>
-          <Link to="/apply/$category/$slug" params={{ category: "investment", slug: "fixed-deposits" }} className="mt-5 inline-block px-5 py-2.5 text-sm font-semibold rounded-md bg-[#0a1438] text-white hover:bg-[#15235c]">{t("cta.applyNow")}</Link>
+          <Link to="/apply/$category/$slug" params={{ category: "investment", slug: "fixed-deposits" }} className="mt-auto pt-5 self-start"><span className="inline-block px-5 py-2.5 text-sm font-semibold rounded-md bg-[#0a1438] text-white hover:bg-[#15235c]">{t("cta.applyNow")}</span></Link>
         </div>
-        <div id="bonds" className="relative scroll-mt-32 bg-card rounded-xl border border-border p-7 shadow-card overflow-hidden">
+        <div id="bonds" className="relative scroll-mt-32 bg-card rounded-xl border border-border p-7 shadow-card overflow-hidden flex flex-col h-full">
           <div className="h-12 w-12 rounded-lg grid place-items-center bg-[var(--brand-yellow-soft)] text-[var(--brand-black)] mb-4">
             <Landmark className="h-6 w-6" />
           </div>
           <h3 className="text-xl font-semibold">{t("investments.bonds.name")}</h3>
           <p className="text-sm text-muted-foreground mt-2">{t("investments.bonds.desc")}</p>
-          <Link to="/apply/$category/$slug" params={{ category: "investment", slug: "bonds" }} className="mt-5 inline-block px-5 py-2.5 text-sm font-semibold rounded-md bg-[#0a1438] text-white hover:bg-[#15235c]">{t("cta.applyNow")}</Link>
+          <Link to="/apply/$category/$slug" params={{ category: "investment", slug: "bonds" }} className="mt-auto pt-5 self-start"><span className="inline-block px-5 py-2.5 text-sm font-semibold rounded-md bg-[#0a1438] text-white hover:bg-[#15235c]">{t("cta.applyNow")}</span></Link>
         </div>
       </section>
     </SiteLayout>
