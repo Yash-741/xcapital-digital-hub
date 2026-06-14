@@ -6,6 +6,7 @@ import logo from "@/assets/xcapital-logo.asset.json";
 import { supabase } from "@/integrations/supabase/client";
 import { SearchDialog } from "./SearchDialog";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { ProfileDialog } from "./ProfileDialog";
 import { useI18n } from "@/lib/i18n";
 
 const loanLinks = [
@@ -61,6 +62,7 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [signedIn, setSignedIn] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const { t, tEn } = useI18n();
@@ -206,14 +208,24 @@ export function Header() {
             </button>
             <LanguageSwitcher />
             {signedIn ? (
-              <button
-                type="button"
-                onClick={() => supabase.auth.signOut()}
-                className="inline-flex items-center gap-2 rounded-full px-4 md:px-5 py-2.5 text-sm font-semibold text-[var(--brand-black)] bg-[var(--brand-yellow)] hover:brightness-105 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-black)] focus-visible:ring-offset-2"
-                aria-label={tEn("Sign out")}
-              >
-                <LogOut className="h-4 w-4" aria-hidden="true" /> <span className="hidden sm:inline">{t("actions.signOut")}</span><span className="sm:hidden" aria-hidden="true">{t("actions.signOut")}</span>
-              </button>
+              <>
+                <button
+                  type="button"
+                  onClick={() => setProfileOpen(true)}
+                  className="inline-flex items-center gap-2 rounded-full px-3 md:px-4 py-2.5 text-sm font-semibold text-[var(--brand-black)] border border-[var(--brand-black)]/15 hover:bg-[var(--brand-yellow-soft)] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-yellow)]"
+                  aria-label={tEn("Profile")}
+                >
+                  <User className="h-4 w-4" aria-hidden="true" /> <span className="hidden sm:inline">{tEn("Profile")}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => supabase.auth.signOut()}
+                  className="inline-flex items-center gap-2 rounded-full px-4 md:px-5 py-2.5 text-sm font-semibold text-[var(--brand-black)] bg-[var(--brand-yellow)] hover:brightness-105 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-black)] focus-visible:ring-offset-2"
+                  aria-label={tEn("Sign out")}
+                >
+                  <LogOut className="h-4 w-4" aria-hidden="true" /> <span className="hidden sm:inline">{t("actions.signOut")}</span><span className="sm:hidden" aria-hidden="true">{t("actions.signOut")}</span>
+                </button>
+              </>
             ) : (
               <Link
                 to="/auth"
@@ -275,6 +287,7 @@ export function Header() {
         </nav>
       )}
       <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
+      <ProfileDialog open={profileOpen} onOpenChange={setProfileOpen} />
     </header>
   );
 }
