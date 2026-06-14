@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { getRequest } from "@tanstack/react-start/server";
 import { z } from "zod";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 const LeadSchema = z.object({
   category: z.enum(["loan", "insurance", "investment"]),
@@ -18,8 +19,9 @@ const LeadSchema = z.object({
 });
 
 export const submitLead = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => LeadSchema.parse(input))
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
     const { rateLimit, getClientIp } = await import("./rate-limit.server");
     const ip = getClientIp(getRequest());
     const rl = rateLimit(`servicelead:${ip}`, { capacity: 5, refillPerSec: 5 / 60 });
@@ -28,10 +30,28 @@ export const submitLead = createServerFn({ method: "POST" })
       throw new Error("Too many submissions. Please try again in a minute.");
     }
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { error } = await supabaseAdmin.from("service_leads").insert(data);
+    const { error } = await supabaseAdmin
+      .from("service_leads")
+      .insert({ ...data, user_id: context.userId });
     if (error) {
       console.error("[submitLead] DB error:", error.message);
       throw new Error("Failed to submit your enquiry. Please try again.");
     }
     return { ok: true as const };
+  });
+
+export const listMyApplications = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { data, error } = await context.supabase
+      .from("service_leads")
+      .select(
+        "id, category, product_slug, product_name, full_name, email, phone, amount, tenure, coverage, age, horizon, notes, status, created_at",
+      )
+      .order("created_at", { ascending: false });
+    if (error) {
+      console.error("[listMyApplications] DB error:", error.message);
+      throw new Error("Failed to load your applications.");
+    }
+    return data ?? [];
   });
