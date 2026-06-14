@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { ChevronDown, ChevronRight, Trash2, LogOut, UserCog } from "lucide-react";
+import { ChevronDown, ChevronRight, Trash2, LogOut, UserCog, ArrowLeft } from "lucide-react";
 import { ProfileDialog } from "@/components/site/ProfileDialog";
 
 export const Route = createFileRoute("/admin/dashboard")({
@@ -164,6 +164,12 @@ function AdminDashboard() {
             <p className="text-xs text-slate-300">Lead management</p>
           </div>
           <div className="flex items-center gap-2">
+            <Link
+              to="/"
+              className="inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm text-white hover:bg-white/10"
+            >
+              <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">View website</span>
+            </Link>
             <Button onClick={() => setProfileOpen(true)} variant="ghost" className="text-white hover:bg-white/10">
               <UserCog className="w-4 h-4 mr-2" /> <span className="hidden sm:inline">Profile</span>
             </Button>
