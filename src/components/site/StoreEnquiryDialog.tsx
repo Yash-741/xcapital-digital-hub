@@ -5,6 +5,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
 } from "@/components/ui/dialog";
 import { useI18n } from "@/lib/i18n";
+import { insertLead } from "@/lib/leads-insert";
 
 type Form = { name: string; phone: string; email: string; message: string };
 type Errs = Partial<Record<keyof Form, string>>;
@@ -39,7 +40,7 @@ export function StoreEnquiryDialog({
     if (errs[k]) setErrs((e) => ({ ...e, [k]: undefined }));
   };
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const r = schema.safeParse(form);
     if (!r.success) {
@@ -53,13 +54,23 @@ export function StoreEnquiryDialog({
       return;
     }
     setSubmitting(true);
-    // Local submission — same UX as Reach Us form on /about
-    window.setTimeout(() => {
-      setSubmitting(false);
-      toast.success(t("toast.contactSuccess"));
+    try {
+      await insertLead({
+        name: form.name,
+        phone: form.phone,
+        email: form.email,
+        message: form.message,
+        requirement: productName || categoryName || "Store enquiry",
+        source: productName ? `store:${productName}` : "store",
+      });
+      toast.success("Thank you! Our team will contact you shortly.");
       onOpenChange(false);
       setForm({ ...initial });
-    }, 300);
+    } catch {
+      toast.error("Something went wrong, please try again");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const title = productName

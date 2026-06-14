@@ -15,9 +15,12 @@ import { Route as InvestmentsRouteImport } from './routes/investments'
 import { Route as InsuranceRouteImport } from './routes/insurance'
 import { Route as CalculatorsRouteImport } from './routes/calculators'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as StoreProductIdRouteImport } from './routes/store.$productId'
+import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
 import { Route as ApplyCategorySlugRouteImport } from './routes/apply.$category.$slug'
 
 const StoreRoute = StoreRouteImport.update({
@@ -50,6 +53,11 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -60,10 +68,20 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
 const StoreProductIdRoute = StoreProductIdRouteImport.update({
   id: '/$productId',
   path: '/$productId',
   getParentRoute: () => StoreRoute,
+} as any)
+const AdminDashboardRoute = AdminDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AdminRoute,
 } as any)
 const ApplyCategorySlugRoute = ApplyCategorySlugRouteImport.update({
   id: '/apply/$category/$slug',
@@ -74,13 +92,16 @@ const ApplyCategorySlugRoute = ApplyCategorySlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/calculators': typeof CalculatorsRoute
   '/insurance': typeof InsuranceRoute
   '/investments': typeof InvestmentsRoute
   '/loans': typeof LoansRoute
   '/store': typeof StoreRouteWithChildren
+  '/admin/dashboard': typeof AdminDashboardRoute
   '/store/$productId': typeof StoreProductIdRoute
+  '/admin/': typeof AdminIndexRoute
   '/apply/$category/$slug': typeof ApplyCategorySlugRoute
 }
 export interface FileRoutesByTo {
@@ -92,20 +113,25 @@ export interface FileRoutesByTo {
   '/investments': typeof InvestmentsRoute
   '/loans': typeof LoansRoute
   '/store': typeof StoreRouteWithChildren
+  '/admin/dashboard': typeof AdminDashboardRoute
   '/store/$productId': typeof StoreProductIdRoute
+  '/admin': typeof AdminIndexRoute
   '/apply/$category/$slug': typeof ApplyCategorySlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/calculators': typeof CalculatorsRoute
   '/insurance': typeof InsuranceRoute
   '/investments': typeof InvestmentsRoute
   '/loans': typeof LoansRoute
   '/store': typeof StoreRouteWithChildren
+  '/admin/dashboard': typeof AdminDashboardRoute
   '/store/$productId': typeof StoreProductIdRoute
+  '/admin/': typeof AdminIndexRoute
   '/apply/$category/$slug': typeof ApplyCategorySlugRoute
 }
 export interface FileRouteTypes {
@@ -113,13 +139,16 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/admin'
     | '/auth'
     | '/calculators'
     | '/insurance'
     | '/investments'
     | '/loans'
     | '/store'
+    | '/admin/dashboard'
     | '/store/$productId'
+    | '/admin/'
     | '/apply/$category/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -131,25 +160,31 @@ export interface FileRouteTypes {
     | '/investments'
     | '/loans'
     | '/store'
+    | '/admin/dashboard'
     | '/store/$productId'
+    | '/admin'
     | '/apply/$category/$slug'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/admin'
     | '/auth'
     | '/calculators'
     | '/insurance'
     | '/investments'
     | '/loans'
     | '/store'
+    | '/admin/dashboard'
     | '/store/$productId'
+    | '/admin/'
     | '/apply/$category/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AdminRoute: typeof AdminRouteWithChildren
   AuthRoute: typeof AuthRoute
   CalculatorsRoute: typeof CalculatorsRoute
   InsuranceRoute: typeof InsuranceRoute
@@ -203,6 +238,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -217,12 +259,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/store/$productId': {
       id: '/store/$productId'
       path: '/$productId'
       fullPath: '/store/$productId'
       preLoaderRoute: typeof StoreProductIdRouteImport
       parentRoute: typeof StoreRoute
+    }
+    '/admin/dashboard': {
+      id: '/admin/dashboard'
+      path: '/dashboard'
+      fullPath: '/admin/dashboard'
+      preLoaderRoute: typeof AdminDashboardRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/apply/$category/$slug': {
       id: '/apply/$category/$slug'
@@ -233,6 +289,18 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface AdminRouteChildren {
+  AdminDashboardRoute: typeof AdminDashboardRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminDashboardRoute: AdminDashboardRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface StoreRouteChildren {
   StoreProductIdRoute: typeof StoreProductIdRoute
@@ -247,6 +315,7 @@ const StoreRouteWithChildren = StoreRoute._addFileChildren(StoreRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AdminRoute: AdminRouteWithChildren,
   AuthRoute: AuthRoute,
   CalculatorsRoute: CalculatorsRoute,
   InsuranceRoute: InsuranceRoute,
@@ -258,13 +327,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
