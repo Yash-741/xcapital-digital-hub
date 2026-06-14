@@ -46,6 +46,13 @@ function redactEmail(email: string | null | undefined): string {
 export const Route = createFileRoute("/lovable/email/auth/webhook")({
   server: {
     handlers: {
+      GET: async () => {
+        return Response.json({
+          ok: true,
+          route: '/lovable/email/auth/webhook',
+          templates: Object.keys(EMAIL_TEMPLATES),
+        })
+      },
       POST: async ({ request }) => {
         const apiKey = process.env.LOVABLE_API_KEY
 
