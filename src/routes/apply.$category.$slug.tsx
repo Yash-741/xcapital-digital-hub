@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { SiteLayout, PageHeader } from "@/components/site/Layout";
 import { Input } from "@/components/ui/input";
@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { submitLead } from "@/lib/leads.functions";
 import { useI18n } from "@/lib/i18n";
+import { supabase } from "@/integrations/supabase/client";
 
 type Cat = "loan" | "insurance" | "investment";
 
@@ -60,10 +61,39 @@ function ApplyPage() {
 
   const send = useServerFn(submitLead);
   const [loading, setLoading] = useState(false);
+  const [authState, setAuthState] = useState<"checking" | "in" | "out">("checking");
+  const [userEmail, setUserEmail] = useState<string>("");
   const [form, setForm] = useState({
     full_name: "", email: "", phone: "",
     amount: "", tenure: "", coverage: "", age: "", horizon: "", notes: "",
   });
+
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      const { data } = await supabase.auth.getUser();
+      if (!active) return;
+      if (data.user) {
+        setUserEmail(data.user.email ?? "");
+        setForm((f) => ({ ...f, email: f.email || (data.user!.email ?? "") }));
+        setAuthState("in");
+      } else {
+        setAuthState("out");
+      }
+    })();
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
+      if (session?.user) {
+        setUserEmail(session.user.email ?? "");
+        setAuthState("in");
+      } else {
+        setAuthState("out");
+      }
+    });
+    return () => {
+      active = false;
+      sub.subscription.unsubscribe();
+    };
+  }, []);
 
   if (!product) {
     return (
@@ -72,6 +102,46 @@ function ApplyPage() {
         <div className="container-x py-12">
           <Link to="/" className="text-[var(--brand-navy)] underline">{t("apply.notFound.back")}</Link>
         </div>
+      </SiteLayout>
+    );
+  }
+
+  if (authState === "checking") {
+    return (
+      <SiteLayout>
+        <PageHeader title={`${t("apply.title")} ${product.name}`} subtitle={t("apply.subtitle")} />
+        <div className="container-x py-16 text-center text-muted-foreground">Loading…</div>
+      </SiteLayout>
+    );
+  }
+
+  if (authState === "out") {
+    const redirectTo = `/apply/${cat}/${product.slug}`;
+    return (
+      <SiteLayout>
+        <PageHeader
+          eyebrow={t("apply.eyebrow")}
+          title={`Sign in to apply for ${product.name}`}
+          subtitle="Please sign in or create an account to submit your application."
+        />
+        <section className="container-x py-12">
+          <div className="max-w-md mx-auto bg-card border border-border rounded-xl shadow-card p-6 md:p-8 text-center space-y-5">
+            <p className="text-sm text-muted-foreground">
+              You need to be signed in before you can apply. It only takes a moment.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Button
+                onClick={() => navigate({ to: "/auth", search: { redirect: redirectTo } as never })}
+                className="bg-[var(--brand-navy)] text-white hover:brightness-110"
+              >
+                Sign in to continue
+              </Button>
+              <Link to="/" className="inline-flex items-center justify-center text-sm text-muted-foreground hover:underline px-4 py-2">
+                Back to home
+              </Link>
+            </div>
+          </div>
+        </section>
       </SiteLayout>
     );
   }
@@ -139,6 +209,9 @@ function ApplyPage() {
       />
       <section className="container-x py-12">
         <form onSubmit={onSubmit} className="max-w-2xl bg-card border border-border rounded-xl shadow-card p-6 md:p-8 space-y-5">
+          {userEmail && (
+            <p className="text-xs text-muted-foreground">Signed in as <span className="font-medium">{userEmail}</span></p>
+          )}
           <div className="grid md:grid-cols-2 gap-4">
             <Field label={t("apply.field.fullName")} required>
               <Input required minLength={2} maxLength={120} value={form.full_name} onChange={set("full_name")} />
