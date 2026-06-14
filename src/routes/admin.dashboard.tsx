@@ -228,9 +228,9 @@ function AdminDashboard() {
           <TabsContent value="leads" className="space-y-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <StatCard label="Total Leads" value={stats.total} accent="bg-[var(--brand-black)]" />
-          <StatCard label="New" value={stats.new} accent="bg-blue-600" />
+          <StatCard label="New" value={stats.new} accent="bg-[var(--brand-yellow)]" />
           <StatCard label="Contacted" value={stats.contacted} accent="bg-amber-500" />
-          <StatCard label="Closed" value={stats.closed} accent="bg-green-600" />
+          <StatCard label="Closed" value={stats.closed} accent="bg-emerald-600" />
         </div>
 
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 grid gap-3 md:grid-cols-[1fr_160px_180px_200px]">
