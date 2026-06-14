@@ -23,6 +23,7 @@ type Lead = {
   phone: string;
   email: string;
   requirement: string | null;
+  category: string | null;
   message: string | null;
   status: string;
   source: string | null;
@@ -107,6 +108,7 @@ function AdminDashboard() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [reqFilter, setReqFilter] = useState<string>("all");
+  const [catFilter, setCatFilter] = useState<string>("all");
   const [page, setPage] = useState(1);
   const [expanded, setExpanded] = useState<string | null>(null);
 
@@ -116,11 +118,18 @@ function AdminDashboard() {
     return Array.from(s).sort();
   }, [leads]);
 
+  const categories = useMemo(() => {
+    const s = new Set<string>();
+    for (const l of leads) if (l.category) s.add(l.category);
+    return Array.from(s).sort();
+  }, [leads]);
+
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     return leads.filter((l) => {
       if (statusFilter !== "all" && l.status !== statusFilter) return false;
       if (reqFilter !== "all" && l.requirement !== reqFilter) return false;
+      if (catFilter !== "all" && l.category !== catFilter) return false;
       if (!q) return true;
       return (
         l.name.toLowerCase().includes(q) ||
@@ -128,13 +137,13 @@ function AdminDashboard() {
         l.email.toLowerCase().includes(q)
       );
     });
-  }, [leads, search, statusFilter, reqFilter]);
+  }, [leads, search, statusFilter, reqFilter, catFilter]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages);
   const pageRows = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 
-  useEffect(() => { setPage(1); }, [search, statusFilter, reqFilter]);
+  useEffect(() => { setPage(1); }, [search, statusFilter, reqFilter, catFilter]);
 
   const stats = useMemo(() => ({
     total: leads.length,
