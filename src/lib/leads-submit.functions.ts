@@ -19,6 +19,7 @@ const LeadSchema = z.object({
   phone: z.string().trim().min(7).max(20).regex(/^[0-9+\-\s()]+$/),
   email: z.string().trim().email().max(255),
   requirement: z.string().trim().max(200).optional().nullable(),
+  category: z.string().trim().max(100).optional().nullable(),
   message: z.string().trim().max(2000).optional().nullable(),
   source: z
     .string()
@@ -45,6 +46,7 @@ export const submitLeadEnquiry = createServerFn({ method: "POST" })
       phone: data.phone,
       email: data.email,
       requirement: data.requirement || null,
+      category: data.category || null,
       message: data.message || null,
       source: data.source || null,
     });

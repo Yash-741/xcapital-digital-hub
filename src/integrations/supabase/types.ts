@@ -103,6 +103,7 @@ export type Database = {
       }
       leads: {
         Row: {
+          category: string | null
           created_at: string
           email: string
           id: string
@@ -114,6 +115,7 @@ export type Database = {
           status: string
         }
         Insert: {
+          category?: string | null
           created_at?: string
           email: string
           id?: string
@@ -125,6 +127,7 @@ export type Database = {
           status?: string
         }
         Update: {
+          category?: string | null
           created_at?: string
           email?: string
           id?: string
