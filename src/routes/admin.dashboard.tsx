@@ -181,30 +181,40 @@ function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="bg-[#0a1438] text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
-          <div>
-            <h1 className="text-lg sm:text-xl font-bold">
-              XCapital <span className="text-[var(--brand-yellow)]">Admin Portal</span>
-            </h1>
-            <p className="text-xs text-slate-300">Lead management</p>
+    <div className="min-h-screen bg-[var(--page-bg)]">
+      <header className="sticky top-0 z-40 bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="h-9 w-9 grid place-items-center rounded-lg bg-[var(--brand-yellow)] text-[var(--brand-black)] font-bold shrink-0">X</div>
+            <div className="min-w-0">
+              <h1 className="text-base sm:text-lg font-bold text-[var(--brand-black)] truncate">
+                XCapital <span className="text-amber-600">Admin Portal</span>
+              </h1>
+              <p className="text-[11px] text-muted-foreground -mt-0.5">Lead management</p>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 sm:gap-2">
             <Link
               to="/"
-              className="inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm text-white hover:bg-white/10"
+              className="inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium text-[var(--brand-black)] hover:bg-[var(--brand-yellow-soft)] transition"
             >
-              <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">View website</span>
+              <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Website</span>
             </Link>
-            <Button onClick={() => setProfileOpen(true)} variant="ghost" className="text-white hover:bg-white/10">
-              <UserCog className="w-4 h-4 mr-2" /> <span className="hidden sm:inline">Profile</span>
-            </Button>
-            <Button onClick={handleLogout} variant="ghost" className="text-white hover:bg-white/10">
-              <LogOut className="w-4 h-4 mr-2" /> <span className="hidden sm:inline">Logout</span>
-            </Button>
+            <button
+              onClick={() => setProfileOpen(true)}
+              className="inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium text-[var(--brand-black)] border border-[var(--brand-black)]/15 hover:bg-[var(--brand-yellow-soft)] transition"
+            >
+              <UserCog className="w-4 h-4" /> <span className="hidden sm:inline">Profile</span>
+            </button>
+            <button
+              onClick={handleLogout}
+              className="inline-flex items-center gap-2 rounded-full px-3 sm:px-4 py-2 text-sm font-semibold text-[var(--brand-black)] bg-[var(--brand-yellow)] hover:brightness-105 transition"
+            >
+              <LogOut className="w-4 h-4" /> <span className="hidden sm:inline">Logout</span>
+            </button>
           </div>
         </div>
+        <div className="h-1 bg-[var(--brand-black)]" />
       </header>
 
       <ProfileDialog open={profileOpen} onOpenChange={setProfileOpen} />
@@ -217,10 +227,10 @@ function AdminDashboard() {
           </TabsList>
           <TabsContent value="leads" className="space-y-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <StatCard label="Total Leads" value={stats.total} accent="bg-[#0a1438]" />
-          <StatCard label="New" value={stats.new} accent="bg-blue-600" />
+          <StatCard label="Total Leads" value={stats.total} accent="bg-[var(--brand-black)]" />
+          <StatCard label="New" value={stats.new} accent="bg-[var(--brand-yellow)]" />
           <StatCard label="Contacted" value={stats.contacted} accent="bg-amber-500" />
-          <StatCard label="Closed" value={stats.closed} accent="bg-green-600" />
+          <StatCard label="Closed" value={stats.closed} accent="bg-emerald-600" />
         </div>
 
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 grid gap-3 md:grid-cols-[1fr_160px_180px_200px]">
@@ -287,8 +297,8 @@ function AdminDashboard() {
                           {open ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
                         </td>
                         <td className="px-3 py-3 font-medium text-slate-900">{l.name}</td>
-                        <td className="px-3 py-3"><a href={`tel:${l.phone}`} className="text-[#0a1438] hover:underline" onClick={(e) => e.stopPropagation()}>{l.phone}</a></td>
-                        <td className="px-3 py-3"><a href={`mailto:${l.email}`} className="text-[#0a1438] hover:underline break-all" onClick={(e) => e.stopPropagation()}>{l.email}</a></td>
+                        <td className="px-3 py-3"><a href={`tel:${l.phone}`} className="text-[var(--brand-black)] hover:underline" onClick={(e) => e.stopPropagation()}>{l.phone}</a></td>
+                        <td className="px-3 py-3"><a href={`mailto:${l.email}`} className="text-[var(--brand-black)] hover:underline break-all" onClick={(e) => e.stopPropagation()}>{l.email}</a></td>
                         <td className="px-3 py-3">
                           {l.category ? (
                             <Badge variant="secondary" className="font-medium">{l.category}</Badge>
@@ -335,8 +345,8 @@ function AdminDashboard() {
                                 <h4 className="text-xs uppercase tracking-wide text-slate-500 font-semibold mb-3">User Details</h4>
                                 <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-sm">
                                   <div><dt className="text-slate-500">Full Name</dt><dd className="font-medium text-slate-900">{l.name}</dd></div>
-                                  <div><dt className="text-slate-500">Phone</dt><dd><a href={`tel:${l.phone}`} className="text-[#0a1438] hover:underline">{l.phone}</a></dd></div>
-                                  <div className="sm:col-span-2"><dt className="text-slate-500">Email</dt><dd><a href={`mailto:${l.email}`} className="text-[#0a1438] hover:underline break-all">{l.email}</a></dd></div>
+                                  <div><dt className="text-slate-500">Phone</dt><dd><a href={`tel:${l.phone}`} className="text-[var(--brand-black)] hover:underline">{l.phone}</a></dd></div>
+                                  <div className="sm:col-span-2"><dt className="text-slate-500">Email</dt><dd><a href={`mailto:${l.email}`} className="text-[var(--brand-black)] hover:underline break-all">{l.email}</a></dd></div>
                                 </dl>
                               </div>
                               <div className="rounded-lg bg-white border border-slate-200 p-4">
@@ -409,17 +419,17 @@ function AdminDashboard() {
                         <td className="px-3 py-3 font-medium text-slate-900">{u.full_name || "—"}</td>
                         <td className="px-3 py-3">
                           {u.email ? (
-                            <a href={`mailto:${u.email}`} className="text-[#0a1438] hover:underline break-all">{u.email}</a>
+                            <a href={`mailto:${u.email}`} className="text-[var(--brand-black)] hover:underline break-all">{u.email}</a>
                           ) : "—"}
                         </td>
                         <td className="px-3 py-3">
                           {u.phone ? (
-                            <a href={`tel:${u.phone}`} className="text-[#0a1438] hover:underline">{u.phone}</a>
+                            <a href={`tel:${u.phone}`} className="text-[var(--brand-black)] hover:underline">{u.phone}</a>
                           ) : "—"}
                         </td>
                         <td className="px-3 py-3 hidden sm:table-cell">
                           {u.is_admin ? (
-                            <Badge className="bg-[var(--brand-yellow)] text-[#0a1438] border-0">Admin</Badge>
+                            <Badge className="bg-[var(--brand-yellow)] text-[var(--brand-black)] border-0">Admin</Badge>
                           ) : (
                             <Badge variant="secondary">User</Badge>
                           )}

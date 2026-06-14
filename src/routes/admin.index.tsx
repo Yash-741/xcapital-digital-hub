@@ -58,7 +58,7 @@ function AdminLogin() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0a1438] px-4">
+    <div className="min-h-screen flex items-center justify-center bg-[var(--brand-black)] px-4">
       <div className="w-full max-w-sm space-y-4">
         <Link to="/" className="inline-flex items-center gap-2 text-sm text-white/80 hover:text-white">
           <ArrowLeft className="w-4 h-4" /> Back to website
@@ -68,7 +68,9 @@ function AdminLogin() {
         className="w-full bg-white rounded-xl shadow-xl border-b-4 border-[var(--brand-yellow)] p-8 space-y-5"
       >
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-[#0a1438]">XCapital Admin</h1>
+          <h1 className="text-2xl font-bold text-[var(--brand-black)]">
+            XCapital <span className="text-amber-600">Admin</span>
+          </h1>
           <p className="text-sm text-muted-foreground mt-1">Sign in to manage leads</p>
         </div>
         <div className="space-y-2">
@@ -82,7 +84,7 @@ function AdminLogin() {
         <Button
           type="submit"
           disabled={loading}
-          className="w-full bg-[#0a1438] hover:bg-[#15235c] text-white"
+          className="w-full bg-[var(--brand-yellow)] hover:brightness-105 text-[var(--brand-black)] font-semibold"
         >
           {loading ? "Signing in…" : "Sign in"}
         </Button>
