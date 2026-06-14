@@ -19,6 +19,10 @@ export function ProfileDialog({ open, onOpenChange }: { open: boolean; onOpenCha
   const [newPwd, setNewPwd] = useState("");
   const [confirmPwd, setConfirmPwd] = useState("");
   const [savingPwd, setSavingPwd] = useState(false);
+  // True when the account has an email/password identity (i.e. a password
+  // was ever set). False for accounts created purely via Google OAuth —
+  // those users have no current password to verify, so we let them set one.
+  const [hasPasswordIdentity, setHasPasswordIdentity] = useState(true);
 
   useEffect(() => {
     if (!open) return;
@@ -29,6 +33,8 @@ export function ProfileDialog({ open, onOpenChange }: { open: boolean; onOpenCha
       if (!u) { setLoadingProfile(false); return; }
       setUserId(u.id);
       setEmail(u.email ?? "");
+      const providers = (u.identities ?? []).map((i) => i.provider);
+      setHasPasswordIdentity(providers.includes("email"));
       const { data: p } = await supabase
         .from("profiles")
         .select("full_name, phone")
@@ -58,17 +64,20 @@ export function ProfileDialog({ open, onOpenChange }: { open: boolean; onOpenCha
     if (newPwd !== confirmPwd) return toast.error("Passwords do not match");
     if (!email) return toast.error("No email on this account");
     setSavingPwd(true);
-    // Re-verify current password to prevent silent session hijack changes
-    const { error: verifyErr } = await supabase.auth.signInWithPassword({ email, password: currentPwd });
-    if (verifyErr) {
-      setSavingPwd(false);
-      return toast.error("Current password is incorrect");
+    if (hasPasswordIdentity) {
+      // Re-verify current password to prevent silent session hijack changes
+      const { error: verifyErr } = await supabase.auth.signInWithPassword({ email, password: currentPwd });
+      if (verifyErr) {
+        setSavingPwd(false);
+        return toast.error("Current password is incorrect");
+      }
     }
     const { error } = await supabase.auth.updateUser({ password: newPwd });
     setSavingPwd(false);
     if (error) return toast.error(error.message);
     setCurrentPwd(""); setNewPwd(""); setConfirmPwd("");
-    toast.success("Password updated");
+    toast.success(hasPasswordIdentity ? "Password updated" : "Password set — you can now sign in with email and password");
+    setHasPasswordIdentity(true);
   }
 
   return (
@@ -104,21 +113,27 @@ export function ProfileDialog({ open, onOpenChange }: { open: boolean; onOpenCha
           </TabsContent>
           <TabsContent value="password">
             <form onSubmit={changePassword} className="space-y-4 pt-2">
+              {hasPasswordIdentity ? (
+                <div className="space-y-1.5">
+                  <Label htmlFor="cp-curr">Current password</Label>
+                  <Input id="cp-curr" type="password" autoComplete="current-password" value={currentPwd} onChange={(e) => setCurrentPwd(e.target.value)} required />
+                </div>
+              ) : (
+                <p className="text-xs text-muted-foreground bg-muted/50 border border-border rounded-md p-3">
+                  You signed in with Google, so there's no current password. Set a password below to also enable email + password login.
+                </p>
+              )}
               <div className="space-y-1.5">
-                <Label htmlFor="cp-curr">Current password</Label>
-                <Input id="cp-curr" type="password" autoComplete="current-password" value={currentPwd} onChange={(e) => setCurrentPwd(e.target.value)} required />
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="cp-new">New password</Label>
+                <Label htmlFor="cp-new">{hasPasswordIdentity ? "New password" : "Set password"}</Label>
                 <Input id="cp-new" type="password" autoComplete="new-password" value={newPwd} onChange={(e) => setNewPwd(e.target.value)} required />
                 <p className="text-xs text-muted-foreground">At least 8 characters.</p>
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="cp-confirm">Confirm new password</Label>
+                <Label htmlFor="cp-confirm">Confirm password</Label>
                 <Input id="cp-confirm" type="password" autoComplete="new-password" value={confirmPwd} onChange={(e) => setConfirmPwd(e.target.value)} required />
               </div>
               <Button type="submit" disabled={savingPwd} className="w-full bg-[#0a1438] hover:bg-[#15235c] text-white">
-                {savingPwd ? "Updating…" : "Change password"}
+                {savingPwd ? (hasPasswordIdentity ? "Updating…" : "Setting…") : (hasPasswordIdentity ? "Change password" : "Set password")}
               </Button>
             </form>
           </TabsContent>
