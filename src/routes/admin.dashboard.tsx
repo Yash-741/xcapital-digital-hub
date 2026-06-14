@@ -236,8 +236,9 @@ function AdminDashboard() {
                   <th className="w-8"></th>
                   <th className="text-left px-3 py-3">Name</th>
                   <th className="text-left px-3 py-3">Phone</th>
-                  <th className="text-left px-3 py-3 hidden md:table-cell">Email</th>
-                  <th className="text-left px-3 py-3 hidden lg:table-cell">Requirement</th>
+                  <th className="text-left px-3 py-3">Email</th>
+                  <th className="text-left px-3 py-3">Category</th>
+                  <th className="text-left px-3 py-3 hidden lg:table-cell">Product</th>
                   <th className="text-left px-3 py-3">Status</th>
                   <th className="text-left px-3 py-3 hidden sm:table-cell">Date</th>
                   <th className="text-right px-3 py-3">Actions</th>
@@ -245,10 +246,10 @@ function AdminDashboard() {
               </thead>
               <tbody>
                 {isLoading && (
-                  <tr><td colSpan={8} className="text-center py-8 text-muted-foreground">Loading leads…</td></tr>
+                  <tr><td colSpan={9} className="text-center py-8 text-muted-foreground">Loading leads…</td></tr>
                 )}
                 {!isLoading && pageRows.length === 0 && (
-                  <tr><td colSpan={8} className="text-center py-8 text-muted-foreground">No leads found</td></tr>
+                  <tr><td colSpan={9} className="text-center py-8 text-muted-foreground">No leads found</td></tr>
                 )}
                 {pageRows.map((l) => {
                   const open = expanded === l.id;
@@ -263,7 +264,12 @@ function AdminDashboard() {
                         </td>
                         <td className="px-3 py-3 font-medium text-slate-900">{l.name}</td>
                         <td className="px-3 py-3"><a href={`tel:${l.phone}`} className="text-[#0a1438] hover:underline" onClick={(e) => e.stopPropagation()}>{l.phone}</a></td>
-                        <td className="px-3 py-3 hidden md:table-cell"><a href={`mailto:${l.email}`} className="text-[#0a1438] hover:underline" onClick={(e) => e.stopPropagation()}>{l.email}</a></td>
+                        <td className="px-3 py-3"><a href={`mailto:${l.email}`} className="text-[#0a1438] hover:underline break-all" onClick={(e) => e.stopPropagation()}>{l.email}</a></td>
+                        <td className="px-3 py-3">
+                          {l.category ? (
+                            <Badge variant="secondary" className="font-medium">{l.category}</Badge>
+                          ) : <span className="text-slate-400">—</span>}
+                        </td>
                         <td className="px-3 py-3 hidden lg:table-cell">{l.requirement || "—"}</td>
                         <td className="px-3 py-3" onClick={(e) => e.stopPropagation()}>
                           <Select
@@ -299,17 +305,30 @@ function AdminDashboard() {
                       {open && (
                         <tr className="bg-slate-50/70 border-t border-slate-100">
                           <td></td>
-                          <td colSpan={7} className="px-3 py-4">
-                            <dl className="grid sm:grid-cols-2 gap-x-6 gap-y-2 text-sm">
-                              <div><dt className="text-slate-500">Email</dt><dd>{l.email}</dd></div>
-                              <div><dt className="text-slate-500">Requirement</dt><dd>{l.requirement || "—"}</dd></div>
-                              <div><dt className="text-slate-500">Source</dt><dd>{l.source || "—"}</dd></div>
-                              <div><dt className="text-slate-500">Submitted</dt><dd>{new Date(l.created_at).toLocaleString()}</dd></div>
-                              <div className="sm:col-span-2">
-                                <dt className="text-slate-500">Message</dt>
-                                <dd className="whitespace-pre-wrap">{l.message || "—"}</dd>
+                          <td colSpan={8} className="px-3 py-4">
+                            <div className="grid lg:grid-cols-2 gap-6">
+                              <div className="rounded-lg bg-white border border-slate-200 p-4">
+                                <h4 className="text-xs uppercase tracking-wide text-slate-500 font-semibold mb-3">User Details</h4>
+                                <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-sm">
+                                  <div><dt className="text-slate-500">Full Name</dt><dd className="font-medium text-slate-900">{l.name}</dd></div>
+                                  <div><dt className="text-slate-500">Phone</dt><dd><a href={`tel:${l.phone}`} className="text-[#0a1438] hover:underline">{l.phone}</a></dd></div>
+                                  <div className="sm:col-span-2"><dt className="text-slate-500">Email</dt><dd><a href={`mailto:${l.email}`} className="text-[#0a1438] hover:underline break-all">{l.email}</a></dd></div>
+                                </dl>
                               </div>
-                            </dl>
+                              <div className="rounded-lg bg-white border border-slate-200 p-4">
+                                <h4 className="text-xs uppercase tracking-wide text-slate-500 font-semibold mb-3">Enquiry Details</h4>
+                                <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-sm">
+                                  <div><dt className="text-slate-500">Category</dt><dd className="font-medium">{l.category || "—"}</dd></div>
+                                  <div><dt className="text-slate-500">Product / Requirement</dt><dd className="font-medium">{l.requirement || "—"}</dd></div>
+                                  <div><dt className="text-slate-500">Source</dt><dd>{l.source || "—"}</dd></div>
+                                  <div><dt className="text-slate-500">Submitted</dt><dd>{new Date(l.created_at).toLocaleString()}</dd></div>
+                                  <div className="sm:col-span-2">
+                                    <dt className="text-slate-500">Message</dt>
+                                    <dd className="whitespace-pre-wrap text-slate-800">{l.message || "—"}</dd>
+                                  </div>
+                                </dl>
+                              </div>
+                            </div>
                           </td>
                         </tr>
                       )}
