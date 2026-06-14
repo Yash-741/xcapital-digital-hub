@@ -262,6 +262,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_email_queue_metrics: {
+        Args: never
+        Returns: {
+          newest_msg_age_sec: number
+          oldest_msg_age_sec: number
+          queue_length: number
+          queue_name: string
+          total_messages: number
+        }[]
+      }
       delete_email: {
         Args: { message_id: number; queue_name: string }
         Returns: boolean
