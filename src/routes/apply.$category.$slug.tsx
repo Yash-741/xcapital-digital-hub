@@ -10,6 +10,15 @@ import { toast } from "sonner";
 import { submitLead } from "@/lib/leads.functions";
 import { useI18n } from "@/lib/i18n";
 import { supabase } from "@/integrations/supabase/client";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { CheckCircle2 } from "lucide-react";
 
 type Cat = "loan" | "insurance" | "investment";
 
@@ -63,6 +72,7 @@ function ApplyPage() {
   const [loading, setLoading] = useState(false);
   const [authState, setAuthState] = useState<"checking" | "in" | "out">("checking");
   const [userEmail, setUserEmail] = useState<string>("");
+  const [successOpen, setSuccessOpen] = useState(false);
   const [form, setForm] = useState({
     full_name: "", email: "", phone: "",
     amount: "", tenure: "", coverage: "", age: "", horizon: "", notes: "",
@@ -188,8 +198,7 @@ function ApplyPage() {
       } catch {
         // non-fatal; primary submission already succeeded
       }
-      toast.success(t("toast.advisorSuccess"));
-      navigate({ to: "/" });
+      setSuccessOpen(true);
     } catch (err) {
       const msg = err instanceof Error ? err.message : t("toast.somethingWrong");
       toast.error(msg);
@@ -207,6 +216,36 @@ function ApplyPage() {
         title={`${t("apply.title")} ${product.name}`}
         subtitle={t("apply.subtitle")}
       />
+      <Dialog
+        open={successOpen}
+        onOpenChange={(v) => {
+          setSuccessOpen(v);
+          if (!v) navigate({ to: "/" });
+        }}
+      >
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <div className="mx-auto mb-2 h-12 w-12 rounded-full bg-[var(--brand-yellow-soft)] flex items-center justify-center">
+              <CheckCircle2 className="h-7 w-7 text-[var(--brand-black)]" />
+            </div>
+            <DialogTitle className="text-center">Application received</DialogTitle>
+            <DialogDescription className="text-center">
+              {t("toast.advisorSuccess")}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="sm:justify-center">
+            <Button
+              onClick={() => {
+                setSuccessOpen(false);
+                navigate({ to: "/" });
+              }}
+              className="bg-[var(--brand-yellow)] text-[var(--brand-black)] font-semibold hover:brightness-105"
+            >
+              Back to home
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
       <section className="container-x py-12">
         <form onSubmit={onSubmit} className="max-w-2xl bg-card border border-border rounded-xl shadow-card p-6 md:p-8 space-y-5">
           {userEmail && (
