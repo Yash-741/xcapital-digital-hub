@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { getRequest } from "@tanstack/react-start/server";
 import { z } from "zod";
 
 const LeadSchema = z.object({
@@ -19,6 +20,13 @@ const LeadSchema = z.object({
 export const submitLead = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => LeadSchema.parse(input))
   .handler(async ({ data }) => {
+    const { rateLimit, getClientIp } = await import("./rate-limit.server");
+    const ip = getClientIp(getRequest());
+    const rl = rateLimit(`servicelead:${ip}`, { capacity: 5, refillPerSec: 5 / 60 });
+    if (!rl.ok) {
+      console.warn(`[submitLead] rate-limited ip=${ip}`);
+      throw new Error("Too many submissions. Please try again in a minute.");
+    }
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await supabaseAdmin.from("service_leads").insert(data);
     if (error) {
