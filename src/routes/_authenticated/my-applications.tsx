@@ -1,11 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
+import { useMemo, useState } from "react";
 import { SiteLayout, PageHeader } from "@/components/site/Layout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { listMyApplications } from "@/lib/leads.functions";
-import { FileText } from "lucide-react";
+import { FileText, Search } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/my-applications")({
   head: () => ({
@@ -30,13 +32,13 @@ const CAT_LABEL: Record<string, string> = {
   investment: "Investment",
 };
 
-// Stable 6-digit display ID derived from the row UUID.
+// Stable 6-digit display ID derived from the row UUID, prefixed with XC.
 function shortLeadId(id: string): string {
   let h = 0;
   for (let i = 0; i < id.length; i++) {
     h = (h * 31 + id.charCodeAt(i)) >>> 0;
   }
-  return String(h % 1_000_000).padStart(6, "0");
+  return "XC" + String(h % 1_000_000).padStart(6, "0");
 }
 
 function MyApplicationsPage() {
@@ -45,6 +47,14 @@ function MyApplicationsPage() {
     queryKey: ["my-applications"],
     queryFn: () => fetchApps(),
   });
+
+  const [search, setSearch] = useState("");
+  const filtered = useMemo(() => {
+    if (!data) return data;
+    const q = search.trim().toUpperCase().replace(/\s|#/g, "");
+    if (!q) return data;
+    return data.filter((a) => shortLeadId(a.id).includes(q));
+  }, [data, search]);
 
   return (
     <SiteLayout>
@@ -55,18 +65,31 @@ function MyApplicationsPage() {
       />
       <section className="container-x py-10 md:py-14">
         <div className="max-w-4xl mx-auto">
-          <div className="flex items-center justify-between mb-4">
-            <p className="text-sm text-muted-foreground">
-              {data ? `${data.length} application${data.length === 1 ? "" : "s"}` : ""}
-            </p>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => refetch()}
-              disabled={isFetching}
-            >
-              {isFetching ? "Refreshing…" : "Refresh"}
-            </Button>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+            <div className="relative flex-1 sm:max-w-sm">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search by Lead ID (e.g. XC482301)"
+                className="pl-9"
+              />
+            </div>
+            <div className="flex items-center gap-3">
+              <p className="text-sm text-muted-foreground whitespace-nowrap">
+                {filtered
+                  ? `${filtered.length} of ${data?.length ?? 0}`
+                  : ""}
+              </p>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => refetch()}
+                disabled={isFetching}
+              >
+                {isFetching ? "Refreshing…" : "Refresh"}
+              </Button>
+            </div>
           </div>
 
           {isLoading && (
@@ -109,9 +132,15 @@ function MyApplicationsPage() {
             </div>
           )}
 
-          {!isLoading && !error && data && data.length > 0 && (
+          {!isLoading && !error && filtered && data && data.length > 0 && filtered.length === 0 && (
+            <div className="bg-card border border-border rounded-xl p-10 text-center text-muted-foreground">
+              No applications match "{search}".
+            </div>
+          )}
+
+          {!isLoading && !error && filtered && filtered.length > 0 && (
             <ul className="space-y-3">
-              {data.map((a) => (
+              {filtered.map((a) => (
                 <li
                   key={a.id}
                   className="bg-card border border-border rounded-xl p-5 shadow-card hover:border-[var(--brand-yellow)] transition"
