@@ -30,6 +30,15 @@ const CAT_LABEL: Record<string, string> = {
   investment: "Investment",
 };
 
+// Stable 6-digit display ID derived from the row UUID.
+function shortLeadId(id: string): string {
+  let h = 0;
+  for (let i = 0; i < id.length; i++) {
+    h = (h * 31 + id.charCodeAt(i)) >>> 0;
+  }
+  return String(h % 1_000_000).padStart(6, "0");
+}
+
 function MyApplicationsPage() {
   const fetchApps = useServerFn(listMyApplications);
   const { data, isLoading, error, refetch, isFetching } = useQuery({
@@ -119,6 +128,9 @@ function MyApplicationsPage() {
                         >
                           {a.status}
                         </Badge>
+                        <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-muted text-muted-foreground">
+                          ID #{shortLeadId(a.id)}
+                        </span>
                       </div>
                       <h3 className="text-base font-semibold mt-1 text-[var(--brand-black)]">
                         {a.product_name}
