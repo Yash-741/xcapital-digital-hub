@@ -30,21 +30,11 @@ export function rateLimit(
   return { ok: true, retryAfter: 0 };
 }
 
-export function getClientIp(): string {
-  try {
-    // TanStack Start exposes the request via getRequest()
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const { getRequest } = require("@tanstack/react-start/server") as {
-      getRequest: () => Request;
-    };
-    const req = getRequest();
-    return (
-      req.headers.get("cf-connecting-ip") ||
-      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-      req.headers.get("x-real-ip") ||
-      "unknown"
-    );
-  } catch {
-    return "unknown";
-  }
+export function getClientIp(req: Request): string {
+  return (
+    req.headers.get("cf-connecting-ip") ||
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    req.headers.get("x-real-ip") ||
+    "unknown"
+  );
 }
