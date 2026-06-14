@@ -281,7 +281,7 @@ function AdminDashboard() {
           <StatCard label="Closed" value={stats.closed} accent="bg-emerald-600" />
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 grid gap-3 md:grid-cols-[1fr_160px_180px_200px]">
+        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 grid gap-3 md:grid-cols-[1fr_140px_160px_170px_auto]">
           <Input
             placeholder="Search name, phone, or email…"
             value={search}
@@ -308,6 +308,12 @@ function AdminDashboard() {
               {requirements.map((r) => <SelectItem key={r} value={r}>{r}</SelectItem>)}
             </SelectContent>
           </Select>
+          <Button
+            onClick={exportLeads}
+            className="bg-[var(--brand-yellow)] hover:brightness-105 text-[var(--brand-black)] font-semibold"
+          >
+            <Download className="w-4 h-4 mr-2" /> Export XLSX
+          </Button>
         </div>
 
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
