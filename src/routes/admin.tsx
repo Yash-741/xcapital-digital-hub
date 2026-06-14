@@ -40,6 +40,11 @@ function AdminLayout() {
     const WARN_MS = 60 * 1000;      // warn 1 min before
     let idleTimer: ReturnType<typeof setTimeout>;
     let warnTimer: ReturnType<typeof setTimeout>;
+    let cancelled = false;
+
+    // Only arm the inactivity timer when there is an authenticated session.
+    // Without a login, there is nothing to log out of.
+    let unsubAuth: (() => void) | undefined;
 
     const logout = async () => {
       await supabase.auth.signOut();
@@ -57,12 +62,31 @@ function AdminLayout() {
     };
 
     const events = ["mousemove", "mousedown", "keydown", "touchstart", "scroll", "visibilitychange"];
-    events.forEach((e) => window.addEventListener(e, reset, { passive: true }));
-    reset();
-    return () => {
+    const arm = () => {
+      events.forEach((e) => window.addEventListener(e, reset, { passive: true }));
+      reset();
+    };
+    const disarm = () => {
       clearTimeout(idleTimer);
       clearTimeout(warnTimer);
       events.forEach((e) => window.removeEventListener(e, reset));
+    };
+
+    (async () => {
+      const { data } = await supabase.auth.getSession();
+      if (cancelled) return;
+      if (data.session) arm();
+      const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
+        disarm();
+        if (session) arm();
+      });
+      unsubAuth = () => sub.subscription.unsubscribe();
+    })();
+
+    return () => {
+      cancelled = true;
+      disarm();
+      unsubAuth?.();
     };
   }, [pathname, navigate]);
 
