@@ -10,6 +10,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { ChevronDown, ChevronRight, Trash2, LogOut, UserCog, ArrowLeft } from "lucide-react";
+import { Download } from "lucide-react";
+import * as XLSX from "xlsx";
 import { ProfileDialog } from "@/components/site/ProfileDialog";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { listAdminUsers, type AdminUser } from "@/lib/admin-users.functions";
