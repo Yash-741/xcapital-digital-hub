@@ -132,16 +132,16 @@ function Index() {
           <div id="investments" className="scroll-mt-32">
           <GridCard title={t("section.investments")} viewAllTo="/investments">
             <div className="grid grid-cols-2 gap-2">
-              <div className="bg-[var(--brand-yellow-soft)]/60 rounded-lg p-3 flex flex-col items-center text-center">
+              <Link to="/investments" className="bg-[var(--brand-yellow-soft)]/60 hover:bg-[var(--brand-yellow-soft)] rounded-lg p-3 flex flex-col items-center text-center transition">
                 <PiggyBank className="h-9 w-9 text-[var(--brand-black)]" strokeWidth={1.5} />
                 <span className="mt-2 text-[11px] font-bold text-green-700">{tEn("Earn up to 8.50%* p.a.")}</span>
                 <span className="text-xs font-medium mt-0.5">{tEn("Fixed Deposit")}</span>
-              </div>
-              <div className="bg-[var(--brand-yellow-soft)]/60 rounded-lg p-3 flex flex-col items-center text-center">
+              </Link>
+              <Link to="/investments" className="bg-[var(--brand-yellow-soft)]/60 hover:bg-[var(--brand-yellow-soft)] rounded-lg p-3 flex flex-col items-center text-center transition">
                 <Landmark className="h-9 w-9 text-[var(--brand-black)]" strokeWidth={1.5} />
                 <span className="mt-2 text-[11px] font-bold text-green-700">{tEn("AAA Rated")}</span>
                 <span className="text-xs font-medium mt-0.5">{tEn("Bonds")}</span>
-              </div>
+              </Link>
             </div>
           </GridCard>
           </div>
