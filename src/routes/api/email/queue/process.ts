@@ -1,4 +1,4 @@
-import { sendLovableEmail } from '@lovable.dev/email-js'
+import { sendTransactionalEmail } from '@/lib/email-helper'
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 import { createFileRoute } from '@tanstack/react-router'
 
@@ -9,8 +9,6 @@ const DEFAULT_AUTH_TTL_MINUTES = 15
 const DEFAULT_TRANSACTIONAL_TTL_MINUTES = 60
 
 // Check if an error is a rate-limit (429) response.
-// Uses EmailAPIError.status when available (email-js >=0.x with structured errors),
-// falls back to parsing the error message for older versions.
 function isRateLimited(error: unknown): boolean {
   if (error && typeof error === 'object' && 'status' in error) {
     return (error as { status: number }).status === 429
@@ -18,8 +16,7 @@ function isRateLimited(error: unknown): boolean {
   return error instanceof Error && error.message.includes('429')
 }
 
-// Check if an error is a forbidden (403) response. Retrying won't help.
-// Move straight to DLQ.
+// Check if an error is a forbidden (403) response.
 function isForbidden(error: unknown): boolean {
   if (error && typeof error === 'object' && 'status' in error) {
     return (error as { status: number }).status === 403
@@ -27,7 +24,7 @@ function isForbidden(error: unknown): boolean {
   return error instanceof Error && error.message.includes('403')
 }
 
-// Extract Retry-After seconds from a structured EmailAPIError, or default to 60s.
+// Extract Retry-After seconds.
 function getRetryAfterSeconds(error: unknown): number {
   if (error && typeof error === 'object' && 'retryAfterSeconds' in error) {
     return (error as { retryAfterSeconds: number | null }).retryAfterSeconds ?? 60
@@ -60,7 +57,7 @@ async function moveToDlq(
   }
 }
 
-export const Route = createFileRoute("/lovable/email/queue/process")({
+export const Route = createFileRoute("/api/email/queue/process")({
   server: {
     handlers: {
       POST: async ({ request }) => {
@@ -76,8 +73,6 @@ export const Route = createFileRoute("/lovable/email/queue/process")({
           )
         }
 
-        // Verify the caller is authorized with the service role key.
-        // In the TanStack stack, the pg_cron job sends the service role key as a Bearer token.
         const authHeader = request.headers.get('Authorization')
         if (!authHeader?.startsWith('Bearer ')) {
           return Response.json({ error: 'Unauthorized' }, { status: 401 })
@@ -124,7 +119,6 @@ export const Route = createFileRoute("/lovable/email/queue/process")({
 
           if (!messages?.length) continue
 
-          // Retry budget is based on real send failures, not pgmq read_ct.
           const messageIds = Array.from(
             new Set(
               messages
@@ -169,9 +163,7 @@ export const Route = createFileRoute("/lovable/email/queue/process")({
                 ? (failedAttemptsByMessageId.get(payload.message_id) ?? 0)
                 : msg.read_ct ?? 0
 
-            // Drop expired messages (TTL exceeded).
-            // Prefer payload.queued_at when present; fall back to PGMQ's enqueued_at
-            // which is always set by the queue.
+            // Drop expired messages
             const queuedAt = payload.queued_at ?? msg.enqueued_at
             if (queuedAt) {
               const ageMs = Date.now() - new Date(queuedAt).getTime()
@@ -188,13 +180,13 @@ export const Route = createFileRoute("/lovable/email/queue/process")({
               }
             }
 
-            // Move to DLQ if max failed send attempts reached.
+            // Move to DLQ if max attempts reached
             if (failedAttempts >= MAX_RETRIES) {
               await moveToDlq(supabase, queue, msg, `Max retries (${MAX_RETRIES}) exceeded (attempted ${failedAttempts} times)`)
               continue
             }
 
-            // Guard: skip if another worker already sent this message (VT expired race)
+            // Guard: skip if already sent
             if (payload.message_id) {
               const { data: alreadySent } = await supabase
                 .from('email_send_log')
@@ -221,7 +213,7 @@ export const Route = createFileRoute("/lovable/email/queue/process")({
             }
 
             try {
-              await sendLovableEmail(
+              await sendTransactionalEmail(
                 {
                   run_id: payload.run_id,
                   to: payload.to,
@@ -239,7 +231,6 @@ export const Route = createFileRoute("/lovable/email/queue/process")({
                 { apiKey, sendUrl: process.env.LOVABLE_SEND_URL }
               )
 
-              // Log success
               await supabase.from('email_send_log').insert({
                 message_id: payload.message_id,
                 template_name: payload.label || queue,
@@ -247,7 +238,6 @@ export const Route = createFileRoute("/lovable/email/queue/process")({
                 status: 'sent',
               })
 
-              // Delete from queue
               const { error: delError } = await supabase.rpc('delete_email', {
                 queue_name: queue,
                 message_id: msg.msg_id,
@@ -286,18 +276,14 @@ export const Route = createFileRoute("/lovable/email/queue/process")({
                   })
                   .eq('id', 1)
 
-                // Stop processing — remaining messages stay in queue (VT expires, retried next cycle)
                 return Response.json({ processed: totalProcessed, stopped: 'rate_limited' })
               }
 
-              // 403s are permanent configuration or authorization failures for this
-              // message, so move straight to DLQ and stop processing the rest of the batch.
               if (isForbidden(error)) {
                 await moveToDlq(supabase, queue, msg, errorMsg.slice(0, 1000))
                 return Response.json({ processed: totalProcessed, stopped: 'forbidden' })
               }
 
-              // Log non-429 failures to track real retry attempts.
               await supabase.from('email_send_log').insert({
                 message_id: payload.message_id,
                 template_name: payload.label || queue,
@@ -308,11 +294,8 @@ export const Route = createFileRoute("/lovable/email/queue/process")({
               if (payload?.message_id && typeof payload.message_id === 'string') {
                 failedAttemptsByMessageId.set(payload.message_id, failedAttempts + 1)
               }
-
-              // Non-429 errors: message stays invisible until VT expires, then retried
             }
 
-            // Small delay between sends to smooth bursts
             if (i < messages.length - 1) {
               await new Promise((r) => setTimeout(r, sendDelayMs))
             }

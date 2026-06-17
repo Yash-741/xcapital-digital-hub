@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable";
 import { z } from "zod";
 import { useI18n } from "@/lib/i18n";
 
@@ -185,12 +184,15 @@ function GoogleButton({ redirectPath }: { redirectPath: string }) {
   const [loading, setLoading] = useState(false);
   async function onClick() {
     setLoading(true);
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: `${window.location.origin}${redirectPath}`,
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}${redirectPath}`,
+      },
     });
-    if (result.error) {
+    if (error) {
       setLoading(false);
-      toast.error(result.error.message || tEn("Google sign-in failed"));
+      toast.error(error.message || tEn("Google sign-in failed"));
     }
   }
   return (

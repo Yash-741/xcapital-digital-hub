@@ -21,12 +21,7 @@ const EMAIL_TEMPLATES: Record<string, React.ComponentType<any>> = {
 const SITE_NAME = "xcapital-digital-hub"
 const ROOT_DOMAIN = "xcapital.co.in"
 
-// Sample data for preview mode ONLY (not used in actual email sending).
-// URLs are baked in at scaffold time from the project's real data.
-// The sample email uses a fixed placeholder (RFC 6761 .test TLD) so the Go backend
-// can always find-and-replace it with the actual recipient when sending test emails,
-// even if the project's domain has changed since the template was scaffolded.
-const SAMPLE_PROJECT_URL = "https://xcapital-digital-hub.lovable.app"
+const SAMPLE_PROJECT_URL = `https://${ROOT_DOMAIN}`
 const SAMPLE_EMAIL = "user@example.test"
 const SAMPLE_DATA: Record<string, object> = {
   signup: {
@@ -60,7 +55,7 @@ const SAMPLE_DATA: Record<string, object> = {
   },
 }
 
-export const Route = createFileRoute("/lovable/email/auth/preview")({
+export const Route = createFileRoute("/api/email/auth/preview")({
   server: {
     handlers: {
       POST: async ({ request }) => {
@@ -73,7 +68,7 @@ export const Route = createFileRoute("/lovable/email/auth/preview")({
           )
         }
 
-        // Verify the caller is authorized with LOVABLE_API_KEY
+        // Verify the caller is authorized with api key
         const authHeader = request.headers.get('Authorization')
         if (!authHeader || authHeader !== `Bearer ${apiKey}`) {
           return Response.json({ error: 'Unauthorized' }, { status: 401 })
