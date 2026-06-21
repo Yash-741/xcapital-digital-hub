@@ -64,6 +64,9 @@ export function Footer() {
             <li><a href="/about#our-vision" className="hover:text-[var(--brand-yellow)]">{t("footer.company.vision")}</a></li>
             <li><a href="/about#reach-us" className="hover:text-[var(--brand-yellow)]">{t("footer.company.contact")}</a></li>
             <li><a href="/about#careers" className="hover:text-[var(--brand-yellow)]">{t("footer.company.careers")}</a></li>
+            <li><Link to="/financial-safety" className="hover:text-[var(--brand-yellow)]">Financial Safety</Link></li>
+            <li><Link to="/privacy" className="hover:text-[var(--brand-yellow)]">Privacy Policy</Link></li>
+            <li><Link to="/terms" className="hover:text-[var(--brand-yellow)]">Terms & Conditions</Link></li>
           </ul>
         </div>
 
