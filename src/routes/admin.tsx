@@ -1,5 +1,5 @@
 import { createFileRoute, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -17,21 +17,6 @@ export const Route = createFileRoute("/admin")({
 function AdminLayout() {
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-
-  useEffect(() => {
-    const signOut = () => {
-      try {
-        for (const key of Object.keys(localStorage)) {
-          if (key.startsWith("sb-") && key.endsWith("-auth-token")) {
-            localStorage.removeItem(key);
-          }
-        }
-      } catch {}
-      void supabase.auth.signOut();
-    };
-    window.addEventListener("beforeunload", signOut);
-    return () => window.removeEventListener("beforeunload", signOut);
-  }, []);
 
   // Auto-logout after inactivity (only on authenticated admin pages).
   useEffect(() => {
