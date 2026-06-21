@@ -1,0 +1,19 @@
+# XCapital
+
+> XCapital is India's digital hub for loans, investments, and insurance — compare offers from 50+ banks, NBFCs, and insurers with transparent rates and fast online application.
+
+## Pages
+
+- [Home](/): Overview of XCapital's loan, investment, and insurance products.
+- [About](/about): Who we are, our mission, and how XCapital works.
+- [Loans](/loans): Personal, home, business, auto, and education loans from leading Indian banks.
+- [Investments](/investments): Fixed deposits, bonds, and wealth products with rates up to 8.5%.
+- [Insurance](/insurance): Health, life, motor, and term insurance plans from top Indian insurers.
+- [Calculators](/calculators): EMI, FD, SIP, and eligibility calculators.
+- [Financial Safety](/financial-safety): Guidance on protecting yourself from financial fraud.
+- [Store](/store): Curated financial products available online.
+
+## Optional
+
+- [Privacy Policy](/privacy): How we handle your data.
+- [Terms](/terms): Terms of use for the XCapital platform.
