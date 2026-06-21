@@ -65,8 +65,8 @@ export function Footer() {
             <li><a href="/about#reach-us" className="hover:text-[var(--brand-yellow)]">{t("footer.company.contact")}</a></li>
             <li><a href="/about#careers" className="hover:text-[var(--brand-yellow)]">{t("footer.company.careers")}</a></li>
             <li><Link to="/financial-safety" className="hover:text-[var(--brand-yellow)]">Financial Safety</Link></li>
-            <li><Link to="/privacy" className="hover:text-[var(--brand-yellow)]">Privacy Policy</Link></li>
-            <li><Link to="/terms" className="hover:text-[var(--brand-yellow)]">Terms & Conditions</Link></li>
+            <li><Link to="/privacy" className="inline-block rounded-sm transition-colors duration-200 ease-out hover:text-[var(--brand-yellow)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-yellow)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--brand-black)]">Privacy Policy</Link></li>
+            <li><Link to="/terms" className="inline-block rounded-sm transition-colors duration-200 ease-out hover:text-[var(--brand-yellow)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-yellow)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--brand-black)]">Terms & Conditions</Link></li>
           </ul>
         </div>
 
@@ -84,11 +84,11 @@ export function Footer() {
         <div className="container-x py-5 text-xs text-white/50 flex flex-col md:flex-row justify-between items-center gap-4">
           <p>© {new Date().getFullYear()} XCapital. {t("footer.rights")}</p>
           <div className="flex gap-4 font-semibold text-white/60">
-            <Link to="/privacy" className="hover:text-[var(--brand-yellow)] hover:underline transition">Privacy Policy</Link>
-            <span>|</span>
-            <Link to="/terms" className="hover:text-[var(--brand-yellow)] hover:underline transition">Terms & Conditions</Link>
-            <span>|</span>
-            <Link to="/financial-safety" className="hover:text-[var(--brand-yellow)] hover:underline transition">Financial Safety</Link>
+            <Link to="/privacy" className="rounded-sm px-1 py-0.5 transition-colors duration-200 ease-out hover:text-[var(--brand-yellow)] hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-yellow)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--brand-black)]">Privacy Policy</Link>
+            <span aria-hidden="true">|</span>
+            <Link to="/terms" className="rounded-sm px-1 py-0.5 transition-colors duration-200 ease-out hover:text-[var(--brand-yellow)] hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-yellow)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--brand-black)]">Terms & Conditions</Link>
+            <span aria-hidden="true">|</span>
+            <Link to="/financial-safety" className="rounded-sm px-1 py-0.5 transition-colors duration-200 ease-out hover:text-[var(--brand-yellow)] hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-yellow)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--brand-black)]">Financial Safety</Link>
           </div>
           <p>{t("footer.disclaimer")}</p>
         </div>
