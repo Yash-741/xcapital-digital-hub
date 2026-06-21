@@ -84,6 +84,8 @@ export function Footer() {
             <Link to="/privacy" className="hover:text-[var(--brand-yellow)] hover:underline transition">Privacy Policy</Link>
             <span>|</span>
             <Link to="/terms" className="hover:text-[var(--brand-yellow)] hover:underline transition">Terms & Conditions</Link>
+            <span>|</span>
+            <Link to="/financial-safety" className="hover:text-[var(--brand-yellow)] hover:underline transition">Financial Safety</Link>
           </div>
           <p>{t("footer.disclaimer")}</p>
         </div>

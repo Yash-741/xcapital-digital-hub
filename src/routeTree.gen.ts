@@ -16,6 +16,7 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as LoansRouteImport } from './routes/loans'
 import { Route as InvestmentsRouteImport } from './routes/investments'
 import { Route as InsuranceRouteImport } from './routes/insurance'
+import { Route as FinancialSafetyRouteImport } from './routes/financial-safety'
 import { Route as CalculatorsRouteImport } from './routes/calculators'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AdminRouteImport } from './routes/admin'
@@ -64,6 +65,11 @@ const InvestmentsRoute = InvestmentsRouteImport.update({
 const InsuranceRoute = InsuranceRouteImport.update({
   id: '/insurance',
   path: '/insurance',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FinancialSafetyRoute = FinancialSafetyRouteImport.update({
+  id: '/financial-safety',
+  path: '/financial-safety',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CalculatorsRoute = CalculatorsRouteImport.update({
@@ -143,6 +149,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/calculators': typeof CalculatorsRoute
+  '/financial-safety': typeof FinancialSafetyRoute
   '/insurance': typeof InsuranceRoute
   '/investments': typeof InvestmentsRoute
   '/loans': typeof LoansRoute
@@ -164,6 +171,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/calculators': typeof CalculatorsRoute
+  '/financial-safety': typeof FinancialSafetyRoute
   '/insurance': typeof InsuranceRoute
   '/investments': typeof InvestmentsRoute
   '/loans': typeof LoansRoute
@@ -188,6 +196,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/calculators': typeof CalculatorsRoute
+  '/financial-safety': typeof FinancialSafetyRoute
   '/insurance': typeof InsuranceRoute
   '/investments': typeof InvestmentsRoute
   '/loans': typeof LoansRoute
@@ -212,6 +221,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/auth'
     | '/calculators'
+    | '/financial-safety'
     | '/insurance'
     | '/investments'
     | '/loans'
@@ -233,6 +243,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/calculators'
+    | '/financial-safety'
     | '/insurance'
     | '/investments'
     | '/loans'
@@ -256,6 +267,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/auth'
     | '/calculators'
+    | '/financial-safety'
     | '/insurance'
     | '/investments'
     | '/loans'
@@ -280,6 +292,7 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRouteWithChildren
   AuthRoute: typeof AuthRoute
   CalculatorsRoute: typeof CalculatorsRoute
+  FinancialSafetyRoute: typeof FinancialSafetyRoute
   InsuranceRoute: typeof InsuranceRoute
   InvestmentsRoute: typeof InvestmentsRoute
   LoansRoute: typeof LoansRoute
@@ -342,6 +355,13 @@ declare module '@tanstack/react-router' {
       path: '/insurance'
       fullPath: '/insurance'
       preLoaderRoute: typeof InsuranceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/financial-safety': {
+      id: '/financial-safety'
+      path: '/financial-safety'
+      fullPath: '/financial-safety'
+      preLoaderRoute: typeof FinancialSafetyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/calculators': {
@@ -485,6 +505,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRouteWithChildren,
   AuthRoute: AuthRoute,
   CalculatorsRoute: CalculatorsRoute,
+  FinancialSafetyRoute: FinancialSafetyRoute,
   InsuranceRoute: InsuranceRoute,
   InvestmentsRoute: InvestmentsRoute,
   LoansRoute: LoansRoute,
