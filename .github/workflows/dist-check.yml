@@ -22,10 +22,13 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
-      - name: Build (runs post-build dist-check)
+      - name: Build
         run: bun run build
         env:
           CI: "true"
+
+      - name: Check generated output contract
+        run: bun run check:output
 
       - name: Upload build output on failure
         if: failure()
