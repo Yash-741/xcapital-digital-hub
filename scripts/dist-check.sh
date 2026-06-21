@@ -9,11 +9,21 @@ cd "$ROOT_DIR"
 LOG_DIR="${ROOT_DIR}/.dist-check"
 mkdir -p "$LOG_DIR"
 
+if [ -x "${ROOT_DIR}/node_modules/.bin/vite" ]; then
+  VITE_CMD=("${ROOT_DIR}/node_modules/.bin/vite")
+elif command -v bun >/dev/null 2>&1; then
+  VITE_CMD=(bun vite)
+elif command -v bunx >/dev/null 2>&1; then
+  VITE_CMD=(bunx vite)
+else
+  VITE_CMD=(npx vite)
+fi
+
 run_build() {
   local attempt="$1"
   local log="${LOG_DIR}/attempt-${attempt}.log"
   echo "[dist-check] attempt ${attempt}: vite build"
-  if vite build 2>&1 | tee "$log"; then
+  if "${VITE_CMD[@]}" build 2>&1 | tee "$log"; then
     return 0
   fi
   return 1
@@ -24,19 +34,24 @@ print_diagnostics() {
   echo "=============================================="
   echo "[dist-check] BUILD FAILED — diagnostics"
   echo "=============================================="
-  echo "Vite build output dir: ${ROOT_DIR}/dist"
-  if [ -d "${ROOT_DIR}/dist" ]; then
+  echo "Vite build output dirs:"
+  echo "  primary: ${ROOT_DIR}/.vercel/output"
+  echo "  fallback: ${ROOT_DIR}/dist"
+  if [ -d "${ROOT_DIR}/.vercel/output" ]; then
+    echo ".vercel/output/ contents:"
+    ls -la "${ROOT_DIR}/.vercel/output" 2>&1 | sed 's/^/  /'
+  elif [ -d "${ROOT_DIR}/dist" ]; then
     echo "dist/ contents:"
     ls -la "${ROOT_DIR}/dist" 2>&1 | sed 's/^/  /'
   else
-    echo "dist/ does not exist."
+    echo "No build output directory exists."
   fi
   echo ""
   echo "Environment:"
   echo "  node:    $(node --version 2>/dev/null || echo 'not found')"
   echo "  bun:     $(bun --version 2>/dev/null || echo 'not found')"
   echo "  npm:     $(npm --version 2>/dev/null || echo 'not found')"
-  echo "  vite:    $(vite --version 2>/dev/null || echo 'not found')"
+  echo "  vite:    $("${VITE_CMD[@]}" --version 2>/dev/null || echo 'not found')"
   echo "  os:      $(uname -a)"
   echo "  cwd:     ${ROOT_DIR}"
   echo "  NODE_ENV=${NODE_ENV:-<unset>}"
