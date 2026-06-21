@@ -7,6 +7,13 @@ export function Footer() {
   const { t, tEn } = useI18n();
   return (
     <footer className="bg-[var(--brand-black)] text-white/75 mt-16">
+      <nav aria-label="Footer legal links" className="container-x flex flex-wrap justify-center gap-x-3 gap-y-2 border-b border-white/10 py-4 text-xs font-semibold text-white/85 md:hidden">
+        <Link to="/privacy" className="rounded-sm px-1 py-0.5 transition-colors duration-200 ease-out hover:text-[var(--brand-yellow)] hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-yellow)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--brand-black)]">Privacy Policy</Link>
+        <span aria-hidden="true">|</span>
+        <Link to="/terms" className="rounded-sm px-1 py-0.5 transition-colors duration-200 ease-out hover:text-[var(--brand-yellow)] hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-yellow)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--brand-black)]">Terms & Conditions</Link>
+        <span aria-hidden="true">|</span>
+        <Link to="/financial-safety" className="rounded-sm px-1 py-0.5 transition-colors duration-200 ease-out hover:text-[var(--brand-yellow)] hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-yellow)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--brand-black)]">Financial Safety</Link>
+      </nav>
       <div className="container-x py-14 grid gap-10 md:grid-cols-5">
         <div>
           <div className="inline-block bg-white px-3 py-2 rounded mb-3">
@@ -64,9 +71,6 @@ export function Footer() {
             <li><a href="/about#our-vision" className="hover:text-[var(--brand-yellow)]">{t("footer.company.vision")}</a></li>
             <li><a href="/about#reach-us" className="hover:text-[var(--brand-yellow)]">{t("footer.company.contact")}</a></li>
             <li><a href="/about#careers" className="hover:text-[var(--brand-yellow)]">{t("footer.company.careers")}</a></li>
-            <li><Link to="/financial-safety" className="hover:text-[var(--brand-yellow)]">Financial Safety</Link></li>
-            <li><Link to="/privacy" className="inline-block rounded-sm transition-colors duration-200 ease-out hover:text-[var(--brand-yellow)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-yellow)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--brand-black)]">Privacy Policy</Link></li>
-            <li><Link to="/terms" className="inline-block rounded-sm transition-colors duration-200 ease-out hover:text-[var(--brand-yellow)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-yellow)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--brand-black)]">Terms & Conditions</Link></li>
           </ul>
         </div>
 
@@ -83,7 +87,7 @@ export function Footer() {
       <div className="border-t border-white/10">
         <div className="container-x py-5 text-xs text-white/50 grid gap-4 text-center md:grid-cols-[1fr_auto_1fr] md:items-center md:text-left">
           <p>© {new Date().getFullYear()} XCapital. {t("footer.rights")}</p>
-          <nav aria-label="Footer legal links" className="flex flex-wrap justify-center gap-x-3 gap-y-2 font-semibold text-white/80 md:justify-center">
+          <nav aria-label="Footer legal links" className="hidden flex-wrap justify-center gap-x-3 gap-y-2 font-semibold text-white/80 md:flex md:justify-center">
             <Link to="/privacy" className="rounded-sm px-1 py-0.5 transition-colors duration-200 ease-out hover:text-[var(--brand-yellow)] hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-yellow)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--brand-black)]">Privacy Policy</Link>
             <span aria-hidden="true">|</span>
             <Link to="/terms" className="rounded-sm px-1 py-0.5 transition-colors duration-200 ease-out hover:text-[var(--brand-yellow)] hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-yellow)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--brand-black)]">Terms & Conditions</Link>

@@ -443,7 +443,7 @@ function AdminDashboard() {
           <Dialog open={addDialogOpen} onOpenChange={setAddDialogOpen}>
             <DialogTrigger asChild>
               <Button className="bg-[var(--brand-black)] hover:bg-[var(--brand-black)]/90 text-white font-semibold cursor-pointer">
-                <Plus className="w-4 h-4 mr-2" /> Add Lead
+                <Plus className="w-4 h-4 mr-2" /> Manual Lead
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
