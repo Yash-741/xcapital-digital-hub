@@ -9,8 +9,11 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { ChevronDown, ChevronRight, Trash2, LogOut, UserCog, ArrowLeft } from "lucide-react";
-import { Download } from "lucide-react";
+import { ChevronDown, ChevronRight, Trash2, LogOut, UserCog, ArrowLeft, Download, Plus } from "lucide-react";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Download as DownloadIcon } from "lucide-react";
 import * as XLSX from "xlsx";
 import { ProfileDialog } from "@/components/site/ProfileDialog";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -38,6 +41,34 @@ type Lead = {
 
 const STATUSES = ["New", "Contacted", "In Progress", "Closed"] as const;
 const PAGE_SIZE = 12;
+
+const CATEGORY_PRODUCTS: Record<string, string[]> = {
+  Lending: [
+    "Business Loans",
+    "MSME Funding",
+    "Working Capital Finance",
+    "Loan Against Property (LAP)",
+    "Home Loans",
+    "Credit Facilities"
+  ],
+  Banking: [
+    "Cash Credit (CC)",
+    "Overdraft Facilities (OD)",
+    "Banking Relationship Management",
+    "Credit Enhancement Support"
+  ],
+  Treasury: [
+    "Fixed Deposit Solutions",
+    "Treasury Advisory",
+    "Liquidity Planning",
+    "Banking Optimization"
+  ],
+  Advisory: [
+    "Financial Structuring",
+    "Funding Strategy",
+    "Capital Access Facilitation"
+  ]
+};
 
 const statusColor: Record<string, string> = {
   New: "bg-blue-100 text-blue-800",
@@ -125,6 +156,95 @@ function AdminDashboard() {
     },
     onError: () => toast.error("Failed to delete"),
   });
+
+  // Manual lead creation state
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [newLeadName, setNewLeadName] = useState("");
+  const [newLeadPhone, setNewLeadPhone] = useState("");
+  const [newLeadEmail, setNewLeadEmail] = useState("");
+  const [newLeadCategory, setNewLeadCategory] = useState("Lending");
+  const [newLeadRequirement, setNewLeadRequirement] = useState("");
+  const [newLeadCustomReq, setNewLeadCustomReq] = useState("");
+  const [newLeadStatus, setNewLeadStatus] = useState("New");
+  const [newLeadSource, setNewLeadSource] = useState("manual");
+  const [newLeadMessage, setNewLeadMessage] = useState("");
+
+  const createLead = useMutation({
+    mutationFn: async (newLead: {
+      name: string;
+      phone: string;
+      email: string;
+      category: string | null;
+      requirement: string | null;
+      message: string | null;
+      source: string | null;
+      status: string;
+    }) => {
+      const { data, error } = await supabase.from("leads").insert([newLead]).select();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["leads"] });
+      toast.success("Manual lead added successfully");
+      setAddDialogOpen(false);
+      // Reset form fields
+      setNewLeadName("");
+      setNewLeadPhone("");
+      setNewLeadEmail("");
+      setNewLeadCategory("Lending");
+      setNewLeadRequirement("");
+      setNewLeadCustomReq("");
+      setNewLeadStatus("New");
+      setNewLeadSource("manual");
+      setNewLeadMessage("");
+    },
+    onError: (err: any) => {
+      console.error(err);
+      toast.error(err.message || "Failed to add manual lead");
+    },
+  });
+
+  const handleAddLeadSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newLeadName.trim()) {
+      toast.error("Name is required");
+      return;
+    }
+    if (!newLeadPhone.trim()) {
+      toast.error("Phone number is required");
+      return;
+    }
+    if (!newLeadEmail.trim()) {
+      toast.error("Email is required");
+      return;
+    }
+    if (!/\S+@\S+\.\S+/.test(newLeadEmail)) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+
+    const finalReq = newLeadRequirement === "custom" ? newLeadCustomReq.trim() : newLeadRequirement;
+
+    createLead.mutate({
+      name: newLeadName.trim(),
+      phone: newLeadPhone.trim(),
+      email: newLeadEmail.trim(),
+      category: newLeadCategory || null,
+      requirement: finalReq || null,
+      message: newLeadMessage.trim() || null,
+      source: newLeadSource || null,
+      status: newLeadStatus,
+    });
+  };
+
+  useEffect(() => {
+    if (newLeadCategory && CATEGORY_PRODUCTS[newLeadCategory]) {
+      setNewLeadRequirement(CATEGORY_PRODUCTS[newLeadCategory][0] || "");
+    } else {
+      setNewLeadRequirement("");
+    }
+  }, [newLeadCategory]);
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
@@ -286,7 +406,7 @@ function AdminDashboard() {
           <StatCard label="Closed" value={stats.closed} accent="bg-emerald-600" />
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 grid gap-3 md:grid-cols-[1fr_140px_160px_170px_auto]">
+        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 grid gap-3 md:grid-cols-[1fr_120px_140px_140px_auto_auto]">
           <Input
             placeholder="Search name, phone, or email…"
             value={search}
@@ -315,10 +435,164 @@ function AdminDashboard() {
           </Select>
           <Button
             onClick={exportLeads}
-            className="bg-[var(--brand-yellow)] hover:brightness-105 text-[var(--brand-black)] font-semibold"
+            className="bg-[var(--brand-yellow)] hover:brightness-105 text-[var(--brand-black)] font-semibold cursor-pointer"
           >
             <Download className="w-4 h-4 mr-2" /> Export XLSX
           </Button>
+
+          <Dialog open={addDialogOpen} onOpenChange={setAddDialogOpen}>
+            <DialogTrigger asChild>
+              <Button className="bg-[var(--brand-black)] hover:bg-[var(--brand-black)]/90 text-white font-semibold cursor-pointer">
+                <Plus className="w-4 h-4 mr-2" /> Add Lead
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[500px]">
+              <DialogHeader>
+                <DialogTitle>Add Manual Lead</DialogTitle>
+                <DialogDescription>
+                  Enter the details of the manual lead. The lead will be added to the database immediately.
+                </DialogDescription>
+              </DialogHeader>
+              <form onSubmit={handleAddLeadSubmit} className="space-y-4 py-2">
+                <div className="grid gap-2">
+                  <Label htmlFor="lead-name">Full Name *</Label>
+                  <Input
+                    id="lead-name"
+                    required
+                    value={newLeadName}
+                    onChange={(e) => setNewLeadName(e.target.value)}
+                    placeholder="e.g. Rahul Sharma"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="grid gap-2">
+                    <Label htmlFor="lead-phone">Phone Number *</Label>
+                    <Input
+                      id="lead-phone"
+                      required
+                      value={newLeadPhone}
+                      onChange={(e) => setNewLeadPhone(e.target.value)}
+                      placeholder="e.g. +919876543210"
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="lead-email">Email Address *</Label>
+                    <Input
+                      id="lead-email"
+                      type="email"
+                      required
+                      value={newLeadEmail}
+                      onChange={(e) => setNewLeadEmail(e.target.value)}
+                      placeholder="e.g. rahul@example.com"
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="grid gap-2">
+                    <Label htmlFor="lead-category">Category</Label>
+                    <Select value={newLeadCategory} onValueChange={setNewLeadCategory}>
+                      <SelectTrigger id="lead-category">
+                        <SelectValue placeholder="Select category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Lending">Lending</SelectItem>
+                        <SelectItem value="Banking">Banking</SelectItem>
+                        <SelectItem value="Treasury">Treasury</SelectItem>
+                        <SelectItem value="Advisory">Advisory</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="lead-requirement">Product / Requirement</Label>
+                    <Select value={newLeadRequirement} onValueChange={setNewLeadRequirement}>
+                      <SelectTrigger id="lead-requirement">
+                        <SelectValue placeholder="Select product" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {CATEGORY_PRODUCTS[newLeadCategory]?.map((p) => (
+                          <SelectItem key={p} value={p}>{p}</SelectItem>
+                        ))}
+                        <SelectItem value="custom">Custom Requirement...</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                {newLeadRequirement === "custom" && (
+                  <div className="grid gap-2 animate-in fade-in-50 duration-150">
+                    <Label htmlFor="lead-custom-req">Custom Requirement Details *</Label>
+                    <Input
+                      id="lead-custom-req"
+                      required
+                      value={newLeadCustomReq}
+                      onChange={(e) => setNewLeadCustomReq(e.target.value)}
+                      placeholder="e.g. Special Structured Loan"
+                    />
+                  </div>
+                )}
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="grid gap-2">
+                    <Label htmlFor="lead-status">Initial Status</Label>
+                    <Select value={newLeadStatus} onValueChange={setNewLeadStatus}>
+                      <SelectTrigger id="lead-status">
+                        <SelectValue placeholder="Status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {STATUSES.map((s) => (
+                          <SelectItem key={s} value={s}>{s}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="lead-source">Lead Source</Label>
+                    <Select value={newLeadSource} onValueChange={setNewLeadSource}>
+                      <SelectTrigger id="lead-source">
+                        <SelectValue placeholder="Source" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="manual">Manual Entry</SelectItem>
+                        <SelectItem value="cold-call">Cold Call</SelectItem>
+                        <SelectItem value="referral">Referral</SelectItem>
+                        <SelectItem value="event">Event / Exhibition</SelectItem>
+                        <SelectItem value="website">Website Form</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                <div className="grid gap-2">
+                  <Label htmlFor="lead-message">Message / Internal Notes</Label>
+                  <Textarea
+                    id="lead-message"
+                    value={newLeadMessage}
+                    onChange={(e) => setNewLeadMessage(e.target.value)}
+                    placeholder="Enter details about the lead's requirement, business background or notes..."
+                    rows={3}
+                  />
+                </div>
+
+                <DialogFooter className="pt-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setAddDialogOpen(false)}
+                    disabled={createLead.isPending}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    className="bg-[var(--brand-yellow)] hover:brightness-105 text-[var(--brand-black)] font-semibold"
+                    disabled={createLead.isPending}
+                  >
+                    {createLead.isPending ? "Adding..." : "Add Lead"}
+                  </Button>
+                </DialogFooter>
+              </form>
+            </DialogContent>
+          </Dialog>
         </div>
 
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
