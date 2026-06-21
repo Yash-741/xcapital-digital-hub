@@ -236,6 +236,7 @@ export function Header() {
             ) : (
               <Link
                 to="/auth"
+                search={{ redirect: undefined }}
                 className="inline-flex items-center gap-2 rounded-full px-4 md:px-5 py-2.5 text-sm font-semibold text-[var(--brand-black)] bg-[var(--brand-yellow)] hover:brightness-105 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-black)] focus-visible:ring-offset-2"
                 aria-label={tEn("Register or Login")}
               >

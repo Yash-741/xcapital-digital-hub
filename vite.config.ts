@@ -50,7 +50,7 @@ export default defineConfig(async ({ command, mode }) => {
 
   return {
     define: envDefine,
-    css: { transformer: "lightningcss" },
+    css: { transformer: "lightningcss" as const },
     resolve: {
       alias: {
         "@": path.resolve(process.cwd(), "./src"),
