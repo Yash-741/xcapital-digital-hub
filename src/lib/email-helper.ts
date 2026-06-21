@@ -148,7 +148,7 @@ export async function verifyWebhookRequest({
   toleranceMs = DEFAULT_TOLERANCE_MS,
   maxBodyBytes = DEFAULT_MAX_BODY_BYTES,
 }: {
-  req: Request | TanStackRequest;
+  req: Request;
   secret: string;
   signatureHeader?: string;
   timestampHeader?: string;
