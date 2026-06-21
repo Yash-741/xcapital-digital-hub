@@ -1,15 +1,13 @@
 import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { Header } from "./Header";
-import { Footer } from "./Footer";
 
 export function SiteLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="flex flex-col min-h-screen" style={{ background: "var(--page-bg)" }}>
+    <>
       <Header />
       <main id="main-content" tabIndex={-1} className="flex-1 focus:outline-none">{children}</main>
-      <Footer />
-    </div>
+    </>
   );
 }
 

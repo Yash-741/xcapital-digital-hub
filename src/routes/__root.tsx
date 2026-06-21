@@ -13,6 +13,7 @@ import appCss from "../styles.css?url";
 import { reportError } from "../lib/error-reporting";
 import { Toaster } from "@/components/ui/sonner";
 import { I18nProvider } from "@/lib/i18n";
+import { Footer } from "@/components/site/Footer";
 
 function NotFoundComponent() {
   return (
@@ -132,21 +133,8 @@ function RootShell({ children }: { children: ReactNode }) {
           .goog-text-highlight { background: transparent !important; box-shadow: none !important; }
           #google_translate_element { position: absolute; left: -9999px; top: -9999px; height: 0; overflow: hidden; }
         `}</style>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `window.googleTranslateElementInit = function() {
-              new window.google.translate.TranslateElement({
-                pageLanguage: 'en',
-                includedLanguages: 'en,hi,mr',
-                autoDisplay: false,
-              }, 'google_translate_element');
-            };`,
-          }}
-        />
-        <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async />
       </head>
-      <body>
-        <div id="google_translate_element" aria-hidden="true" />
+      <body suppressHydrationWarning>
         {children}
         <Scripts />
       </body>
@@ -160,8 +148,11 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <I18nProvider>
-        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <Outlet />
+        <div className="flex min-h-screen flex-col" style={{ background: "var(--page-bg)" }}>
+          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+          <Outlet />
+          <Footer />
+        </div>
         <Toaster />
       </I18nProvider>
     </QueryClientProvider>

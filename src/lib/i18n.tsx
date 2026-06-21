@@ -2579,6 +2579,7 @@ const I18nContext = createContext<Ctx | null>(null);
 
 function applyGoogleTranslate(lang: Lang) {
   if (typeof document === "undefined") return;
+  ensureGoogleTranslateElement();
   const cookieVal = lang === "en" ? "" : `/en/${lang}`;
   const host = typeof location !== "undefined" ? location.hostname : "";
   const expires = lang === "en" ? "Thu, 01 Jan 1970 00:00:00 GMT" : "";
@@ -2602,6 +2603,35 @@ function applyGoogleTranslate(lang: Lang) {
   }
 }
 
+function ensureGoogleTranslateElement() {
+  if (typeof window === "undefined" || typeof document === "undefined") return;
+  if (!document.getElementById("google_translate_element")) {
+    const el = document.createElement("div");
+    el.id = "google_translate_element";
+    el.setAttribute("aria-hidden", "true");
+    document.body.appendChild(el);
+  }
+  const win = window as Window & {
+    google?: { translate?: { TranslateElement: new (options: Record<string, unknown>, elementId: string) => unknown } };
+    googleTranslateElementInit?: () => void;
+  };
+  if (!win.googleTranslateElementInit) {
+    win.googleTranslateElementInit = () => {
+      if (!win.google?.translate?.TranslateElement) return;
+      new win.google.translate.TranslateElement(
+        { pageLanguage: "en", includedLanguages: "en,hi,mr", autoDisplay: false },
+        "google_translate_element",
+      );
+    };
+  }
+  if (!document.querySelector('script[src*="translate_a/element.js"]')) {
+    const script = document.createElement("script");
+    script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+    script.async = true;
+    document.body.appendChild(script);
+  }
+}
+
 const _missingWarned = new Set<string>();
 function reportMissing(lang: Lang, key: string) {
   if (lang === "en") return;
@@ -2620,6 +2650,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     const saved = (typeof window !== "undefined" && (localStorage.getItem(STORAGE_KEY) as Lang)) || "en";
     setLangState(saved);
     if (typeof document !== "undefined") document.documentElement.lang = saved;
+    if (saved !== "en") ensureGoogleTranslateElement();
   }, []);
 
   const setLang = useCallback((l: Lang) => {
