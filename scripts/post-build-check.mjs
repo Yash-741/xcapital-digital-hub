@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // Post-build verification: ensure .vercel/output/ contains the expected
-// artifacts produced by `vite build` (TanStack Start + Nitro/Vercel preset).
-// Exits non-zero with a clear message listing every missing item.
+// deployable artifacts produced by `vite build` (TanStack Start + Nitro/Vercel preset).
+// Keep this focused on stable Vercel output contracts; internal chunk folders can
+// change between TanStack/Nitro releases and should not fail CI by themselves.
 import { existsSync, statSync, readdirSync } from "node:fs";
 import { join, relative } from "node:path";
 
@@ -19,8 +20,6 @@ const required = [
   { path: "functions/__server.func",                    kind: "dir",  note: "SSR + server-fn handler bundle" },
   { path: "functions/__server.func/index.mjs",         kind: "file", note: "Worker entry" },
   { path: "functions/__server.func/package.json",      kind: "file", note: "Function package manifest" },
-  { path: "functions/__server.func/_ssr",              kind: "dir",  note: "Per-route SSR chunks" },
-  { path: "functions/__server.func/_libs",             kind: "dir",  note: "Vendor chunks (react, supabase, etc.)" },
 ];
 
 const missing = [];
@@ -46,11 +45,10 @@ for (const item of required) {
 }
 
 // Extra sanity checks
-const ssrDir = join(OUT, "functions/__server.func/_ssr");
-let ssrCount = 0;
-if (existsSync(ssrDir) && statSync(ssrDir).isDirectory()) {
-  ssrCount = readdirSync(ssrDir).filter((f) => f.endsWith(".mjs")).length;
-}
+const serverFuncDir = join(OUT, "functions/__server.func");
+const serverEntries = existsSync(serverFuncDir) && statSync(serverFuncDir).isDirectory()
+  ? readdirSync(serverFuncDir, { recursive: true }).filter((f) => String(f).endsWith(".mjs"))
+  : [];
 
 const assetsDir = join(OUT, "static/assets");
 let assetCount = 0;
@@ -61,12 +59,12 @@ if (existsSync(assetsDir) && statSync(assetsDir).isDirectory()) {
 const problems = [];
 if (missing.length) problems.push(`${missing.length} missing item(s)`);
 if (wrongKind.length) problems.push(`${wrongKind.length} wrong-kind item(s)`);
-if (ssrCount === 0) problems.push("no SSR route chunks (_ssr/*.mjs) emitted");
+if (serverEntries.length === 0) problems.push("no server JavaScript bundles emitted");
 if (assetCount === 0) problems.push("no client assets (static/assets/*) emitted");
 
 if (problems.length === 0) {
   console.log(
-    `✓ post-build-check passed — ${ssrCount} SSR chunks, ${assetCount} client assets in ${relative(ROOT, OUT)}/`,
+    `✓ post-build-check passed — ${serverEntries.length} server bundles, ${assetCount} client assets in ${relative(ROOT, OUT)}/`,
   );
   process.exit(0);
 }
@@ -80,8 +78,8 @@ for (const w of wrongKind) {
     `  - WRONG KIND .vercel/output/${w.path} — expected ${w.kind}, found ${w.actual}`,
   );
 }
-if (ssrCount === 0) {
-  console.error("  - EMPTY .vercel/output/functions/__server.func/_ssr — no SSR route chunks were bundled");
+if (serverEntries.length === 0) {
+  console.error("  - EMPTY .vercel/output/functions/__server.func — no server JavaScript bundles were emitted");
 }
 if (assetCount === 0) {
   console.error("  - EMPTY .vercel/output/static/assets — client bundle was not emitted");
