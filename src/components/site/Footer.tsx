@@ -81,16 +81,16 @@ export function Footer() {
       </div>
 
       <div className="border-t border-white/10">
-        <div className="container-x py-5 text-xs text-white/50 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="container-x py-5 text-xs text-white/50 grid gap-4 text-center md:grid-cols-[1fr_auto_1fr] md:items-center md:text-left">
           <p>© {new Date().getFullYear()} XCapital. {t("footer.rights")}</p>
-          <div className="flex gap-4 font-semibold text-white/60">
+          <nav aria-label="Footer legal links" className="flex flex-wrap justify-center gap-x-3 gap-y-2 font-semibold text-white/80 md:justify-center">
             <Link to="/privacy" className="rounded-sm px-1 py-0.5 transition-colors duration-200 ease-out hover:text-[var(--brand-yellow)] hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-yellow)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--brand-black)]">Privacy Policy</Link>
             <span aria-hidden="true">|</span>
             <Link to="/terms" className="rounded-sm px-1 py-0.5 transition-colors duration-200 ease-out hover:text-[var(--brand-yellow)] hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-yellow)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--brand-black)]">Terms & Conditions</Link>
             <span aria-hidden="true">|</span>
             <Link to="/financial-safety" className="rounded-sm px-1 py-0.5 transition-colors duration-200 ease-out hover:text-[var(--brand-yellow)] hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-yellow)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--brand-black)]">Financial Safety</Link>
-          </div>
-          <p>{t("footer.disclaimer")}</p>
+          </nav>
+          <p className="md:text-right">{t("footer.disclaimer")}</p>
         </div>
       </div>
     </footer>
