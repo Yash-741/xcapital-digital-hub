@@ -78,8 +78,13 @@ export function Footer() {
       </div>
 
       <div className="border-t border-white/10">
-        <div className="container-x py-5 text-xs text-white/50 flex flex-col md:flex-row justify-between gap-2">
+        <div className="container-x py-5 text-xs text-white/50 flex flex-col md:flex-row justify-between items-center gap-4">
           <p>© {new Date().getFullYear()} XCapital. {t("footer.rights")}</p>
+          <div className="flex gap-4 font-semibold text-white/60">
+            <Link to="/privacy" className="hover:text-[var(--brand-yellow)] hover:underline transition">Privacy Policy</Link>
+            <span>|</span>
+            <Link to="/terms" className="hover:text-[var(--brand-yellow)] hover:underline transition">Terms & Conditions</Link>
+          </div>
           <p>{t("footer.disclaimer")}</p>
         </div>
       </div>
