@@ -1,5 +1,3 @@
-import { type Request as TanStackRequest } from '@tanstack/react-router'
-
 const DEFAULT_SIGNATURE_HEADER = "x-lovable-signature";
 const DEFAULT_TIMESTAMP_HEADER = "x-lovable-timestamp";
 const DEFAULT_TOLERANCE_MS = 5 * 60 * 1000; // 5 minutes
