@@ -451,7 +451,7 @@ function EMICalculator({ onSave, initialPresetKey }: { onSave: SaveFn; initialPr
       </div>
 
       <div className="mt-7 bg-[var(--brand-black)] text-white rounded-lg p-6">
-        <div className="grid grid-cols-3 gap-4 text-center mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center mb-6">
           <div>
             <div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Monthly EMI" /></div>
             <div className="text-xl font-bold text-[var(--brand-yellow)] mt-1">{inr(emi)}</div>
@@ -523,7 +523,7 @@ function SIPCalculator({ onSave }: { onSave: SaveFn }) {
         <Field label="Time Period" value={years} min={1} max={40} step={1} onChange={setYears} suffix=" yr" />
       </div>
       <div className="mt-7 bg-[var(--brand-black)] text-white rounded-lg p-6">
-        <div className="grid grid-cols-3 gap-4 text-center mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center mb-6">
           <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Invested" /></div><div className="text-xl font-bold mt-1">{inr(invested)}</div></div>
           <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Est. Returns" /></div><div className="text-xl font-bold mt-1">{inr(gains)}</div></div>
           <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Maturity" /></div><div className="text-xl font-bold text-[var(--brand-yellow)] mt-1">{inr(maturity)}</div></div>
@@ -583,7 +583,7 @@ function LumpsumCalculator({ onSave }: { onSave: SaveFn }) {
         <Field label="Time Period" value={years} min={1} max={40} step={1} onChange={setYears} suffix=" yr" />
       </div>
       <div className="mt-7 bg-[var(--brand-black)] text-white rounded-lg p-6">
-        <div className="grid grid-cols-3 gap-4 text-center mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center mb-6">
           <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Invested" /></div><div className="text-xl font-bold mt-1">{inr(principal)}</div></div>
           <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Est. Returns" /></div><div className="text-xl font-bold mt-1">{inr(gains)}</div></div>
           <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Maturity" /></div><div className="text-xl font-bold text-[var(--brand-yellow)] mt-1">{inr(maturity)}</div></div>
@@ -644,7 +644,7 @@ function FDCalculator({ onSave }: { onSave: SaveFn }) {
         <Field label="Tenure" value={years} min={1} max={20} step={1} onChange={setYears} suffix=" yr" />
       </div>
       <div className="mt-7 bg-[var(--brand-black)] text-white rounded-lg p-6">
-        <div className="grid grid-cols-3 gap-4 text-center mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center mb-6">
           <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Invested" /></div><div className="text-xl font-bold mt-1">{inr(principal)}</div></div>
           <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Interest" /></div><div className="text-xl font-bold mt-1">{inr(interest)}</div></div>
           <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Maturity" /></div><div className="text-xl font-bold text-[var(--brand-yellow)] mt-1">{inr(maturity)}</div></div>
