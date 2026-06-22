@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 import { submitLead } from "@/lib/leads.functions";
 import { useI18n } from "@/lib/i18n";
@@ -73,6 +74,7 @@ function ApplyPage() {
   const [authState, setAuthState] = useState<"checking" | "in" | "out">("checking");
   const [userEmail, setUserEmail] = useState<string>("");
   const [successOpen, setSuccessOpen] = useState(false);
+  const [agree, setAgree] = useState(false);
   const [form, setForm] = useState({
     full_name: "", email: "", phone: "",
     amount: "", tenure: "", coverage: "", age: "", horizon: "", notes: "",
@@ -161,6 +163,10 @@ function ApplyPage() {
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!agree) {
+      toast.error("Please accept the Terms & Conditions and Privacy Policy");
+      return;
+    }
     setLoading(true);
     try {
       const payload: Record<string, unknown> = {
@@ -300,8 +306,15 @@ function ApplyPage() {
             <Textarea rows={4} maxLength={1000} value={form.notes} onChange={set("notes")} placeholder={t("apply.placeholder.notes")} />
           </Field>
 
+          <div className="flex items-start gap-2 pt-1">
+            <Checkbox id="apply-agree" checked={agree} onCheckedChange={(v) => setAgree(v === true)} className="mt-0.5" />
+            <Label htmlFor="apply-agree" className="text-xs font-normal leading-relaxed text-muted-foreground">
+              I agree to the <Link to="/terms" className="underline text-[var(--brand-navy)]">Terms & Conditions</Link> and <Link to="/privacy" className="underline text-[var(--brand-navy)]">Privacy Policy</Link>.
+            </Label>
+          </div>
+
           <div className="flex items-center gap-3 pt-2">
-            <Button type="submit" disabled={loading} className="bg-[var(--brand-yellow)] text-[var(--brand-black)] font-semibold hover:brightness-105">
+            <Button type="submit" disabled={loading || !agree} className="bg-[var(--brand-yellow)] text-[var(--brand-black)] font-semibold hover:brightness-105">
               {loading ? t("apply.submitting") : t("apply.submit")}
             </Button>
             <Link to="/about" className="text-sm text-muted-foreground hover:underline">{t("apply.contactDirect")}</Link>

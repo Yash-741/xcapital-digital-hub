@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Checkbox } from "@/components/ui/checkbox";
 import { supabase } from "@/integrations/supabase/client";
 import { z } from "zod";
 import { useI18n } from "@/lib/i18n";
@@ -85,6 +86,7 @@ function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [agree, setAgree] = useState(false);
   const emailSchema = z.string().trim().email(tEn("Enter a valid email")).max(255);
 
   async function onSubmit(e: React.FormEvent) {
@@ -93,6 +95,7 @@ function LoginForm() {
     const pv = z.string().min(1, tEn("Password is required")).safeParse(password);
     if (!ev.success) return toast.error(ev.error.issues[0].message);
     if (!pv.success) return toast.error(pv.error.issues[0].message);
+    if (!agree) return toast.error(tEn("Please accept the Terms & Conditions and Privacy Policy"));
     setLoading(true);
     const { error } = await supabase.auth.signInWithPassword({ email: ev.data, password });
     setLoading(false);
@@ -110,6 +113,12 @@ function LoginForm() {
         <Label htmlFor="li-pass">{tEn("Password")}</Label>
         <Input id="li-pass" type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} required />
       </div>
+      <div className="flex items-start gap-2">
+        <Checkbox id="li-agree" checked={agree} onCheckedChange={(v) => setAgree(v === true)} className="mt-0.5" />
+        <Label htmlFor="li-agree" className="text-xs font-normal leading-relaxed text-muted-foreground">
+          {tEn("I agree to the")} <Link to="/terms" className="underline text-[var(--brand-navy)]">{tEn("Terms & Conditions")}</Link> {tEn("and")} <Link to="/privacy" className="underline text-[var(--brand-navy)]">{tEn("Privacy Policy")}</Link>.
+        </Label>
+      </div>
       <Button type="submit" disabled={loading} className="w-full bg-[var(--brand-yellow)] text-[var(--brand-black)] hover:brightness-105">
         {loading ? tEn("Signing in...") : tEn("Login")}
       </Button>
@@ -124,6 +133,7 @@ function RegisterForm({ onDone }: { onDone: () => void }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [agree, setAgree] = useState(false);
   const emailSchema = z.string().trim().email(tEn("Enter a valid email")).max(255);
   const passwordSchema = z.string().min(8, tEn("Password must be at least 8 characters")).max(72);
   const nameSchema = z.string().trim().min(2, tEn("Enter your full name")).max(100);
@@ -138,6 +148,7 @@ function RegisterForm({ onDone }: { onDone: () => void }) {
     for (const r of [nv, phv, ev, pv]) {
       if (!r.success) return toast.error(r.error.issues[0].message);
     }
+    if (!agree) return toast.error(tEn("Please accept the Terms & Conditions and Privacy Policy"));
     setLoading(true);
     const { error } = await supabase.auth.signUp({
       email: ev.data!,
@@ -171,6 +182,12 @@ function RegisterForm({ onDone }: { onDone: () => void }) {
         <Label htmlFor="r-pass">{tEn("Password")}</Label>
         <Input id="r-pass" type="password" autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)} required />
         <p className="text-xs text-muted-foreground">{tEn("At least 8 characters.")}</p>
+      </div>
+      <div className="flex items-start gap-2">
+        <Checkbox id="r-agree" checked={agree} onCheckedChange={(v) => setAgree(v === true)} className="mt-0.5" />
+        <Label htmlFor="r-agree" className="text-xs font-normal leading-relaxed text-muted-foreground">
+          {tEn("I agree to the")} <Link to="/terms" className="underline text-[var(--brand-navy)]">{tEn("Terms & Conditions")}</Link> {tEn("and")} <Link to="/privacy" className="underline text-[var(--brand-navy)]">{tEn("Privacy Policy")}</Link>.
+        </Label>
       </div>
       <Button type="submit" disabled={loading} className="w-full bg-[var(--brand-yellow)] text-[var(--brand-black)] hover:brightness-105">
         {loading ? tEn("Creating account...") : tEn("Create account")}
