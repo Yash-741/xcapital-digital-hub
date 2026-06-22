@@ -7,7 +7,9 @@ ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT_DIR"
 
 LOG_DIR="${ROOT_DIR}/.dist-check"
+rm -rf "$LOG_DIR"
 mkdir -p "$LOG_DIR"
+LAST_LOG=""
 
 if [ -x "${ROOT_DIR}/node_modules/.bin/vite" ]; then
   VITE_CMD=("${ROOT_DIR}/node_modules/.bin/vite")
@@ -22,6 +24,7 @@ fi
 run_build() {
   local attempt="$1"
   local log="${LOG_DIR}/attempt-${attempt}.log"
+  LAST_LOG="$log"
   echo "[dist-check] attempt ${attempt}: vite build"
   if "${VITE_CMD[@]}" build 2>&1 | tee "$log"; then
     return 0
@@ -46,12 +49,18 @@ print_diagnostics() {
   else
     echo "No build output directory exists."
   fi
+  if [ -n "$LAST_LOG" ] && [ -f "$LAST_LOG" ]; then
+    echo ""
+    echo "Last build log tail (${LAST_LOG}):"
+    tail -n 160 "$LAST_LOG" 2>&1 | sed 's/^/  /'
+  fi
   echo ""
   echo "Environment:"
   echo "  node:    $(node --version 2>/dev/null || echo 'not found')"
   echo "  bun:     $(bun --version 2>/dev/null || echo 'not found')"
   echo "  npm:     $(npm --version 2>/dev/null || echo 'not found')"
   echo "  vite:    $("${VITE_CMD[@]}" --version 2>/dev/null || echo 'not found')"
+  echo "  vite cmd: ${VITE_CMD[*]}"
   echo "  os:      $(uname -a)"
   echo "  cwd:     ${ROOT_DIR}"
   echo "  NODE_ENV=${NODE_ENV:-<unset>}"
