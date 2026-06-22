@@ -27,6 +27,7 @@ export function Footer() {
               { Icon: Twitter, href: "https://x.com/XCapital_tweets", label: "X (Twitter)" },
               { Icon: Instagram, href: "https://www.instagram.com/xcapital.co.in/", label: "Instagram" },
               { Icon: Facebook, href: "https://www.facebook.com/profile.php?id=61590165826852", label: "Facebook" },
+              { Icon: Linkedin, href: "https://www.linkedin.com/company/contact-xcapital/", label: "LinkedIn" },
             ].map(({ Icon, href, label }) => (
               <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label} className="h-9 w-9 grid place-items-center rounded-full bg-white/10 hover:bg-[var(--brand-yellow)] hover:text-[var(--brand-black)] transition">
                 <Icon className="h-4 w-4" />
