@@ -450,7 +450,7 @@ function EMICalculator({ onSave, initialPresetKey }: { onSave: SaveFn; initialPr
         <Field label="Tenure (months)" value={tenure} min={3} max={360} step={1} onChange={setTenure} suffix=" mo" />
       </div>
 
-      <div className="order-3 lg:order-4 mb-6 lg:mb-0 lg:mt-7 sticky top-16 z-20 lg:static bg-[var(--brand-black)] text-white rounded-lg p-4 sm:p-6 shadow-lg">
+      <div className="order-3 lg:order-4 mb-6 lg:mb-0 lg:mt-7 sticky top-16 z-20 lg:static max-h-[55vh] overflow-y-auto lg:max-h-none lg:overflow-visible bg-[var(--brand-black)] text-white rounded-lg p-4 sm:p-6 shadow-xl ring-1 ring-black/10">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 text-center mb-6">
           <div>
             <div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Monthly EMI" /></div>
@@ -522,7 +522,7 @@ function SIPCalculator({ onSave }: { onSave: SaveFn }) {
         <Field label="Expected Return (p.a.)" value={rate} min={1} max={30} step={0.1} onChange={setRate} suffix="%" />
         <Field label="Time Period" value={years} min={1} max={40} step={1} onChange={setYears} suffix=" yr" />
       </div>
-      <div className="order-2 lg:order-3 mb-6 lg:mb-0 lg:mt-7 sticky top-16 z-20 lg:static bg-[var(--brand-black)] text-white rounded-lg p-4 sm:p-6 shadow-lg">
+      <div className="order-2 lg:order-3 mb-6 lg:mb-0 lg:mt-7 sticky top-16 z-20 lg:static max-h-[55vh] overflow-y-auto lg:max-h-none lg:overflow-visible bg-[var(--brand-black)] text-white rounded-lg p-4 sm:p-6 shadow-xl ring-1 ring-black/10">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 text-center mb-6">
           <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Invested" /></div><div className="amount font-bold mt-1">{inr(invested)}</div></div>
           <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Est. Returns" /></div><div className="amount font-bold mt-1">{inr(gains)}</div></div>
@@ -582,7 +582,7 @@ function LumpsumCalculator({ onSave }: { onSave: SaveFn }) {
         <Field label="Expected Return (p.a.)" value={rate} min={1} max={30} step={0.1} onChange={setRate} suffix="%" />
         <Field label="Time Period" value={years} min={1} max={40} step={1} onChange={setYears} suffix=" yr" />
       </div>
-      <div className="order-2 lg:order-3 mb-6 lg:mb-0 lg:mt-7 sticky top-16 z-20 lg:static bg-[var(--brand-black)] text-white rounded-lg p-4 sm:p-6 shadow-lg">
+      <div className="order-2 lg:order-3 mb-6 lg:mb-0 lg:mt-7 sticky top-16 z-20 lg:static max-h-[55vh] overflow-y-auto lg:max-h-none lg:overflow-visible bg-[var(--brand-black)] text-white rounded-lg p-4 sm:p-6 shadow-xl ring-1 ring-black/10">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 text-center mb-6">
           <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Invested" /></div><div className="amount font-bold mt-1">{inr(principal)}</div></div>
           <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Est. Returns" /></div><div className="amount font-bold mt-1">{inr(gains)}</div></div>
@@ -643,7 +643,7 @@ function FDCalculator({ onSave }: { onSave: SaveFn }) {
         <Field label="Interest Rate (p.a.)" value={rate} min={3} max={12} step={0.05} onChange={setRate} suffix="%" />
         <Field label="Tenure" value={years} min={1} max={20} step={1} onChange={setYears} suffix=" yr" />
       </div>
-      <div className="order-2 lg:order-3 mb-6 lg:mb-0 lg:mt-7 sticky top-16 z-20 lg:static bg-[var(--brand-black)] text-white rounded-lg p-4 sm:p-6 shadow-lg">
+      <div className="order-2 lg:order-3 mb-6 lg:mb-0 lg:mt-7 sticky top-16 z-20 lg:static max-h-[55vh] overflow-y-auto lg:max-h-none lg:overflow-visible bg-[var(--brand-black)] text-white rounded-lg p-4 sm:p-6 shadow-xl ring-1 ring-black/10">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 text-center mb-6">
           <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Invested" /></div><div className="amount font-bold mt-1">{inr(principal)}</div></div>
           <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Interest" /></div><div className="amount font-bold mt-1">{inr(interest)}</div></div>
@@ -710,7 +710,7 @@ function SimpleCalc({ def }: { def: SimpleDef }) {
           />
         ))}
       </div>
-      <div className="order-2 lg:order-3 mb-6 lg:mb-0 lg:mt-7 sticky top-16 z-20 lg:static bg-[var(--brand-black)] text-white rounded-lg p-4 sm:p-6 shadow-lg">
+      <div className="order-2 lg:order-3 mb-6 lg:mb-0 lg:mt-7 sticky top-16 z-20 lg:static max-h-[55vh] overflow-y-auto lg:max-h-none lg:overflow-visible bg-[var(--brand-black)] text-white rounded-lg p-4 sm:p-6 shadow-xl ring-1 ring-black/10">
         <div className={`grid gap-4 text-center mb-6 grid-cols-1 ${result.rows.length >= 3 ? "lg:grid-cols-3" : "sm:grid-cols-2"}`}>
           {result.rows.map((r) => {
             const isPrimary = r.label === result.primaryLabel;
