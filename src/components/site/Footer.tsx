@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Facebook, Twitter, Instagram } from "lucide-react";
+import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
 import logo from "@/assets/xcapital-logo.asset.json";
 import { useI18n } from "@/lib/i18n";
 
