@@ -31,16 +31,6 @@ export default defineConfig(async ({ command, mode }) => {
     tsConfigPaths({ projects: ["./tsconfig.json"] }),
   ];
 
-  // For production builds, we add Nitro with Vercel preset (or auto-detected via NITRO_PRESET)
-  if (command === "build") {
-    const { nitro } = await import("nitro/vite");
-    plugins.push(
-      nitro({
-        preset: "vercel", // explicitly target vercel
-      })
-    );
-  }
-
   // Load client env variables for define
   const envDefine: Record<string, string> = {};
   const loadedEnv = loadEnv(mode, process.cwd(), "VITE_");
