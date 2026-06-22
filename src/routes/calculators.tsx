@@ -454,15 +454,15 @@ function EMICalculator({ onSave, initialPresetKey }: { onSave: SaveFn; initialPr
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 text-center mb-6">
           <div>
             <div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Monthly EMI" /></div>
-            <div className="text-xl font-bold text-[var(--brand-yellow)] mt-1">{inr(emi)}</div>
+            <div className="amount font-bold text-[var(--brand-yellow)] mt-1">{inr(emi)}</div>
           </div>
           <div>
             <div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Interest" /></div>
-            <div className="text-xl font-bold mt-1">{inr(interest)}</div>
+            <div className="amount font-bold mt-1">{inr(interest)}</div>
           </div>
           <div>
             <div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Total Payable" /></div>
-            <div className="text-xl font-bold mt-1">{inr(total)}</div>
+            <div className="amount font-bold mt-1">{inr(total)}</div>
           </div>
         </div>
         <div className="bg-white/5 rounded-md p-4">
@@ -524,9 +524,9 @@ function SIPCalculator({ onSave }: { onSave: SaveFn }) {
       </div>
       <div className="mt-7 bg-[var(--brand-black)] text-white rounded-lg p-6">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 text-center mb-6">
-          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Invested" /></div><div className="text-xl font-bold mt-1">{inr(invested)}</div></div>
-          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Est. Returns" /></div><div className="text-xl font-bold mt-1">{inr(gains)}</div></div>
-          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Maturity" /></div><div className="text-xl font-bold text-[var(--brand-yellow)] mt-1">{inr(maturity)}</div></div>
+          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Invested" /></div><div className="amount font-bold mt-1">{inr(invested)}</div></div>
+          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Est. Returns" /></div><div className="amount font-bold mt-1">{inr(gains)}</div></div>
+          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Maturity" /></div><div className="amount font-bold text-[var(--brand-yellow)] mt-1">{inr(maturity)}</div></div>
         </div>
         <div className="bg-white/5 rounded-md p-4">
           <Donut a={invested} b={gains} labelA="Invested" labelB="Est. Returns" center={inr(maturity)} />
@@ -584,9 +584,9 @@ function LumpsumCalculator({ onSave }: { onSave: SaveFn }) {
       </div>
       <div className="mt-7 bg-[var(--brand-black)] text-white rounded-lg p-6">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 text-center mb-6">
-          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Invested" /></div><div className="text-xl font-bold mt-1">{inr(principal)}</div></div>
-          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Est. Returns" /></div><div className="text-xl font-bold mt-1">{inr(gains)}</div></div>
-          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Maturity" /></div><div className="text-xl font-bold text-[var(--brand-yellow)] mt-1">{inr(maturity)}</div></div>
+          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Invested" /></div><div className="amount font-bold mt-1">{inr(principal)}</div></div>
+          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Est. Returns" /></div><div className="amount font-bold mt-1">{inr(gains)}</div></div>
+          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Maturity" /></div><div className="amount font-bold text-[var(--brand-yellow)] mt-1">{inr(maturity)}</div></div>
         </div>
         <div className="bg-white/5 rounded-md p-4">
           <Donut a={principal} b={gains} labelA="Invested" labelB="Est. Returns" center={inr(maturity)} />
@@ -645,9 +645,9 @@ function FDCalculator({ onSave }: { onSave: SaveFn }) {
       </div>
       <div className="mt-7 bg-[var(--brand-black)] text-white rounded-lg p-6">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 text-center mb-6">
-          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Invested" /></div><div className="text-xl font-bold mt-1">{inr(principal)}</div></div>
-          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Interest" /></div><div className="text-xl font-bold mt-1">{inr(interest)}</div></div>
-          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Maturity" /></div><div className="text-xl font-bold text-[var(--brand-yellow)] mt-1">{inr(maturity)}</div></div>
+          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Invested" /></div><div className="amount font-bold mt-1">{inr(principal)}</div></div>
+          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Interest" /></div><div className="amount font-bold mt-1">{inr(interest)}</div></div>
+          <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Maturity" /></div><div className="amount font-bold text-[var(--brand-yellow)] mt-1">{inr(maturity)}</div></div>
         </div>
         <div className="bg-white/5 rounded-md p-4">
           <Donut a={principal} b={interest} labelA="Principal" labelB="Interest" center={inr(maturity)} />
@@ -717,7 +717,7 @@ function SimpleCalc({ def }: { def: SimpleDef }) {
             return (
               <div key={r.label}>
                 <div className="text-xs text-white/60 uppercase tracking-wider"><Tx s={r.label} /></div>
-                <div className={`text-xl font-bold mt-1 ${isPrimary ? "text-[var(--brand-yellow)]" : ""}`}>{r.value}</div>
+                <div className={`amount font-bold mt-1 ${isPrimary ? "text-[var(--brand-yellow)]" : ""}`}>{r.value}</div>
               </div>
             );
           })}

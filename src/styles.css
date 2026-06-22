@@ -168,3 +168,30 @@
 @utility shadow-card {
   box-shadow: var(--shadow-card);
 }
+
+/*
+ * Amount / numeric typography.
+ * Fluid size scales with viewport so long ₹ figures (₹7,24,974) never
+ * overlap on tablet/md, while staying punchy on desktop.
+ * - tabular-nums: even digit widths so columns line up
+ * - break-words + leading-tight: graceful wrap inside narrow grid cells
+ */
+@utility amount {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  font-size: clamp(0.95rem, 1.6vw + 0.4rem, 1.25rem);
+  letter-spacing: -0.01em;
+}
+
+@utility amount-lg {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  font-size: clamp(1.1rem, 2vw + 0.4rem, 1.75rem);
+  letter-spacing: -0.015em;
+}
