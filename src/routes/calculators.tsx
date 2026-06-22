@@ -711,7 +711,7 @@ function SimpleCalc({ def }: { def: SimpleDef }) {
         ))}
       </div>
       <div className="mt-7 bg-[var(--brand-black)] text-white rounded-lg p-6">
-        <div className={`grid gap-4 text-center mb-6 ${result.rows.length >= 3 ? "grid-cols-3" : "grid-cols-2"}`}>
+        <div className={`grid gap-4 text-center mb-6 grid-cols-1 ${result.rows.length >= 3 ? "lg:grid-cols-3" : "sm:grid-cols-2"}`}>
           {result.rows.map((r) => {
             const isPrimary = r.label === result.primaryLabel;
             return (
