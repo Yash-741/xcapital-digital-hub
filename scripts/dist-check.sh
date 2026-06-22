@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Wrap `vite build` with one retry on transient failures.
 # On final failure, print Vite build output path and environment details.
-set -u
+set -uo pipefail
 
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT_DIR"
@@ -9,13 +9,10 @@ cd "$ROOT_DIR"
 LOG_DIR="${ROOT_DIR}/.dist-check"
 mkdir -p "$LOG_DIR"
 
-if command -v bun >/dev/null 2>&1; then
-  # Run Vite through Bun's runtime so CI does not depend on the runner's
-  # system Node.js version. Vite 7 requires a recent Node-compatible runtime,
-  # while GitHub-hosted runners can lag behind.
-  VITE_CMD=(bun --bun vite)
-elif [ -x "${ROOT_DIR}/node_modules/.bin/vite" ]; then
+if [ -x "${ROOT_DIR}/node_modules/.bin/vite" ]; then
   VITE_CMD=("${ROOT_DIR}/node_modules/.bin/vite")
+elif command -v bun >/dev/null 2>&1; then
+  VITE_CMD=(bun vite)
 elif command -v bunx >/dev/null 2>&1; then
   VITE_CMD=(bunx vite)
 else
@@ -51,13 +48,12 @@ print_diagnostics() {
   fi
   echo ""
   echo "Environment:"
-  echo "  node(system): $(node --version 2>/dev/null || echo 'not found')"
-  echo "  node(vite):   $(bun --bun -e 'console.log(process.version)' 2>/dev/null || node --version 2>/dev/null || echo 'not found')"
-  echo "  bun:          $(bun --version 2>/dev/null || echo 'not found')"
-  echo "  npm:          $(npm --version 2>/dev/null || echo 'not found')"
-  echo "  vite:         $("${VITE_CMD[@]}" --version 2>/dev/null || echo 'not found')"
-  echo "  os:           $(uname -a)"
-  echo "  cwd:          ${ROOT_DIR}"
+  echo "  node:    $(node --version 2>/dev/null || echo 'not found')"
+  echo "  bun:     $(bun --version 2>/dev/null || echo 'not found')"
+  echo "  npm:     $(npm --version 2>/dev/null || echo 'not found')"
+  echo "  vite:    $("${VITE_CMD[@]}" --version 2>/dev/null || echo 'not found')"
+  echo "  os:      $(uname -a)"
+  echo "  cwd:     ${ROOT_DIR}"
   echo "  NODE_ENV=${NODE_ENV:-<unset>}"
   echo "  CI=${CI:-<unset>}"
   echo "  memory:  $(free -h 2>/dev/null | awk '/Mem:/ {print $2" total, "$7" available"}' || echo 'n/a')"
