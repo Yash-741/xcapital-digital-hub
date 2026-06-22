@@ -11,6 +11,11 @@ rm -rf "$LOG_DIR"
 mkdir -p "$LOG_DIR"
 LAST_LOG=""
 
+node -e "const v=process.versions.node.split('.').map(Number); process.exit(v[0] > 20 || (v[0] === 20 && v[1] >= 19) ? 0 : 1)" || {
+  echo "[dist-check] Node.js $(node --version 2>/dev/null || echo 'not found') is unsupported; Vite 7 requires Node.js >=20.19.0 or >=22.12.0."
+  exit 1
+}
+
 if [ -x "${ROOT_DIR}/node_modules/.bin/vite" ]; then
   VITE_CMD=("${ROOT_DIR}/node_modules/.bin/vite")
 elif command -v bun >/dev/null 2>&1; then
