@@ -413,8 +413,8 @@ function EMICalculator({ onSave, initialPresetKey }: { onSave: SaveFn; initialPr
   });
 
   return (
-    <div className="bg-card border border-border rounded-xl shadow-card p-7 border-b-[3px] border-b-[var(--brand-yellow)]">
-      <div className="flex items-center gap-3 mb-5">
+    <div className="bg-card border border-border rounded-xl shadow-card p-5 sm:p-7 border-b-[3px] border-b-[var(--brand-yellow)] flex flex-col">
+      <div className="order-1 flex items-center gap-3 mb-5">
         <div className="h-11 w-11 rounded-lg bg-[var(--brand-yellow-soft)] grid place-items-center text-[var(--brand-black)]">
           <Calculator className="h-5 w-5" />
         </div>
@@ -424,7 +424,7 @@ function EMICalculator({ onSave, initialPresetKey }: { onSave: SaveFn; initialPr
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-2 mb-6">
+      <div className="order-2 flex flex-wrap gap-2 mb-6">
         {loanPresets.map((p) => {
           const active = p.key === preset.key;
           const Icon = p.icon;
@@ -444,13 +444,13 @@ function EMICalculator({ onSave, initialPresetKey }: { onSave: SaveFn; initialPr
         })}
       </div>
 
-      <div className="space-y-5">
+      <div className="order-4 lg:order-3 space-y-5">
         <Field label="Loan Amount" value={amount} min={50000} max={preset.maxAmount} step={50000} onChange={setAmount} prefix="₹" />
         <Field label="Interest Rate (p.a.)" value={rate} min={4} max={30} step={0.1} onChange={setRate} suffix="%" />
         <Field label="Tenure (months)" value={tenure} min={3} max={360} step={1} onChange={setTenure} suffix=" mo" />
       </div>
 
-      <div className="mt-7 bg-[var(--brand-black)] text-white rounded-lg p-6">
+      <div className="order-3 lg:order-4 mb-6 lg:mb-0 lg:mt-7 sticky top-16 z-20 lg:static bg-[var(--brand-black)] text-white rounded-lg p-4 sm:p-6 shadow-lg">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 text-center mb-6">
           <div>
             <div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Monthly EMI" /></div>
@@ -465,11 +465,11 @@ function EMICalculator({ onSave, initialPresetKey }: { onSave: SaveFn; initialPr
             <div className="amount font-bold mt-1">{inr(total)}</div>
           </div>
         </div>
-        <div className="bg-white/5 rounded-md p-4">
+        <div className="hidden sm:block bg-white/5 rounded-md p-4">
           <Donut a={amount} b={interest} labelA="Principal" labelB="Interest" center={inr(total)} />
         </div>
       </div>
-      <SaveScenarioButton onClick={save} />
+      <div className="order-5"><SaveScenarioButton onClick={save} /></div>
     </div>
   );
 }
