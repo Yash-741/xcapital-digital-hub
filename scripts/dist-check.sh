@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Wrap `vite build` with one retry on transient failures.
 # On final failure, print Vite build output path and environment details.
-set -u
+set -uo pipefail
 
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT_DIR"
