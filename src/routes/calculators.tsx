@@ -413,8 +413,8 @@ function EMICalculator({ onSave, initialPresetKey }: { onSave: SaveFn; initialPr
   });
 
   return (
-    <div className="bg-card border border-border rounded-xl shadow-card p-7 border-b-[3px] border-b-[var(--brand-yellow)]">
-      <div className="flex items-center gap-3 mb-5">
+    <div className="bg-card border border-border rounded-xl shadow-card p-5 sm:p-7 border-b-[3px] border-b-[var(--brand-yellow)] flex flex-col">
+      <div className="order-1 flex items-center gap-3 mb-5">
         <div className="h-11 w-11 rounded-lg bg-[var(--brand-yellow-soft)] grid place-items-center text-[var(--brand-black)]">
           <Calculator className="h-5 w-5" />
         </div>
@@ -424,7 +424,7 @@ function EMICalculator({ onSave, initialPresetKey }: { onSave: SaveFn; initialPr
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-2 mb-6">
+      <div className="order-2 flex flex-wrap gap-2 mb-6">
         {loanPresets.map((p) => {
           const active = p.key === preset.key;
           const Icon = p.icon;
@@ -444,13 +444,13 @@ function EMICalculator({ onSave, initialPresetKey }: { onSave: SaveFn; initialPr
         })}
       </div>
 
-      <div className="space-y-5">
+      <div className="order-4 lg:order-3 space-y-5">
         <Field label="Loan Amount" value={amount} min={50000} max={preset.maxAmount} step={50000} onChange={setAmount} prefix="₹" />
         <Field label="Interest Rate (p.a.)" value={rate} min={4} max={30} step={0.1} onChange={setRate} suffix="%" />
         <Field label="Tenure (months)" value={tenure} min={3} max={360} step={1} onChange={setTenure} suffix=" mo" />
       </div>
 
-      <div className="mt-7 bg-[var(--brand-black)] text-white rounded-lg p-6">
+      <div className="order-3 lg:order-4 mb-6 lg:mb-0 lg:mt-7 sticky top-16 z-20 lg:static max-h-[55vh] overflow-y-auto lg:max-h-none lg:overflow-visible bg-[var(--brand-black)] text-white rounded-lg p-4 sm:p-6 shadow-xl ring-1 ring-black/10">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 text-center mb-6">
           <div>
             <div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Monthly EMI" /></div>
@@ -465,11 +465,11 @@ function EMICalculator({ onSave, initialPresetKey }: { onSave: SaveFn; initialPr
             <div className="amount font-bold mt-1">{inr(total)}</div>
           </div>
         </div>
-        <div className="bg-white/5 rounded-md p-4">
+        <div className="hidden sm:block bg-white/5 rounded-md p-4">
           <Donut a={amount} b={interest} labelA="Principal" labelB="Interest" center={inr(total)} />
         </div>
       </div>
-      <SaveScenarioButton onClick={save} />
+      <div className="order-5"><SaveScenarioButton onClick={save} /></div>
     </div>
   );
 }
@@ -507,8 +507,8 @@ function SIPCalculator({ onSave }: { onSave: SaveFn }) {
   });
 
   return (
-    <div className="bg-card border border-border rounded-xl shadow-card p-7 border-b-[3px] border-b-[var(--brand-yellow)]">
-      <div className="flex items-center gap-3 mb-6">
+    <div className="bg-card border border-border rounded-xl shadow-card p-5 sm:p-7 border-b-[3px] border-b-[var(--brand-yellow)] flex flex-col">
+      <div className="order-1 flex items-center gap-3 mb-6">
         <div className="h-11 w-11 rounded-lg bg-[var(--brand-yellow-soft)] grid place-items-center text-[var(--brand-black)]">
           <TrendingUp className="h-5 w-5" />
         </div>
@@ -517,22 +517,22 @@ function SIPCalculator({ onSave }: { onSave: SaveFn }) {
           <p className="text-xs text-muted-foreground"><Tx s="Project your mutual-fund SIP returns" /></p>
         </div>
       </div>
-      <div className="space-y-5">
+      <div className="order-3 lg:order-2 space-y-5">
         <Field label="Monthly Investment" value={monthly} min={500} max={500000} step={500} onChange={setMonthly} prefix="₹" />
         <Field label="Expected Return (p.a.)" value={rate} min={1} max={30} step={0.1} onChange={setRate} suffix="%" />
         <Field label="Time Period" value={years} min={1} max={40} step={1} onChange={setYears} suffix=" yr" />
       </div>
-      <div className="mt-7 bg-[var(--brand-black)] text-white rounded-lg p-6">
+      <div className="order-2 lg:order-3 mb-6 lg:mb-0 lg:mt-7 sticky top-16 z-20 lg:static max-h-[55vh] overflow-y-auto lg:max-h-none lg:overflow-visible bg-[var(--brand-black)] text-white rounded-lg p-4 sm:p-6 shadow-xl ring-1 ring-black/10">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 text-center mb-6">
           <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Invested" /></div><div className="amount font-bold mt-1">{inr(invested)}</div></div>
           <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Est. Returns" /></div><div className="amount font-bold mt-1">{inr(gains)}</div></div>
           <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Maturity" /></div><div className="amount font-bold text-[var(--brand-yellow)] mt-1">{inr(maturity)}</div></div>
         </div>
-        <div className="bg-white/5 rounded-md p-4">
+        <div className="hidden sm:block bg-white/5 rounded-md p-4">
           <Donut a={invested} b={gains} labelA="Invested" labelB="Est. Returns" center={inr(maturity)} />
         </div>
       </div>
-      <SaveScenarioButton onClick={save} />
+      <div className="order-4"><SaveScenarioButton onClick={save} /></div>
     </div>
   );
 }
@@ -567,8 +567,8 @@ function LumpsumCalculator({ onSave }: { onSave: SaveFn }) {
   });
 
   return (
-    <div className="bg-card border border-border rounded-xl shadow-card p-7 border-b-[3px] border-b-[var(--brand-yellow)]">
-      <div className="flex items-center gap-3 mb-6">
+    <div className="bg-card border border-border rounded-xl shadow-card p-5 sm:p-7 border-b-[3px] border-b-[var(--brand-yellow)] flex flex-col">
+      <div className="order-1 flex items-center gap-3 mb-6">
         <div className="h-11 w-11 rounded-lg bg-[var(--brand-yellow-soft)] grid place-items-center text-[var(--brand-black)]">
           <Wallet className="h-5 w-5" />
         </div>
@@ -577,22 +577,22 @@ function LumpsumCalculator({ onSave }: { onSave: SaveFn }) {
           <p className="text-xs text-muted-foreground"><Tx s="One-time investment growth" /></p>
         </div>
       </div>
-      <div className="space-y-5">
+      <div className="order-3 lg:order-2 space-y-5">
         <Field label="Investment Amount" value={principal} min={1000} max={50000000} step={1000} onChange={setPrincipal} prefix="₹" />
         <Field label="Expected Return (p.a.)" value={rate} min={1} max={30} step={0.1} onChange={setRate} suffix="%" />
         <Field label="Time Period" value={years} min={1} max={40} step={1} onChange={setYears} suffix=" yr" />
       </div>
-      <div className="mt-7 bg-[var(--brand-black)] text-white rounded-lg p-6">
+      <div className="order-2 lg:order-3 mb-6 lg:mb-0 lg:mt-7 sticky top-16 z-20 lg:static max-h-[55vh] overflow-y-auto lg:max-h-none lg:overflow-visible bg-[var(--brand-black)] text-white rounded-lg p-4 sm:p-6 shadow-xl ring-1 ring-black/10">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 text-center mb-6">
           <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Invested" /></div><div className="amount font-bold mt-1">{inr(principal)}</div></div>
           <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Est. Returns" /></div><div className="amount font-bold mt-1">{inr(gains)}</div></div>
           <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Maturity" /></div><div className="amount font-bold text-[var(--brand-yellow)] mt-1">{inr(maturity)}</div></div>
         </div>
-        <div className="bg-white/5 rounded-md p-4">
+        <div className="hidden sm:block bg-white/5 rounded-md p-4">
           <Donut a={principal} b={gains} labelA="Invested" labelB="Est. Returns" center={inr(maturity)} />
         </div>
       </div>
-      <SaveScenarioButton onClick={save} />
+      <div className="order-4"><SaveScenarioButton onClick={save} /></div>
     </div>
   );
 }
@@ -628,8 +628,8 @@ function FDCalculator({ onSave }: { onSave: SaveFn }) {
   });
 
   return (
-    <div className="bg-card border border-border rounded-xl shadow-card p-7 border-b-[3px] border-b-[var(--brand-yellow)]">
-      <div className="flex items-center gap-3 mb-6">
+    <div className="bg-card border border-border rounded-xl shadow-card p-5 sm:p-7 border-b-[3px] border-b-[var(--brand-yellow)] flex flex-col">
+      <div className="order-1 flex items-center gap-3 mb-6">
         <div className="h-11 w-11 rounded-lg bg-[var(--brand-yellow-soft)] grid place-items-center text-[var(--brand-black)]">
           <PiggyBank className="h-5 w-5" />
         </div>
@@ -638,22 +638,22 @@ function FDCalculator({ onSave }: { onSave: SaveFn }) {
           <p className="text-xs text-muted-foreground"><Tx s="Quarterly compounding maturity value" /></p>
         </div>
       </div>
-      <div className="space-y-5">
+      <div className="order-3 lg:order-2 space-y-5">
         <Field label="Principal Amount" value={principal} min={10000} max={20000000} step={10000} onChange={setPrincipal} prefix="₹" />
         <Field label="Interest Rate (p.a.)" value={rate} min={3} max={12} step={0.05} onChange={setRate} suffix="%" />
         <Field label="Tenure" value={years} min={1} max={20} step={1} onChange={setYears} suffix=" yr" />
       </div>
-      <div className="mt-7 bg-[var(--brand-black)] text-white rounded-lg p-6">
+      <div className="order-2 lg:order-3 mb-6 lg:mb-0 lg:mt-7 sticky top-16 z-20 lg:static max-h-[55vh] overflow-y-auto lg:max-h-none lg:overflow-visible bg-[var(--brand-black)] text-white rounded-lg p-4 sm:p-6 shadow-xl ring-1 ring-black/10">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 text-center mb-6">
           <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Invested" /></div><div className="amount font-bold mt-1">{inr(principal)}</div></div>
           <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Interest" /></div><div className="amount font-bold mt-1">{inr(interest)}</div></div>
           <div><div className="text-xs text-white/60 uppercase tracking-wider"><Tx s="Maturity" /></div><div className="amount font-bold text-[var(--brand-yellow)] mt-1">{inr(maturity)}</div></div>
         </div>
-        <div className="bg-white/5 rounded-md p-4">
+        <div className="hidden sm:block bg-white/5 rounded-md p-4">
           <Donut a={principal} b={interest} labelA="Principal" labelB="Interest" center={inr(maturity)} />
         </div>
       </div>
-      <SaveScenarioButton onClick={save} />
+      <div className="order-4"><SaveScenarioButton onClick={save} /></div>
     </div>
   );
 }
@@ -688,8 +688,8 @@ function SimpleCalc({ def }: { def: SimpleDef }) {
   const result = useMemo(() => def.compute(vals), [def, vals]);
   const Icon = def.icon;
   return (
-    <div className="bg-card border border-border rounded-xl shadow-card p-7 border-b-[3px] border-b-[var(--brand-yellow)]">
-      <div className="flex items-center gap-3 mb-6">
+    <div className="bg-card border border-border rounded-xl shadow-card p-5 sm:p-7 border-b-[3px] border-b-[var(--brand-yellow)] flex flex-col">
+      <div className="order-1 flex items-center gap-3 mb-6">
         <div className="h-11 w-11 rounded-lg bg-[var(--brand-yellow-soft)] grid place-items-center text-[var(--brand-black)]">
           <Icon className="h-5 w-5" />
         </div>
@@ -698,7 +698,7 @@ function SimpleCalc({ def }: { def: SimpleDef }) {
           <p className="text-xs text-muted-foreground"><Tx s={def.desc} /></p>
         </div>
       </div>
-      <div className="space-y-5">
+      <div className="order-3 lg:order-2 space-y-5">
         {def.inputs.map((i) => (
           <Field
             key={i.key}
@@ -710,7 +710,7 @@ function SimpleCalc({ def }: { def: SimpleDef }) {
           />
         ))}
       </div>
-      <div className="mt-7 bg-[var(--brand-black)] text-white rounded-lg p-6">
+      <div className="order-2 lg:order-3 mb-6 lg:mb-0 lg:mt-7 sticky top-16 z-20 lg:static max-h-[55vh] overflow-y-auto lg:max-h-none lg:overflow-visible bg-[var(--brand-black)] text-white rounded-lg p-4 sm:p-6 shadow-xl ring-1 ring-black/10">
         <div className={`grid gap-4 text-center mb-6 grid-cols-1 ${result.rows.length >= 3 ? "lg:grid-cols-3" : "sm:grid-cols-2"}`}>
           {result.rows.map((r) => {
             const isPrimary = r.label === result.primaryLabel;
@@ -723,7 +723,7 @@ function SimpleCalc({ def }: { def: SimpleDef }) {
           })}
         </div>
         {result.donut && (
-          <div className="bg-white/5 rounded-md p-4">
+          <div className="hidden sm:block bg-white/5 rounded-md p-4">
             <Donut {...result.donut} />
           </div>
         )}
