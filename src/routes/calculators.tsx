@@ -688,8 +688,8 @@ function SimpleCalc({ def }: { def: SimpleDef }) {
   const result = useMemo(() => def.compute(vals), [def, vals]);
   const Icon = def.icon;
   return (
-    <div className="bg-card border border-border rounded-xl shadow-card p-7 border-b-[3px] border-b-[var(--brand-yellow)]">
-      <div className="flex items-center gap-3 mb-6">
+    <div className="bg-card border border-border rounded-xl shadow-card p-5 sm:p-7 border-b-[3px] border-b-[var(--brand-yellow)] flex flex-col">
+      <div className="order-1 flex items-center gap-3 mb-6">
         <div className="h-11 w-11 rounded-lg bg-[var(--brand-yellow-soft)] grid place-items-center text-[var(--brand-black)]">
           <Icon className="h-5 w-5" />
         </div>
@@ -698,7 +698,7 @@ function SimpleCalc({ def }: { def: SimpleDef }) {
           <p className="text-xs text-muted-foreground"><Tx s={def.desc} /></p>
         </div>
       </div>
-      <div className="space-y-5">
+      <div className="order-3 lg:order-2 space-y-5">
         {def.inputs.map((i) => (
           <Field
             key={i.key}
@@ -710,7 +710,7 @@ function SimpleCalc({ def }: { def: SimpleDef }) {
           />
         ))}
       </div>
-      <div className="mt-7 bg-[var(--brand-black)] text-white rounded-lg p-6">
+      <div className="order-2 lg:order-3 mb-6 lg:mb-0 lg:mt-7 sticky top-16 z-20 lg:static bg-[var(--brand-black)] text-white rounded-lg p-4 sm:p-6 shadow-lg">
         <div className={`grid gap-4 text-center mb-6 grid-cols-1 ${result.rows.length >= 3 ? "lg:grid-cols-3" : "sm:grid-cols-2"}`}>
           {result.rows.map((r) => {
             const isPrimary = r.label === result.primaryLabel;
@@ -723,7 +723,7 @@ function SimpleCalc({ def }: { def: SimpleDef }) {
           })}
         </div>
         {result.donut && (
-          <div className="bg-white/5 rounded-md p-4">
+          <div className="hidden sm:block bg-white/5 rounded-md p-4">
             <Donut {...result.donut} />
           </div>
         )}
