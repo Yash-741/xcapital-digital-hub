@@ -88,14 +88,15 @@ function Donut({ a, b, labelA, labelB, center }: {
   const total = Math.max(a + b, 1);
   const pctA = (a / total) * 100;
   const C = 2 * Math.PI * 56;
-  const dashA = (pctA / 100) * C;
+  const dashA = Math.round(((pctA / 100) * C) * 100) / 100;
+  const dashB = Math.round((C - dashA) * 100) / 100;
   return (
     <div className="flex flex-col sm:flex-row items-center gap-6">
       <div className="relative">
         <svg width="160" height="160" viewBox="0 0 160 160" className="-rotate-90">
           <circle cx="80" cy="80" r="56" fill="none" stroke="var(--brand-yellow)" strokeWidth="20" />
           <circle cx="80" cy="80" r="56" fill="none" stroke="#1a1a1a" strokeWidth="20"
-            strokeDasharray={`${dashA} ${C - dashA}`} />
+            strokeDasharray={`${dashA} ${dashB}`} />
         </svg>
         <div className="absolute inset-0 grid place-items-center text-center">
           <div>
