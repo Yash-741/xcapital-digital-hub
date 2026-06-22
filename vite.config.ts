@@ -41,6 +41,9 @@ export default defineConfig(async ({ command, mode }) => {
   return {
     define: envDefine,
     css: { transformer: "lightningcss" as const },
+      ssr: {
+        noExternal: ["h3-v2"],
+      },
     resolve: {
       alias: {
         "@": path.resolve(process.cwd(), "./src"),
