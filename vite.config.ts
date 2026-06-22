@@ -42,7 +42,7 @@ export default defineConfig(async ({ command, mode }) => {
     define: envDefine,
     css: { transformer: "lightningcss" as const },
       ssr: {
-        noExternal: ["h3-v2"],
+        noExternal: ["h3-v2", "rou3", "srvx"],
       },
     resolve: {
       alias: {
