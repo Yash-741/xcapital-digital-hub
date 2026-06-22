@@ -42,7 +42,20 @@ export default defineConfig(async ({ command, mode }) => {
     define: envDefine,
     css: { transformer: "lightningcss" as const },
       ssr: {
-        noExternal: ["h3-v2", "rou3", "srvx"],
+        noExternal: [
+          "@tanstack/history",
+          "@tanstack/react-router",
+          "@tanstack/react-start",
+          "@tanstack/react-start-client",
+          "@tanstack/react-start-server",
+          "@tanstack/router-core",
+          "@tanstack/start-client-core",
+          "@tanstack/start-server-core",
+          "@tanstack/start-storage-context",
+          "h3-v2",
+          "rou3",
+          "srvx",
+        ],
       },
     resolve: {
       alias: {
