@@ -16,6 +16,8 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "XCapital — Loans, Investments & Insurance in India" },
       { property: "og:description", content: "Personal & home loans, FDs up to 8.5%, health & life cover from India's top banks and insurers. Apply online with XCapital." },
       { property: "og:url", content: "/" },
+      { name: "twitter:title", content: "XCapital — Loans, Investments & Insurance in India" },
+      { name: "twitter:description", content: "Compare loans, fixed deposits, bonds and insurance from 50+ leading Indian banks with XCapital." },
     ],
     links: [{ rel: "canonical", href: "/" }],
   }),
