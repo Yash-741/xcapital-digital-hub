@@ -1,6 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { useServerFn } from "@tanstack/react-start";
 import { SiteLayout, PageHeader } from "@/components/site/Layout";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,7 +7,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
-import { submitLead } from "@/lib/leads.functions";
 import { useI18n } from "@/lib/i18n";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -69,7 +67,6 @@ function ApplyPage() {
     [cat, slug],
   );
 
-  const send = useServerFn(submitLead);
   const [loading, setLoading] = useState(false);
   const [authState, setAuthState] = useState<"checking" | "in" | "out">("checking");
   const [userEmail, setUserEmail] = useState<string>("");
@@ -189,7 +186,11 @@ function ApplyPage() {
       }
       if (form.notes) payload.notes = form.notes;
 
-      await send({ data: payload as never });
+      const { data: userData } = await supabase.auth.getUser();
+      const { error } = await supabase
+        .from("service_leads")
+        .insert({ ...payload, user_id: userData.user?.id ?? null } as never);
+      if (error) throw error;
       try {
         const { insertLead } = await import("@/lib/leads-insert");
         await insertLead({

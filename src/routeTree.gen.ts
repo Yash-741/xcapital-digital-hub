@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as StoreRouteImport } from './routes/store'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as LoansRouteImport } from './routes/loans'
 import { Route as InvestmentsRouteImport } from './routes/investments'
@@ -28,9 +27,6 @@ import { Route as StoreProductIdRouteImport } from './routes/store.$productId'
 import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
 import { Route as AuthenticatedMyApplicationsRouteImport } from './routes/_authenticated/my-applications'
 import { Route as ApplyCategorySlugRouteImport } from './routes/apply.$category.$slug'
-import { Route as ApiEmailQueueProcessRouteImport } from './routes/api/email/queue/process'
-import { Route as ApiEmailAuthWebhookRouteImport } from './routes/api/email/auth/webhook'
-import { Route as ApiEmailAuthPreviewRouteImport } from './routes/api/email/auth/preview'
 
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
@@ -40,11 +36,6 @@ const TermsRoute = TermsRouteImport.update({
 const StoreRoute = StoreRouteImport.update({
   id: '/store',
   path: '/store',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -127,21 +118,6 @@ const ApplyCategorySlugRoute = ApplyCategorySlugRouteImport.update({
   path: '/apply/$category/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiEmailQueueProcessRoute = ApiEmailQueueProcessRouteImport.update({
-  id: '/api/email/queue/process',
-  path: '/api/email/queue/process',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiEmailAuthWebhookRoute = ApiEmailAuthWebhookRouteImport.update({
-  id: '/api/email/auth/webhook',
-  path: '/api/email/auth/webhook',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiEmailAuthPreviewRoute = ApiEmailAuthPreviewRouteImport.update({
-  id: '/api/email/auth/preview',
-  path: '/api/email/auth/preview',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -154,7 +130,6 @@ export interface FileRoutesByFullPath {
   '/investments': typeof InvestmentsRoute
   '/loans': typeof LoansRoute
   '/privacy': typeof PrivacyRoute
-  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/store': typeof StoreRouteWithChildren
   '/terms': typeof TermsRoute
   '/my-applications': typeof AuthenticatedMyApplicationsRoute
@@ -162,9 +137,6 @@ export interface FileRoutesByFullPath {
   '/store/$productId': typeof StoreProductIdRoute
   '/admin/': typeof AdminIndexRoute
   '/apply/$category/$slug': typeof ApplyCategorySlugRoute
-  '/api/email/auth/preview': typeof ApiEmailAuthPreviewRoute
-  '/api/email/auth/webhook': typeof ApiEmailAuthWebhookRoute
-  '/api/email/queue/process': typeof ApiEmailQueueProcessRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -176,7 +148,6 @@ export interface FileRoutesByTo {
   '/investments': typeof InvestmentsRoute
   '/loans': typeof LoansRoute
   '/privacy': typeof PrivacyRoute
-  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/store': typeof StoreRouteWithChildren
   '/terms': typeof TermsRoute
   '/my-applications': typeof AuthenticatedMyApplicationsRoute
@@ -184,9 +155,6 @@ export interface FileRoutesByTo {
   '/store/$productId': typeof StoreProductIdRoute
   '/admin': typeof AdminIndexRoute
   '/apply/$category/$slug': typeof ApplyCategorySlugRoute
-  '/api/email/auth/preview': typeof ApiEmailAuthPreviewRoute
-  '/api/email/auth/webhook': typeof ApiEmailAuthWebhookRoute
-  '/api/email/queue/process': typeof ApiEmailQueueProcessRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -201,7 +169,6 @@ export interface FileRoutesById {
   '/investments': typeof InvestmentsRoute
   '/loans': typeof LoansRoute
   '/privacy': typeof PrivacyRoute
-  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/store': typeof StoreRouteWithChildren
   '/terms': typeof TermsRoute
   '/_authenticated/my-applications': typeof AuthenticatedMyApplicationsRoute
@@ -209,9 +176,6 @@ export interface FileRoutesById {
   '/store/$productId': typeof StoreProductIdRoute
   '/admin/': typeof AdminIndexRoute
   '/apply/$category/$slug': typeof ApplyCategorySlugRoute
-  '/api/email/auth/preview': typeof ApiEmailAuthPreviewRoute
-  '/api/email/auth/webhook': typeof ApiEmailAuthWebhookRoute
-  '/api/email/queue/process': typeof ApiEmailQueueProcessRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -226,7 +190,6 @@ export interface FileRouteTypes {
     | '/investments'
     | '/loans'
     | '/privacy'
-    | '/sitemap.xml'
     | '/store'
     | '/terms'
     | '/my-applications'
@@ -234,9 +197,6 @@ export interface FileRouteTypes {
     | '/store/$productId'
     | '/admin/'
     | '/apply/$category/$slug'
-    | '/api/email/auth/preview'
-    | '/api/email/auth/webhook'
-    | '/api/email/queue/process'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -248,7 +208,6 @@ export interface FileRouteTypes {
     | '/investments'
     | '/loans'
     | '/privacy'
-    | '/sitemap.xml'
     | '/store'
     | '/terms'
     | '/my-applications'
@@ -256,9 +215,6 @@ export interface FileRouteTypes {
     | '/store/$productId'
     | '/admin'
     | '/apply/$category/$slug'
-    | '/api/email/auth/preview'
-    | '/api/email/auth/webhook'
-    | '/api/email/queue/process'
   id:
     | '__root__'
     | '/'
@@ -272,7 +228,6 @@ export interface FileRouteTypes {
     | '/investments'
     | '/loans'
     | '/privacy'
-    | '/sitemap.xml'
     | '/store'
     | '/terms'
     | '/_authenticated/my-applications'
@@ -280,9 +235,6 @@ export interface FileRouteTypes {
     | '/store/$productId'
     | '/admin/'
     | '/apply/$category/$slug'
-    | '/api/email/auth/preview'
-    | '/api/email/auth/webhook'
-    | '/api/email/queue/process'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -297,13 +249,9 @@ export interface RootRouteChildren {
   InvestmentsRoute: typeof InvestmentsRoute
   LoansRoute: typeof LoansRoute
   PrivacyRoute: typeof PrivacyRoute
-  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   StoreRoute: typeof StoreRouteWithChildren
   TermsRoute: typeof TermsRoute
   ApplyCategorySlugRoute: typeof ApplyCategorySlugRoute
-  ApiEmailAuthPreviewRoute: typeof ApiEmailAuthPreviewRoute
-  ApiEmailAuthWebhookRoute: typeof ApiEmailAuthWebhookRoute
-  ApiEmailQueueProcessRoute: typeof ApiEmailQueueProcessRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -320,13 +268,6 @@ declare module '@tanstack/react-router' {
       path: '/store'
       fullPath: '/store'
       preLoaderRoute: typeof StoreRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -441,27 +382,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApplyCategorySlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/email/queue/process': {
-      id: '/api/email/queue/process'
-      path: '/api/email/queue/process'
-      fullPath: '/api/email/queue/process'
-      preLoaderRoute: typeof ApiEmailQueueProcessRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/email/auth/webhook': {
-      id: '/api/email/auth/webhook'
-      path: '/api/email/auth/webhook'
-      fullPath: '/api/email/auth/webhook'
-      preLoaderRoute: typeof ApiEmailAuthWebhookRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/email/auth/preview': {
-      id: '/api/email/auth/preview'
-      path: '/api/email/auth/preview'
-      fullPath: '/api/email/auth/preview'
-      preLoaderRoute: typeof ApiEmailAuthPreviewRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -510,24 +430,10 @@ const rootRouteChildren: RootRouteChildren = {
   InvestmentsRoute: InvestmentsRoute,
   LoansRoute: LoansRoute,
   PrivacyRoute: PrivacyRoute,
-  SitemapDotxmlRoute: SitemapDotxmlRoute,
   StoreRoute: StoreRouteWithChildren,
   TermsRoute: TermsRoute,
   ApplyCategorySlugRoute: ApplyCategorySlugRoute,
-  ApiEmailAuthPreviewRoute: ApiEmailAuthPreviewRoute,
-  ApiEmailAuthWebhookRoute: ApiEmailAuthWebhookRoute,
-  ApiEmailQueueProcessRoute: ApiEmailQueueProcessRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
