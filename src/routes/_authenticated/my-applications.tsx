@@ -1,12 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { SiteLayout, PageHeader } from "@/components/site/Layout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { listMyApplications } from "@/lib/leads.functions";
+import { supabase } from "@/integrations/supabase/client";
 import { FileText, Search } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/my-applications")({
@@ -39,10 +38,16 @@ function formatLeadId(n: number): string {
 }
 
 function MyApplicationsPage() {
-  const fetchApps = useServerFn(listMyApplications);
   const { data, isLoading, error, refetch, isFetching } = useQuery({
     queryKey: ["my-applications"],
-    queryFn: () => fetchApps(),
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("service_leads")
+        .select("id, category, product_slug, product_name, full_name, email, phone, amount, tenure, coverage, age, horizon, notes, status, created_at")
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      return data ?? [];
+    },
   });
 
   const [search, setSearch] = useState("");

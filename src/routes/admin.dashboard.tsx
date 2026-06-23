@@ -17,9 +17,18 @@ import { Download as DownloadIcon } from "lucide-react";
 import * as XLSX from "xlsx";
 import { ProfileDialog } from "@/components/site/ProfileDialog";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { listAdminUsers, type AdminUser } from "@/lib/admin-users.functions";
-import { useServerFn } from "@tanstack/react-start";
 import xcapitalLogo from "@/assets/xcapital-logo.asset.json";
+
+type AdminUser = {
+  id: string;
+  email: string | null;
+  full_name: string | null;
+  phone: string | null;
+  created_at: string;
+  last_sign_in_at: string | null;
+  email_confirmed_at: string | null;
+  is_admin: boolean;
+};
 
 export const Route = createFileRoute("/admin/dashboard")({
   head: () => ({ meta: [{ title: "XCapital Admin Portal" }, { name: "robots", content: "noindex" }] }),
@@ -82,7 +91,6 @@ function AdminDashboard() {
   const qc = useQueryClient();
   const [authed, setAuthed] = useState<boolean | null>(null);
   const [profileOpen, setProfileOpen] = useState(false);
-  const fetchUsers = useServerFn(listAdminUsers);
 
   useEffect(() => {
     (async () => {
@@ -122,7 +130,7 @@ function AdminDashboard() {
   const { data: users = [], isLoading: usersLoading } = useQuery({
     queryKey: ["admin-users"],
     enabled: authed === true,
-    queryFn: () => fetchUsers(),
+    queryFn: async (): Promise<AdminUser[]> => [],
   });
   const [userSearch, setUserSearch] = useState("");
   const filteredUsers = useMemo(() => {
