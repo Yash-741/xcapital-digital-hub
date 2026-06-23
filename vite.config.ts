@@ -55,6 +55,9 @@ export default defineConfig(async ({ command, mode }) => {
           "h3-v2",
           "rou3",
           "srvx",
+          "seroval",
+          "seroval-plugins",
+          "seroval-plugins/web",
         ],
       },
     resolve: {
