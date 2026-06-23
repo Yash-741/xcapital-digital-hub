@@ -135,13 +135,18 @@ function AdminDashboard() {
     .from("profiles")
     .select("id, full_name, phone, created_at");
   if (error) throw error;
-  return (data ?? []).map((u) => ({
-    id: u.id,
-    email: "",
-    full_name: u.full_name ?? "",
-    phone: u.phone ?? "",
-    created_at: u.created_at,
-  }));
+      const { data: rolesData } = await supabase
+        .from("user_roles")
+        .select("user_id, role");
+      const { data: authData } = await supabase.rpc("get_users_for_admin");
+      return (data ?? []).map((u) => ({
+        id: u.id,
+        email: authData?.find((a: any) => a.id === u.id)?.email ?? "",
+        full_name: u.full_name ?? "",
+        phone: u.phone ?? "",
+        created_at: u.created_at,
+        role: rolesData?.find((r: any) => r.user_id === u.id)?.role ?? "user",
+      }));
 },
   });
   const [userSearch, setUserSearch] = useState("");
