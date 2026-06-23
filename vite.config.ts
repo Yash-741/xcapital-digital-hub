@@ -1,30 +1,17 @@
-import { defineConfig } from "vite";
-import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import { defineConfig, loadEnv } from "vite";
+import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import viteReact from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import tsConfigPaths from "vite-tsconfig-paths";
 import path from "node:path";
-import { loadEnv } from "vite";
-
-// Load all env vars (no prefix) into process.env for server-side routes
-// that need secrets like SUPABASE_SERVICE_ROLE_KEY. Client bundle still
-// only sees VITE_* via the wrapper's envDefine.
-const serverEnv = loadEnv(process.env.NODE_ENV || "development", process.cwd(), "");
-Object.assign(process.env, serverEnv);
 
 export default defineConfig(async ({ command, mode }) => {
   const plugins = [
-    tanstackStart({
-      // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
-      // nitro/vite builds from this
-      server: { entry: "server" },
-      importProtection: {
-        behavior: "error",
-        client: {
-          files: ["**/server/**"],
-          specifiers: ["server-only"]
-        }
-      }
+    tanstackRouter({
+      target: "react",
+      routesDirectory: "./src/routes",
+      generatedRouteTree: "./src/routeTree.gen.ts",
+      routeFileIgnorePattern: "^(api|sitemap\\[\\.\\]xml\\.ts)$",
     }),
     viteReact(),
     tailwindcss(),
@@ -39,48 +26,14 @@ export default defineConfig(async ({ command, mode }) => {
   }
 
   return {
+    appType: "spa",
     define: envDefine,
     css: { transformer: "lightningcss" as const },
-      ssr: {
-        noExternal: [
-          "@tanstack/history",
-          "@tanstack/react-router",
-          "@tanstack/react-start",
-          "@tanstack/react-start-client",
-          "@tanstack/react-start-server",
-          "@tanstack/router-core",
-          "@tanstack/start-client-core",
-          "@tanstack/start-server-core",
-          "@tanstack/start-storage-context",
-          "h3-v2",
-          "rou3",
-          "srvx",
-          "seroval",
-          "seroval-plugins",
-          "seroval-plugins/web",
-          // Broad: bundle every @tanstack/* runtime package
-          /^@tanstack\//,
-          // h3 + transitive runtime deps used by the SSR server bundle
-          "h3",
-          "cookie-es",
-          "crossws",
-          "ufo",
-          "ohash",
-          "hookable",
-          "unenv",
-          "ofetch",
-          "unstorage",
-          "pathe",
-          "consola",
-          "destr",
-          "defu",
-          "radix3",
-          "iron-webcrypto",
-          "uncrypto",
-          "is-https",
-          "node-mock-http",
-        ],
+    build: {
+      rollupOptions: {
+        input: path.resolve(process.cwd(), "index.html"),
       },
+    },
     resolve: {
       alias: {
         "@": path.resolve(process.cwd(), "./src"),
