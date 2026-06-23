@@ -5,11 +5,9 @@ import {
   createRootRouteWithContext,
   useRouter,
   HeadContent,
-  Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect } from "react";
 
-import appCss from "../styles.css?url";
 import { reportError } from "../lib/error-reporting";
 import { Toaster } from "@/components/ui/sonner";
 import { I18nProvider } from "@/lib/i18n";
@@ -83,9 +81,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "XCapital" },
       { name: "twitter:card", content: "summary_large_image" },
-      { title: "Lovable App" },
-      { property: "og:title", content: "Lovable App" },
-      { name: "twitter:title", content: "Lovable App" },
+      { title: "XCapital — Loans, Investments & Insurance" },
+      { property: "og:title", content: "XCapital — Loans, Investments & Insurance" },
+      { name: "twitter:title", content: "XCapital — Loans, Investments & Insurance" },
       { name: "description", content: "XCapital Launchpad is a professional financial services website for an Indian NBFC." },
       { property: "og:description", content: "XCapital Launchpad is a professional financial services website for an Indian NBFC." },
       { name: "twitter:description", content: "XCapital Launchpad is a professional financial services website for an Indian NBFC." },
@@ -97,10 +95,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" },
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
     ],
     scripts: [
       {
@@ -124,16 +118,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
     ],
   }),
-  shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
   errorComponent: ErrorComponent,
 });
 
-function RootShell({ children }: { children: ReactNode }) {
+function RootComponent() {
+  const { queryClient } = Route.useRouteContext();
+
   return (
-    <html lang="en">
-      <head>
+    <QueryClientProvider client={queryClient}>
+      <I18nProvider>
         <HeadContent />
         <style>{`
           .goog-te-banner-frame, .goog-te-balloon-frame, .skiptranslate iframe { display: none !important; }
@@ -142,21 +137,6 @@ function RootShell({ children }: { children: ReactNode }) {
           .goog-text-highlight { background: transparent !important; box-shadow: none !important; }
           #google_translate_element { position: absolute; left: -9999px; top: -9999px; height: 0; overflow: hidden; }
         `}</style>
-      </head>
-      <body suppressHydrationWarning>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  );
-}
-
-function RootComponent() {
-  const { queryClient } = Route.useRouteContext();
-
-  return (
-    <QueryClientProvider client={queryClient}>
-      <I18nProvider>
         <div className="flex min-h-screen flex-col" style={{ background: "var(--page-bg)" }}>
           {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
           <Outlet />

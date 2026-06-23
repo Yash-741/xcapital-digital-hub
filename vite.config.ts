@@ -26,7 +26,7 @@ export default defineConfig(async ({ command, mode }) => {
   }
 
   return {
-    appType: "spa",
+    appType: "spa" as const,
     define: envDefine,
     css: { transformer: "lightningcss" as const },
     build: {
