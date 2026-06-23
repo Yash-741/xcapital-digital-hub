@@ -130,7 +130,19 @@ function AdminDashboard() {
   const { data: users = [], isLoading: usersLoading } = useQuery({
     queryKey: ["admin-users"],
     enabled: authed === true,
-    queryFn: async (): Promise<AdminUser[]> => [],
+    queryFn: async (): Promise<AdminUser[]> => {
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("id, full_name, phone, created_at");
+  if (error) throw error;
+  return (data ?? []).map((u) => ({
+    id: u.id,
+    email: "",
+    full_name: u.full_name ?? "",
+    phone: u.phone ?? "",
+    created_at: u.created_at,
+  }));
+},
   });
   const [userSearch, setUserSearch] = useState("");
   const filteredUsers = useMemo(() => {
