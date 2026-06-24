@@ -201,17 +201,17 @@ function GoogleButton({ redirectPath }: { redirectPath: string }) {
   const [loading, setLoading] = useState(false);
   async function onClick() {
     setLoading(true);
-    const { lovable } = await import("@/integrations/lovable");
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: `${window.location.origin}${redirectPath}`,
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}${redirectPath}`,
+      },
     });
-    if (result.error) {
+    if (error) {
       setLoading(false);
-      toast.error(result.error.message || tEn("Google sign-in failed"));
+      toast.error(error.message || tEn("Google sign-in failed"));
       return;
     }
-    if (result.redirected) return;
-    setLoading(false);
   }
   return (
     <Button type="button" variant="outline" onClick={onClick} disabled={loading} className="w-full">
