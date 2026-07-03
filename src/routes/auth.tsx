@@ -24,7 +24,6 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
 });
 
-// Only allow same-origin relative paths to prevent open-redirect.
 function safeRedirect(target: string | undefined): string {
   if (!target) return "/";
   if (target.startsWith("/") && !target.startsWith("//")) return target;
@@ -35,11 +34,11 @@ function AuthPage() {
   const navigate = useNavigate();
   const router = useRouter();
   const [tab, setTab] = useState<"login" | "register">("login");
+  const [showForgot, setShowForgot] = useState(false);
   const { tEn } = useI18n();
   const { redirect: redirectParam } = Route.useSearch();
   const dest = safeRedirect(redirectParam);
 
-  // Redirect if already signed in
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
       if (data.user) navigate({ to: dest, replace: true });
@@ -53,6 +52,19 @@ function AuthPage() {
     return () => sub.subscription.unsubscribe();
   }, [navigate, router, dest]);
 
+  if (showForgot) {
+    return (
+      <SiteLayout>
+        <PageHeader eyebrow={tEn("Account")} title={tEn("Reset Password")} subtitle={tEn("Enter your email and we'll send you a reset link.")} />
+        <section className="container-x py-10 md:py-14">
+          <div className="max-w-md mx-auto bg-white rounded-lg shadow-card border-b-[3px] border-[var(--brand-yellow)] p-6 md:p-8">
+            <ForgotPasswordForm onBack={() => setShowForgot(false)} />
+          </div>
+        </section>
+      </SiteLayout>
+    );
+  }
+
   return (
     <SiteLayout>
       <PageHeader eyebrow={tEn("Account")} title={tEn("Login or Register")} subtitle={tEn("Access your XCapital account to apply, track and manage.")} />
@@ -63,7 +75,7 @@ function AuthPage() {
               <TabsTrigger value="login">{tEn("Login")}</TabsTrigger>
               <TabsTrigger value="register">{tEn("Register")}</TabsTrigger>
             </TabsList>
-            <TabsContent value="login"><LoginForm /></TabsContent>
+            <TabsContent value="login"><LoginForm onForgotPassword={() => setShowForgot(true)} /></TabsContent>
             <TabsContent value="register"><RegisterForm onDone={() => setTab("login")} /></TabsContent>
           </Tabs>
 
@@ -81,7 +93,7 @@ function AuthPage() {
   );
 }
 
-function LoginForm() {
+function LoginForm({ onForgotPassword }: { onForgotPassword: () => void }) {
   const { tEn } = useI18n();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -110,7 +122,16 @@ function LoginForm() {
         <Input id="li-email" type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
       </div>
       <div className="space-y-1.5">
-        <Label htmlFor="li-pass">{tEn("Password")}</Label>
+        <div className="flex items-center justify-between">
+          <Label htmlFor="li-pass">{tEn("Password")}</Label>
+          <button
+            type="button"
+            onClick={onForgotPassword}
+            className="text-xs text-[var(--brand-black)] underline hover:opacity-75 transition-opacity"
+          >
+            {tEn("Forgot password?")}
+          </button>
+        </div>
         <Input id="li-pass" type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} required />
       </div>
       <div className="flex items-start gap-2">
@@ -121,6 +142,57 @@ function LoginForm() {
       </div>
       <Button type="submit" disabled={loading} className="w-full bg-[var(--brand-yellow)] text-[var(--brand-black)] hover:brightness-105">
         {loading ? tEn("Signing in...") : tEn("Login")}
+      </Button>
+    </form>
+  );
+}
+
+function ForgotPasswordForm({ onBack }: { onBack: () => void }) {
+  const { tEn } = useI18n();
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [sent, setSent] = useState(false);
+  const emailSchema = z.string().trim().email(tEn("Enter a valid email")).max(255);
+
+  async function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    const ev = emailSchema.safeParse(email);
+    if (!ev.success) return toast.error(ev.error.issues[0].message);
+    setLoading(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(ev.data, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setLoading(false);
+    if (error) return toast.error(error.message);
+    setSent(true);
+  }
+
+  if (sent) {
+    return (
+      <div className="text-center space-y-4">
+        <div className="text-4xl">📧</div>
+        <h3 className="text-lg font-semibold">{tEn("Check your email")}</h3>
+        <p className="text-sm text-muted-foreground">
+          {tEn("We've sent a password reset link to")} <strong>{email}</strong>. {tEn("Click the link in the email to reset your password.")}
+        </p>
+        <Button variant="outline" onClick={onBack} className="w-full">
+          {tEn("Back to Login")}
+        </Button>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={onSubmit} className="space-y-4">
+      <div className="space-y-1.5">
+        <Label htmlFor="fp-email">{tEn("Email address")}</Label>
+        <Input id="fp-email" type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter your registered email" required />
+      </div>
+      <Button type="submit" disabled={loading} className="w-full bg-[var(--brand-yellow)] text-[var(--brand-black)] hover:brightness-105">
+        {loading ? tEn("Sending...") : tEn("Send Reset Link")}
+      </Button>
+      <Button type="button" variant="outline" onClick={onBack} className="w-full">
+        {tEn("Back to Login")}
       </Button>
     </form>
   );
